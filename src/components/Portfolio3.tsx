@@ -5,13 +5,11 @@ Command: npx gltfjsx@6.5.3 public/Portfolio3.glb -o src/components/Portfolio3.ts
 "use client"
 import * as THREE from 'three'
 import React from 'react'
-import { useGLTF, useTexture, MeshReflectorMaterial, meshStandardMaterial } from '@react-three/drei'
+import { useGLTF, useTexture, MeshReflectorMaterial} from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useRef, useLayoutEffect, useState } from 'react'
 import { LinearSRGBColorSpace, RepeatWrapping, TextureLoader } from 'three';
-import { useHelper, SpotLight } from '@react-three/drei'
-import { SpotLightHelper } from 'three'
 import gsap from "gsap";
 type GLTFResult = GLTF & {
   nodes: {
