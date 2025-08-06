@@ -1,7 +1,7 @@
 'use client'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { easing } from 'maath'
 
 export default function CameraRig({ active }: { active: boolean }) {

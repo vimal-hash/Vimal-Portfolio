@@ -158,7 +158,7 @@ const CircularSkill: React.FC<CircularSkillProps> = ({ skill, percentage, delay 
 };
 
 // Reusable Triangle Component with Enhanced Glow
-const GlowingTriangle: React.FC<GlowingTriangleProps> = ({ techList, triangleId, onClick, isSelected }) => {
+const GlowingTriangle: React.FC<GlowingTriangleProps> = ({ techList, triangleId, onClick}) => {
     return (
         <div>
         <div onClick={() => onClick(triangleId)} className="cursor-pointer">
@@ -305,11 +305,7 @@ const intriangleWrapperRef = useRef<HTMLDivElement | null>(null);
         // Create a GSAP timeline
         const tl = gsap.timeline();
         
-        const positions = [
-            { x: 200, y: 80, rotate: 0, scale: 1 },     // Triangle 1
-            { x: 395, y: 340, rotate: 125, scale: 1 }, // Triangle 2  
-            { x: 90, y: 385, rotate: -125, scale: 1 }  // Triangle 3
-        ];
+      
         
         const initTrianglePositions = [
             { x: 210, y: 150, rotate: 0, scale: 1 },

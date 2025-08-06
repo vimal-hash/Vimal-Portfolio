@@ -379,7 +379,6 @@ export function Portfolio3(props: { onAnimationComplete: any }) {
   const tri7 = useRef<THREE.Group>(null!)
   const tri8 = useRef<THREE.Group>(null!)
   const tri9 = useRef<THREE.Group>(null!)
-  const [visible, setVisible] = useState(false)
 
 
   useFrame(() => {
