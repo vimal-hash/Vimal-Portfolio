@@ -5,7 +5,7 @@ import SecondSec from '@/components/secondsec'
 import ContactForm from '@/components/ContactForm'
 
 export default function Home() {
-  const [cameraSwayActive, setCameraSwayActive] = useState(false)
+ 
 
   return (
     <>

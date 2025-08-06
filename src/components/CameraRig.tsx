@@ -11,7 +11,7 @@ export default function CameraRig({ active }: { active: boolean }) {
     // Smooth mouse tracking state
     const smoothMouse = useRef({ x: 0, y: 0 })
     const velocity = useRef({ x: 0, y: 0 })
-    const [isHovering, setIsHovering] = useState(false)
+    
 
     useFrame((state, delta) => {
         const camera = state.camera
