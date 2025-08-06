@@ -228,12 +228,12 @@ type GLTFResult = GLTF & {
     ['SVGMat.078']: THREE.MeshStandardMaterial
     ['SVGMat.079']: THREE.MeshStandardMaterial
   }
-  animations: GLTFAction[]
+  animations: THREE.AnimationClip[]
 }
 
-export function Portfolio3(props) {
+export function Portfolio3(props: { onAnimationComplete: any }) {
   const { onAnimationComplete } = props;
-  const { nodes, materials } = useGLTF('/Portfolio3.glb') as GLTFResult
+  const { nodes, materials } = useGLTF('/Portfolio3.glb') as unknown as GLTFResult
 
   const [roughness, normal] = useLoader(TextureLoader, [
     '/terrain-roughness.jpg',

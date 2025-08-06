@@ -41,7 +41,7 @@ export default function Showcase() {
       </CubeCamera>
 
 
-      <EffectComposer disableNormalPass>
+      <EffectComposer enableNormalPass>
         <Bloom luminanceThreshold={0.01} intensity={0.005} mipmapBlur />
         <ToneMapping />
       </EffectComposer>
