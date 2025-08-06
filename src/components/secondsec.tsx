@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from "gsap";
