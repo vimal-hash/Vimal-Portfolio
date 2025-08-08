@@ -231,7 +231,11 @@ type GLTFResult = GLTF & {
   animations: THREE.AnimationClip[]
 }
 
-export function Portfolio3(props: { onAnimationComplete: any }) {
+interface Portfolio3Props {
+  onAnimationComplete?: () => void;
+}
+
+export function Portfolio3(props: Portfolio3Props) {
   const { onAnimationComplete } = props;
   const { nodes, materials } = useGLTF('/Portfolio3.glb') as unknown as GLTFResult
 
@@ -374,8 +378,8 @@ export function Portfolio3(props: { onAnimationComplete: any }) {
 
 
   // Glow
-  const shelftoplight = useRef<THREE.Group>(null!)
-  const Lefttoplight = useRef<THREE.Group>(null!)
+  const shelftoplight = useRef<THREE.MeshBasicMaterial>(null!)
+const Lefttoplight = useRef<THREE.MeshBasicMaterial>(null!)
   const tri7 = useRef<THREE.MeshBasicMaterial>(null!)
 const tri8 = useRef<THREE.MeshBasicMaterial>(null!)
 const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
@@ -412,77 +416,77 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
   }, [])
 
   const tl = useRef<gsap.core.Timeline | null>(null);
-  const floor = useRef<THREE.Mesh>(null);
-  const lwall = useRef<THREE.Mesh>(null);
-  const rwall = useRef<THREE.Mesh>(null);
-  const showcase = useRef<THREE.Mesh>(null);
-  const showcaselight = useRef<THREE.Mesh>(null);
-  const showcaselightself = useRef<THREE.Mesh>(null);
-  const showcasepillar = useRef<THREE.Mesh>(null);
-  const striplight1 = useRef<THREE.Mesh>(null);
-  const showcasepillar1 = useRef<THREE.Mesh>(null);
-  const striplight2 = useRef<THREE.Mesh>(null);
-  const striplight3 = useRef<THREE.Mesh>(null);
-  const striplight4 = useRef<THREE.Mesh>(null);
-  const striplight5 = useRef<THREE.Mesh>(null);
-  const striplight6 = useRef<THREE.Mesh>(null);
-  const striplight7 = useRef<THREE.Mesh>(null);
-  const striplight8 = useRef<THREE.Mesh>(null);
-  const striplight9 = useRef<THREE.Mesh>(null);
-  const striplight10 = useRef<THREE.Mesh>(null);
-  const showcasepillar2 = useRef<THREE.Mesh>(null);
-  const showcasepillar3 = useRef<THREE.Mesh>(null);
-  const showcasepillar4 = useRef<THREE.Mesh>(null);
-  const showcasepillar5 = useRef<THREE.Mesh>(null);
-  const showcasepillar6 = useRef<THREE.Mesh>(null);
-  const showcasepillar7 = useRef<THREE.Mesh>(null);
-  const showcasepillar8 = useRef<THREE.Mesh>(null);
+  const floor = useRef<THREE.Mesh>(null!);
+  const lwall = useRef<THREE.Mesh>(null!);
+  const rwall = useRef<THREE.Mesh>(null!);
+  const showcase = useRef<THREE.Mesh>(null!);
+  const showcaselight = useRef<THREE.Mesh>(null!);
+  const showcaselightself = useRef<THREE.Mesh>(null!);
+  const showcasepillar = useRef<THREE.Mesh>(null!);
+  const striplight1 = useRef<THREE.Mesh>(null!);
+  const showcasepillar1 = useRef<THREE.Mesh>(null!);
+  const striplight2 = useRef<THREE.Mesh>(null!);
+  const striplight3 = useRef<THREE.Mesh>(null!);
+  const striplight4 = useRef<THREE.Mesh>(null!);
+  const striplight5 = useRef<THREE.Mesh>(null!);
+  const striplight6 = useRef<THREE.Mesh>(null!);
+  const striplight7 = useRef<THREE.Mesh>(null!);
+  const striplight8 = useRef<THREE.Mesh>(null!);
+  const striplight9 = useRef<THREE.Mesh>(null!);
+  const striplight10 = useRef<THREE.Mesh>(null!);
+  const showcasepillar2 = useRef<THREE.Mesh>(null!);
+  const showcasepillar3 = useRef<THREE.Mesh>(null!);
+  const showcasepillar4 = useRef<THREE.Mesh>(null!);
+  const showcasepillar5 = useRef<THREE.Mesh>(null!);
+  const showcasepillar6 = useRef<THREE.Mesh>(null!);
+  const showcasepillar7 = useRef<THREE.Mesh>(null!);
+  const showcasepillar8 = useRef<THREE.Mesh>(null!);
 
   // set gpt
-  const books = useRef<THREE.Mesh>(null);
-  const Cactus = useRef<THREE.Mesh>(null);
-  const Cactusleaf = useRef<THREE.Mesh>(null);
-  const chair = useRef<THREE.Mesh>(null);
-  const Cube = useRef<THREE.Mesh>(null);
-  const Cube002 = useRef<THREE.Mesh>(null);
-  const Cube003 = useRef<THREE.Mesh>(null);
-  const Cube005 = useRef<THREE.Mesh>(null);
-  const Cube006 = useRef<THREE.Mesh>(null);
-  const Cube024 = useRef<THREE.Mesh>(null);
-  const Cube027 = useRef<THREE.Mesh>(null);
-  const mouse = useRef<THREE.Mesh>(null);
-  const penguin = useRef<THREE.Mesh>(null);
-  const picture = useRef<THREE.Mesh>(null);
-  const picture001 = useRef<THREE.Mesh>(null);
-  const Plane004 = useRef<THREE.Mesh>(null);
-  const Plane005 = useRef<THREE.Mesh>(null);
-  const plant = useRef<THREE.Mesh>(null);
-  const plant001 = useRef<THREE.Mesh>(null);
-  const speaker = useRef<THREE.Mesh>(null);
-  const Table_small = useRef<THREE.Mesh>(null);
+  const books = useRef<THREE.Mesh>(null!);
+  const Cactus = useRef<THREE.Mesh>(null!);
+  const Cactusleaf = useRef<THREE.Mesh>(null!);
+  const chair = useRef<THREE.Mesh>(null!);
+  const Cube = useRef<THREE.Mesh>(null!);
+  const Cube002 = useRef<THREE.Mesh>(null!);
+  const Cube003 = useRef<THREE.Mesh>(null!);
+  const Cube005 = useRef<THREE.Mesh>(null!);
+  const Cube006 = useRef<THREE.Mesh>(null!);
+  const Cube024 = useRef<THREE.Mesh>(null!);
+  const Cube027 = useRef<THREE.Mesh>(null!);
+  const mouse = useRef<THREE.Mesh>(null!);
+  const penguin = useRef<THREE.Mesh>(null!);
+  const picture = useRef<THREE.Mesh>(null!);
+  const picture001 = useRef<THREE.Mesh>(null!);
+  const Plane004 = useRef<THREE.Mesh>(null!);
+  const Plane005 = useRef<THREE.Mesh>(null!);
+  const plant = useRef<THREE.Mesh>(null!);
+  const plant001 = useRef<THREE.Mesh>(null!);
+  const speaker = useRef<THREE.Mesh>(null!);
+  const Table_small = useRef<THREE.Mesh>(null!);
   // man
-  const Face_new = useRef<THREE.Mesh>(null);
-  const Hair = useRef<THREE.Mesh>(null);
-  const Hand = useRef<THREE.Mesh>(null);
-  const Leg = useRef<THREE.Mesh>(null);
-  const Pant = useRef<THREE.Mesh>(null);
-  const Shirt = useRef<THREE.Mesh>(null);
+  const Face_new = useRef<THREE.Mesh>(null!);
+  const Hair = useRef<THREE.Mesh>(null!);
+  const Hand = useRef<THREE.Mesh>(null!);
+  const Leg = useRef<THREE.Mesh>(null!);
+  const Pant = useRef<THREE.Mesh>(null!);
+  const Shirt = useRef<THREE.Mesh>(null!);
 
 
   // collections
 
-  const Curve = useRef<THREE.Mesh>(null);
-  const Curve001 = useRef<THREE.Mesh>(null);
-  const Curve002 = useRef<THREE.Mesh>(null);
-  const Curve003 = useRef<THREE.Mesh>(null);
-  const Curve004 = useRef<THREE.Mesh>(null);
-  const Curve007 = useRef<THREE.Mesh>(null);
-  const Curve005 = useRef<THREE.Mesh>(null);
-  const Curve011 = useRef<THREE.Mesh>(null);
-  const Curve008 = useRef<THREE.Mesh>(null);
-  const Curve006 = useRef<THREE.Mesh>(null);
-  const Curve009 = useRef<THREE.Mesh>(null);
-  const Curve010 = useRef<THREE.Mesh>(null);
+  const Curve = useRef<THREE.Mesh>(null!);
+  const Curve001 = useRef<THREE.Mesh>(null!);
+  const Curve002 = useRef<THREE.Mesh>(null!);
+  const Curve003 = useRef<THREE.Mesh>(null!);
+  const Curve004 = useRef<THREE.Mesh>(null!);
+  const Curve007 = useRef<THREE.Mesh>(null!);
+  const Curve005 = useRef<THREE.Mesh>(null!);
+  const Curve011 = useRef<THREE.Mesh>(null!);
+  const Curve008 = useRef<THREE.Mesh>(null!);
+  const Curve006 = useRef<THREE.Mesh>(null!);
+  const Curve009 = useRef<THREE.Mesh>(null!);
+  const Curve010 = useRef<THREE.Mesh>(null!);
 
 
   // light
@@ -504,9 +508,9 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
   useLayoutEffect(() => {
-    tl.current = gsap.timeline();
+  tl.current = gsap.timeline();
 
-    if (groupRef.current) {
+  if (groupRef.current) {
 
 
 
@@ -552,38 +556,40 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
 
-      tl.current.set(floor.current.scale, {
-        x: 0,
-        y: 0,
-        z: 0,
-      }, 0);
+      if (floor.current) {
+  tl.current.set(floor.current.scale, {
+    x: 0,
+    y: 0,
+    z: 0,
+  }, 0);
+
+  tl.current.to(floor.current.scale, {
+    duration: 0.1,
+    x: 1,
+    y: 1,
+    z: 1,
+  }, 4);
+}
 
 
-      tl.current.to(floor.current.scale, {
-        duration: 0.1,
-        x: 1,
-        y: 1,
-        z: 1,
-      }, 4);
+      if (lwall.current) {
+  tl.current.from(lwall.current.scale, {
+    x: 0,
+    y: 0,
+    z: 0,
+  }, 0);
+
+  tl.current.to(lwall.current.scale, {
+    duration: 0.1,
+    x: 0.032,
+    y: 1.856,
+    z: 6.427,
+    ease: "back.out(1.7)"
+  }, 4);
+}
 
 
-      tl.current.from(lwall.current.scale, {
-        x: 0,
-        y: 0,
-        z: 0,
-      }, 0);
-
-
-      tl.current.to(lwall.current.scale, {
-        duration: 0.1,
-        x: 0.032,
-        y: 1.856,
-        z: 6.427,
-        ease: "back.out(1.7)"
-      }, 4);
-
-
-
+if (rwall.current) {
       tl.current.from(rwall.current.scale, {
         x: 0,
         y: 0,
@@ -599,7 +605,9 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         ease: "back.out(1.7)"
       }, 4);
 
+    }
 
+    if (showcase.current) {
       tl.current.from(showcase.current.position, {
         x: 0,
         y: -10,
@@ -614,21 +622,21 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 7.487,
         ease: "back.out(1.7)"
       }, 4.5);
+    }
 
 
 
 
-
-
+if (showcaselight.current) {
       tl.current.set(showcaselight.current.scale, { x: 0, y: 0, z: 0 }, 0);
       tl.current.to(showcaselight.current.scale, {
         duration: 1,
         x: 1, y: 1, z: 1,
         ease: "back.out(1.7)"
       }, 4.5);
+    }
 
-
-
+if (showcaselightself.current) {
       tl.current.set(showcaselightself.current.scale, { x: 0, y: 0, z: 0 }, 0);
       tl.current.to(showcaselightself.current.scale, {
         duration: 1,
@@ -636,8 +644,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         ease: "back.out(1.7)"
       }, 4.5);
 
-
-
+}
+if (showcasepillar.current) {
       tl.current.from(showcasepillar.current.position, {
         x: -5.962,
         y: 50,
@@ -660,8 +668,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
 
-
-
+}
+if (striplight1.current) {
 
       tl.current.from(striplight1.current.position, {
         x: -5.801,
@@ -677,8 +685,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 5.657,
 
       }, 4.5);
-
-
+}
+if (showcasepillar1.current) {
       tl.current.from(showcasepillar1.current.position, {
         x: -4.501,
         y: 50,
@@ -693,8 +701,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 6.452,
 
       }, 4.5);
-
-
+}
+if (striplight2.current) {
       tl.current.from(striplight2.current.position, {
         x: -4.401,
         y: 50,
@@ -709,8 +717,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 6.16,
 
       }, 4.5);
-
-
+}
+if (showcasepillar2.current) {
       tl.current.from(showcasepillar2.current.position, {
         x: -3.026,
         y: 50,
@@ -725,8 +733,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 6.808,
 
       }, 4.5);
-
-
+}
+if (showcasepillar3.current) {
       tl.current.from(showcasepillar3.current.position, {
         x: -1.547,
         y: 50,
@@ -741,8 +749,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 7.08,
 
       }, 4.5);
-
-
+}
+if (showcasepillar4.current) {
       tl.current.from(showcasepillar4.current.position, {
         x: 0.042,
         y: 50,
@@ -757,8 +765,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 7.129,
 
       }, 4.5);
-
-
+}
+if (showcasepillar5.current) {
       tl.current.from(showcasepillar5.current.position, {
         x: 1.599,
         y: 50,
@@ -772,8 +780,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         y: 1.857,
         z: 7.063,
 
-      }, 4.5);
-
+      }, 4.5);}
+if (showcasepillar6.current) {
       tl.current.from(showcasepillar6.current.position, {
         x: 3.094,
         y: 50,
@@ -788,8 +796,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 6.843,
 
       }, 4.5);
-
-
+}
+if (showcasepillar7.current) {
       tl.current.from(showcasepillar7.current.position, {
         x: 4.566,
         y: 50,
@@ -805,8 +813,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
       }, 4.5);
 
-
-
+}
+if (showcasepillar8.current) {
       tl.current.from(showcasepillar8.current.position, {
         x: 5.984,
         y: 50,
@@ -823,8 +831,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
       }, 4.5);
 
 
-
-
+}
+if (striplight3.current) {
       tl.current.from(striplight3.current.position, {
         x: -2.946,
         y: 50,
@@ -840,8 +848,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
       }, 4.5);
 
-
-
+}
+if (striplight4.current) {
       tl.current.from(striplight4.current.position, {
         x: -1.475,
         y: 50,
@@ -858,8 +866,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
       }, 4.5);
 
 
-
-
+}
+if (striplight5.current) {
       tl.current.from(striplight5.current.position, {
         x: 0.044,
         y: 50,
@@ -875,8 +883,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
       }, 4.5);
 
-
-
+}
+if (striplight6.current) {
       tl.current.from(striplight6.current.position, {
         x: 1.554,
         y: 50,
@@ -891,8 +899,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 6.767,
 
       }, 4.5);
-
-
+}
+if (striplight7.current) {
 
       tl.current.from(striplight7.current.position, {
         x: 3.049,
@@ -910,8 +918,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
       }, 4.5);
 
 
-
-
+}
+if (striplight8.current) {
       tl.current.from(striplight8.current.position, {
         x: 4.486,
         y: 50,
@@ -927,8 +935,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
       }, 4.5);
 
-
-
+}
+if (striplight9.current) {
       tl.current.from(striplight9.current.position, {
         x: 5.88,
         y: 50,
@@ -945,8 +953,8 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
       }, 4.5);
 
 
-
-
+}
+if (striplight10.current) {
       tl.current.from(striplight10.current.position, {
         x: -7.661,
         y: 50,
@@ -961,7 +969,7 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
         z: 5.185,
 
       }, 4.5);
-
+    }
       if (books.current) {
         tl.current.set(books.current.scale, { x: 0, y: 0, z: 0 }, 0);
         tl.current.to(books.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
@@ -1308,32 +1316,32 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
   return (
     <>
-      <group ref={groupRef} visible={ready} dispose={null}>
-        <mesh ref={Cube002} castShadow receiveShadow name="Cube002" geometry={nodes.Cube002.geometry} material={materials['Material.009']} position={[7.048, 0.664, -1.984]} />
-        <mesh ref={Cube003} name="Cube003" geometry={nodes.Cube003.geometry} material={materials['Material.014']} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
-        <mesh ref={Cube005} name="Cube005" geometry={nodes.Cube005.geometry} material={materials['Material.014']} position={[7.313, 1.238, -0.467]} />
-        <mesh castShadow receiveShadow name="Cube007" geometry={nodes.Cube007.geometry} position={[-0.019, 0.122, 3.471]} rotation={[0, Math.PI / 2, 0]} >
+      <group ref={groupRef} visible={ready} {...({} as any)}>
+        <mesh ref={Cube002} castShadow receiveShadow name="Cube002" geometry={nodes.Cube007.geometry as any as any} material={materials['Material.009'] as any} position={[7.048, 0.664, -1.984]} />
+        <mesh ref={Cube003} name="Cube003" geometry={nodes.Cube003.geometry as any} material={materials['Material.014'] as any} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
+        <mesh ref={Cube005} name="Cube005" geometry={nodes.Cube005.geometry as any} material={materials['Material.014'] as any} position={[7.313, 1.238, -0.467]} />
+        <mesh castShadow receiveShadow name="Cube007" geometry={nodes.Cube007.geometry as any} position={[-0.019, 0.122, 3.471]} rotation={[0, Math.PI / 2, 0]} >
           <meshBasicMaterial ref={tri7} toneMapped={false} />
         </mesh>
-        <mesh castShadow receiveShadow name="Cube008" geometry={nodes.Cube008.geometry} position={[-2.096, 0.122, -1.017]} rotation={[0, -0.402, 0]} >
+        <mesh castShadow receiveShadow name="Cube008" geometry={nodes.Cube008.geometry as any} position={[-2.096, 0.122, -1.017]} rotation={[0, -0.402, 0]} >
           <meshBasicMaterial ref={tri8} toneMapped={false} />
         </mesh>
-        <mesh castShadow receiveShadow name="Cube009" geometry={nodes.Cube009.geometry} position={[2.058, 0.122, -1.036]} rotation={[0, 0.402, 0]} >
+        <mesh castShadow receiveShadow name="Cube009" geometry={nodes.Cube009.geometry as any} position={[2.058, 0.122, -1.036]} rotation={[0, 0.402, 0]} >
           <meshBasicMaterial ref={tri9} toneMapped={false} />
         </mesh>
-        <mesh ref={striplight5} name="Cube010" geometry={nodes.Cube010.geometry} material={materials['Material.007']} position={[0.044, 1.902, 6.812]} />
-        <mesh ref={striplight4} name="Cube011" geometry={nodes.Cube011.geometry} material={materials['Material.007']} position={[-1.475, 1.902, 6.749]} />
-        <mesh ref={striplight3} name="Cube012" geometry={nodes.Cube012.geometry} material={materials['Material.007']} position={[-2.946, 1.902, 6.527]} />
-        <mesh ref={striplight2} name="Cube013" geometry={nodes.Cube013.geometry} material={materials['Material.007']} position={[-4.401, 1.902, 6.16]} rotation={[0, -0.085, 0]} />
-        <mesh ref={striplight1} name="Cube014" geometry={nodes.Cube014.geometry} material={materials['Material.007']} position={[-5.801, 1.902, 5.657]} rotation={[0, -0.085, 0]} />
-        <mesh ref={striplight6} name="Cube015" geometry={nodes.Cube015.geometry} material={materials['Material.007']} position={[1.554, 1.902, 6.767]} />
-        <mesh ref={striplight7} name="Cube016" geometry={nodes.Cube016.geometry} material={materials['Material.007']} position={[3.049, 1.902, 6.528]} />
-        <mesh ref={striplight8} name="Cube017" geometry={nodes.Cube017.geometry} material={materials['Material.007']} position={[4.486, 1.902, 6.137]} />
-        <mesh ref={striplight9} name="Cube018" geometry={nodes.Cube018.geometry} material={materials['Material.007']} position={[5.88, 1.902, 5.587]} />
-        <mesh ref={showcaselight} name="Cube019" geometry={nodes.Cube019.geometry} position={[0, 3.69, 7.153]} >
+        <mesh ref={striplight5} name="Cube010" geometry={nodes.Cube010.geometry as any} material={materials['Material.007'] as any} position={[0.044, 1.902, 6.812]} />
+        <mesh ref={striplight4} name="Cube011" geometry={nodes.Cube011.geometry as any} material={materials['Material.007'] as any} position={[-1.475, 1.902, 6.749]} />
+        <mesh ref={striplight3} name="Cube012" geometry={nodes.Cube012.geometry as any} material={materials['Material.007'] as any} position={[-2.946, 1.902, 6.527]} />
+        <mesh ref={striplight2} name="Cube013" geometry={nodes.Cube013.geometry as any} material={materials['Material.007'] as any} position={[-4.401, 1.902, 6.16]} rotation={[0, -0.085, 0]} />
+        <mesh ref={striplight1} name="Cube014" geometry={nodes.Cube014.geometry as any} material={materials['Material.007'] as any} position={[-5.801, 1.902, 5.657]} rotation={[0, -0.085, 0]} />
+        <mesh ref={striplight6} name="Cube015" geometry={nodes.Cube015.geometry as any} material={materials['Material.007'] as any} position={[1.554, 1.902, 6.767]} />
+        <mesh ref={striplight7} name="Cube016" geometry={nodes.Cube016.geometry as any} material={materials['Material.007'] as any} position={[3.049, 1.902, 6.528]} />
+        <mesh ref={striplight8} name="Cube017" geometry={nodes.Cube017.geometry as any} material={materials['Material.007'] as any} position={[4.486, 1.902, 6.137]} />
+        <mesh ref={striplight9} name="Cube018" geometry={nodes.Cube018.geometry as any} material={materials['Material.007'] as any} position={[5.88, 1.902, 5.587]} />
+        <mesh ref={showcaselight} name="Cube019" geometry={nodes.Cube019.geometry as any} position={[0, 3.69, 7.153]} >
           <meshBasicMaterial ref={shelftoplight} toneMapped={false} />
         </mesh>
-        <mesh ref={showcaselightself} name="Cube021" geometry={nodes.Cube021.geometry} position={[0, 1.772, 7.305]} scale={[1.04, 1, 1]} >
+        <mesh ref={showcaselightself} name="Cube021" geometry={nodes.Cube021.geometry as any} position={[0, 1.772, 7.305]} scale={[1.04, 1, 1]} >
           <meshStandardMaterial
             map={wdiffuse}
             normalMap={wnormalw}
@@ -1350,30 +1358,30 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
           />
 
         </mesh>
-        <mesh ref={Cube024} name="Cube024" geometry={nodes.Cube024.geometry} material={materials['Material.022']} position={[7.431, 3.606, -1.007]} rotation={[0.003, 0, 0]} >
+        <mesh ref={Cube024} name="Cube024" geometry={nodes.Cube024.geometry as any} material={materials['Material.022']  as any} position={[7.431, 3.606, -1.007]} rotation={[0.003, 0, 0]} >
           <meshBasicMaterial ref={Lefttoplight} toneMapped={false} />
         </mesh>
-        <mesh name="Cylinder" geometry={nodes.Cylinder.geometry} material={materials['Material.019']} position={[0, 0.519, 0]} rotation={[0, -0.178, 0]} />
-        <mesh castShadow receiveShadow name="Cylinder001" geometry={nodes.Cylinder001.geometry} material={materials['Material.021']} position={[0, 0.314, 0]} />
-        <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry} material={materials['Material.020']} position={[0, 0.667, 0]} />
-        <mesh ref={Plane004} name="Plane004" geometry={nodes.Plane004.geometry} material={materials['Material.015']} position={[7.287, 1.233, -0.466]} rotation={[0, 0, -Math.PI / 2]} />
-        <mesh ref={Plane005} name="Plane005" geometry={nodes.Plane005.geometry} material={materials['Material.015']} position={[7.083, 1.226, -1.947]} rotation={[-Math.PI, 0.45, Math.PI / 2]} />
-        <mesh ref={books} name="books" geometry={nodes.books.geometry} material={materials['Material.034']} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
-        <mesh ref={Cactus} name="Catcus" geometry={nodes.Catcus.geometry} material={materials['Material.033']} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
-        <mesh ref={chair} name="chair" geometry={nodes.chair.geometry} material={materials['Material.010']} position={[5.701, 0.224, -0.663]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={mouse} name="mouse" geometry={nodes.mouse.geometry} material={materials['Material.013']} position={[6.368, 0.013, 1.149]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={penguin} name="penguin" geometry={nodes.penguin.geometry} material={nodes.penguin.material} position={[6.303, 0.828, -2.613]} rotation={[Math.PI, -1.186, Math.PI]}>
-          <mesh name="penguin-wing-0" geometry={nodes['penguin-wing-0'].geometry} material={nodes['penguin-wing-0'].material} />
-          <mesh name="penguin-wing-1" geometry={nodes['penguin-wing-1'].geometry} material={nodes['penguin-wing-1'].material} />
+        <mesh name="Cylinder" geometry={nodes.Cylinder.geometry as any} material={materials['Material.019'] as any} position={[0, 0.519, 0]} rotation={[0, -0.178, 0]} />
+        <mesh castShadow receiveShadow name="Cylinder001" geometry={nodes.Cylinder001.geometry as any} material={materials['Material.021'] as any} position={[0, 0.314, 0]} />
+        <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry as any} material={materials['Material.020'] as any} position={[0, 0.667, 0]} />
+        <mesh ref={Plane004} name="Plane004" geometry={nodes.Plane004.geometry as any} material={materials['Material.015'] as any} position={[7.287, 1.233, -0.466]} rotation={[0, 0, -Math.PI / 2]} />
+        <mesh ref={Plane005} name="Plane005" geometry={nodes.Plane005.geometry as any} material={materials['Material.015'] as any} position={[7.083, 1.226, -1.947]} rotation={[-Math.PI, 0.45, Math.PI / 2]} />
+        <mesh ref={books} name="books" geometry={nodes.books.geometry as any} material={materials['Material.034'] as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
+        <mesh ref={Cactus} name="Catcus" geometry={nodes.Catcus.geometry as any} material={materials['Material.033'] as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
+        <mesh ref={chair} name="chair" geometry={nodes.chair.geometry as any} material={materials['Material.010'] as any} position={[5.701, 0.224, -0.663]} rotation={[Math.PI, -0.011, Math.PI]} />
+        <mesh ref={mouse} name="mouse" geometry={nodes.mouse.geometry as any} material={materials['Material.013'] as any} position={[6.368, 0.013, 1.149]} rotation={[Math.PI, -0.011, Math.PI]} />
+        <mesh ref={penguin} name="penguin" geometry={nodes.penguin.geometry as any} material={nodes.penguin.material  as any} position={[6.303, 0.828, -2.613]} rotation={[Math.PI, -1.186, Math.PI]}>
+          <mesh name="penguin-wing-0" geometry={nodes['penguin-wing-0'].geometry as any} material={nodes['penguin-wing-0'].material  as any} />
+          <mesh name="penguin-wing-1" geometry={nodes['penguin-wing-1'].geometry as any} material={nodes['penguin-wing-1'].material  as any} />
         </mesh>
-        <mesh ref={picture} name="picture" geometry={nodes.picture.geometry} material={materials['Material.018']} position={[7.638, 2.13, 0.711]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={picture001} name="picture001" geometry={nodes.picture001.geometry} material={materials['Material.017']} position={[7.621, 2.165, 0.711]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={plant} name="plant" geometry={nodes.plant.geometry} material={materials['Material.016']} position={[6.833, 0.18, 1.463]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={plant001} name="plant001" geometry={nodes.plant001.geometry} material={materials['Material.011']} position={[6.833, 0.18, 1.463]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={speaker} name="speaker" geometry={nodes.speaker.geometry} material={nodes.speaker.material} position={[5.844, 0.732, -2.568]} rotation={[0, -1, 0.049]} />
-        <mesh ref={Table_small} name="Table_small" geometry={nodes.Table_small.geometry} material={nodes.Table_small.material} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
-        <mesh ref={Cactusleaf} name="Catcus_leaf" geometry={nodes.Catcus_leaf.geometry} material={materials['Material.032']} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
-        <mesh ref={showcase} receiveShadow name="Cube" geometry={nodes.Cube.geometry} position={[0.087, 1.863, 7.487]} scale={[7.081, 1.809, 0.058]} >
+        <mesh ref={picture} name="picture" geometry={nodes.picture.geometry as any} material={materials['Material.018'] as any} position={[7.638, 2.13, 0.711]} rotation={[Math.PI, -0.011, Math.PI]} />
+        <mesh ref={picture001} name="picture001" geometry={nodes.picture001.geometry as any} material={materials['Material.017'] as any} position={[7.621, 2.165, 0.711]} rotation={[Math.PI, -0.011, Math.PI]} />
+        <mesh ref={plant} name="plant" geometry={nodes.plant.geometry as any} material={materials['Material.016'] as any} position={[6.833, 0.18, 1.463]} rotation={[Math.PI, -0.011, Math.PI]} />
+        <mesh ref={plant001} name="plant001" geometry={nodes.plant001.geometry as any} material={materials['Material.011'] as any} position={[6.833, 0.18, 1.463]} rotation={[Math.PI, -0.011, Math.PI]} />
+        <mesh ref={speaker} name="speaker" geometry={nodes.speaker.geometry as any} material={nodes.speaker.material  as any} position={[5.844, 0.732, -2.568]} rotation={[0, -1, 0.049]} />
+        <mesh ref={Table_small} name="Table_small" geometry={nodes.Table_small.geometry as any} material={nodes.Table_small.material  as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
+        <mesh ref={Cactusleaf} name="Catcus_leaf" geometry={nodes.Catcus_leaf.geometry as any} material={materials['Material.032'] as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
+        <mesh ref={showcase} receiveShadow name="Cube" geometry={nodes.Cube.geometry as any} position={[0.087, 1.863, 7.487]} scale={[7.081, 1.809, 0.058]} >
           <meshStandardMaterial
             map={cdiffuse}
             normalMap={cnormalw}
@@ -1394,7 +1402,7 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
           />
 
         </mesh>
-        <mesh ref={lwall} name="Cube027" geometry={nodes.Cube027.geometry} position={[7.692, 1.904, -0.998]} scale={[0.032, 1.856, 6.427]} >
+        <mesh ref={lwall} name="Cube027" geometry={nodes.Cube027.geometry as any} position={[7.692, 1.904, -0.998]} scale={[0.032, 1.856, 6.427]} >
           <MeshReflectorMaterial
             map={rdiffuse}
             normalMap={rnormalw}
@@ -1435,19 +1443,19 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
             metalness={0.7}
           />
         </mesh>
-        <mesh castShadow receiveShadow name="Cylinder002" geometry={nodes.Cylinder002.geometry} material={materials['Material.003']} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} />
-        <mesh ref={Cube006} name="Cube006" geometry={nodes.Cube006.geometry} material={materials['Material.005']} position={[6.805, 0.753, -0.41]} rotation={[-Math.PI, 0, -Math.PI]} scale={[-0.17, -0.026, -0.539]} />
-        <mesh ref={showcasepillar4} name="Cube028" geometry={nodes.Cube028.geometry} material={materials['Material.036']} position={[0.042, 1.857, 7.129]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar3} name="Cube030" geometry={nodes.Cube030.geometry} material={materials['Material.036']} position={[-1.547, 1.857, 7.08]} rotation={[0, -0.201, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar2} name="Cube031" geometry={nodes.Cube031.geometry} material={materials['Material.036']} position={[-3.026, 1.857, 6.808]} rotation={[0, -0.375, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar1} name="Cube032" geometry={nodes.Cube032.geometry} material={materials['Material.036']} position={[-4.501, 1.857, 6.452]} rotation={[0, -0.395, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar} name="Cube033" geometry={nodes.Cube033.geometry} material={materials['Material.036']} position={[-5.962, 1.857, 5.961]} rotation={[0, -0.435, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar5} name="Cube034" geometry={nodes.Cube034.geometry} material={materials['Material.036']} position={[1.599, 1.857, 7.063]} rotation={[0, 0.038, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar6} name="Cube035" geometry={nodes.Cube035.geometry} material={materials['Material.036']} position={[3.094, 1.857, 6.843]} rotation={[0, 0.261, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar7} name="Cube036" geometry={nodes.Cube036.geometry} material={materials['Material.036']} position={[4.566, 1.857, 6.454]} rotation={[0, 0.357, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={showcasepillar8} name="Cube037" geometry={nodes.Cube037.geometry} material={materials['Material.036']} position={[5.984, 1.857, 5.895]} rotation={[0, 0.361, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={striplight10} name="Cube038" geometry={nodes.Cube038.geometry} material={materials['Material.036']} position={[-7.661, 1.857, 5.185]} rotation={[0, -0.435, 0]} scale={[0.047, 1.771, 0.263]} />
-        <mesh ref={rwall} name="Cube039" geometry={nodes.Cube039.geometry} position={[-7.623, 1.904, -0.998]} rotation={[Math.PI, -0.001, Math.PI]} scale={[0.032, 1.856, 6.427]} >
+        <mesh castShadow receiveShadow name="Cylinder002" geometry={nodes.Cylinder002.geometry as any} material={materials['Material.003'] as any} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} />
+        <mesh ref={Cube006} name="Cube006" geometry={nodes.Cube006.geometry as any} material={materials['Material.005'] as any} position={[6.805, 0.753, -0.41]} rotation={[-Math.PI, 0, -Math.PI]} scale={[-0.17, -0.026, -0.539]} />
+        <mesh ref={showcasepillar4} name="Cube028" geometry={nodes.Cube028.geometry as any} material={materials['Material.036'] as any} position={[0.042, 1.857, 7.129]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar3} name="Cube030" geometry={nodes.Cube030.geometry as any} material={materials['Material.036'] as any} position={[-1.547, 1.857, 7.08]} rotation={[0, -0.201, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar2} name="Cube031" geometry={nodes.Cube031.geometry as any} material={materials['Material.036'] as any} position={[-3.026, 1.857, 6.808]} rotation={[0, -0.375, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar1} name="Cube032" geometry={nodes.Cube032.geometry as any} material={materials['Material.036'] as any} position={[-4.501, 1.857, 6.452]} rotation={[0, -0.395, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar} name="Cube033" geometry={nodes.Cube033.geometry as any} material={materials['Material.036'] as any} position={[-5.962, 1.857, 5.961]} rotation={[0, -0.435, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar5} name="Cube034" geometry={nodes.Cube034.geometry as any} material={materials['Material.036'] as any} position={[1.599, 1.857, 7.063]} rotation={[0, 0.038, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar6} name="Cube035" geometry={nodes.Cube035.geometry as any} material={materials['Material.036'] as any} position={[3.094, 1.857, 6.843]} rotation={[0, 0.261, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar7} name="Cube036" geometry={nodes.Cube036.geometry as any} material={materials['Material.036'] as any} position={[4.566, 1.857, 6.454]} rotation={[0, 0.357, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={showcasepillar8} name="Cube037" geometry={nodes.Cube037.geometry as any} material={materials['Material.036'] as any} position={[5.984, 1.857, 5.895]} rotation={[0, 0.361, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={striplight10} name="Cube038" geometry={nodes.Cube038.geometry as any} material={materials['Material.036'] as any} position={[-7.661, 1.857, 5.185]} rotation={[0, -0.435, 0]} scale={[0.047, 1.771, 0.263]} />
+        <mesh ref={rwall} name="Cube039" geometry={nodes.Cube039.geometry as any} position={[-7.623, 1.904, -0.998]} rotation={[Math.PI, -0.001, Math.PI]} scale={[0.032, 1.856, 6.427]} >
           <MeshReflectorMaterial
             map={diffuse}
             normalMap={normalw}
@@ -1467,106 +1475,106 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
             color="#111111"
           />
         </mesh>
-        <mesh ref={Face_new} castShadow receiveShadow name="Face_new" geometry={nodes.Face_new.geometry} material={materials['Material.030']} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
-        <mesh ref={Hair} castShadow receiveShadow name="Hair" geometry={nodes.Hair.geometry} material={materials['Material.027']} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Hand} castShadow receiveShadow name="Hand" geometry={nodes.Hand.geometry} material={materials['Material.026']} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Leg} castShadow receiveShadow name="Leg" geometry={nodes.Leg.geometry} material={materials['Material.028']} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Pant} castShadow receiveShadow name="Pant" geometry={nodes.Pant.geometry} material={materials['Material.025']} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Shirt} castShadow receiveShadow name="Shirt" geometry={nodes.Shirt.geometry} material={materials['Material.024']} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Curve} castShadow receiveShadow name="Curve" geometry={nodes.Curve.geometry} material={materials['SVGMat.001']} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
+        <mesh ref={Face_new} castShadow receiveShadow name="Face_new" geometry={nodes.Face_new.geometry as any} material={materials['Material.030'] as any} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
+        <mesh ref={Hair} castShadow receiveShadow name="Hair" geometry={nodes.Hair.geometry as any} material={materials['Material.027'] as any} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Hand} castShadow receiveShadow name="Hand" geometry={nodes.Hand.geometry as any} material={materials['Material.026'] as any} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Leg} castShadow receiveShadow name="Leg" geometry={nodes.Leg.geometry as any} material={materials['Material.028'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Pant} castShadow receiveShadow name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Shirt} castShadow receiveShadow name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Curve} castShadow receiveShadow name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
           <pointLight ref={Curve001light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />
         </mesh>
         <group ref={Curve001} castShadow receiveShadow name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
-          <mesh name="Curve002_1" geometry={nodes.Curve002_1.geometry} material={materials['Material.006']} >
+          <mesh name="Curve002_1" geometry={nodes.Curve002_1.geometry as any} material={materials['Material.006'] as any} >
 
           </mesh>
-          <mesh name="Curve002_2" geometry={nodes.Curve002_2.geometry} material={materials['Material.023']} />
+          <mesh name="Curve002_2" geometry={nodes.Curve002_2.geometry as any} material={materials['Material.023'] as any} />
           <pointLight ref={Curve01light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />
         </group>
-        <mesh ref={Curve002} castShadow receiveShadow name="Curve002" geometry={nodes.Curve002.geometry} material={materials['Material.031']} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
+        <mesh ref={Curve002} castShadow receiveShadow name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
           <pointLight ref={Curve02light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />
 
         </mesh>
         <group ref={Curve003} castShadow receiveShadow name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
-          <mesh name="Curve008_1" geometry={nodes.Curve008_1.geometry} material={materials['SVGMat.009']} />
-          <mesh name="Curve008_2" geometry={nodes.Curve008_2.geometry} material={materials['SVGMat.010']} />
-          <mesh name="Curve008_3" geometry={nodes.Curve008_3.geometry} material={materials['SVGMat.011']} />
+          <mesh name="Curve008_1" geometry={nodes.Curve008_1.geometry as any} material={materials['SVGMat.009'] as any} />
+          <mesh name="Curve008_2" geometry={nodes.Curve008_2.geometry as any} material={materials['SVGMat.010'] as any} />
+          <mesh name="Curve008_3" geometry={nodes.Curve008_3.geometry as any} material={materials['SVGMat.011'] as any} />
           <pointLight ref={Curve03light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
         </group>
         <group ref={Curve004} name="Curve004" position={[-6.78, 0.804, 5.681]} rotation={[1.571, -0.002, -2.743]}>
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
-          <mesh name="Curve011_1" geometry={nodes.Curve011_1.geometry} material={materials['SVGMat.013']} />
-          <mesh name="Curve011_2" geometry={nodes.Curve011_2.geometry} material={materials['SVGMat.014']} />
-          <mesh name="Curve011_3" geometry={nodes.Curve011_3.geometry} material={materials['SVGMat.015']} />
-          <mesh name="Curve011_4" geometry={nodes.Curve011_4.geometry} material={materials['SVGMat.016']} />
-          <mesh name="Curve011_5" geometry={nodes.Curve011_5.geometry} material={materials['SVGMat.017']} />
-          <mesh name="Curve011_6" geometry={nodes.Curve011_6.geometry} material={materials['SVGMat.018']} />
-          <mesh name="Curve011_7" geometry={nodes.Curve011_7.geometry} material={materials['SVGMat.019']} />
-          <mesh name="Curve011_8" geometry={nodes.Curve011_8.geometry} material={materials['SVGMat.020']} />
-          <mesh name="Curve011_9" geometry={nodes.Curve011_9.geometry} material={materials['SVGMat.021']} />
-          <mesh name="Curve011_10" geometry={nodes.Curve011_10.geometry} material={materials['SVGMat.022']} />
-          <mesh name="Curve011_11" geometry={nodes.Curve011_11.geometry} material={materials['SVGMat.023']} />
-          <mesh name="Curve011_12" geometry={nodes.Curve011_12.geometry} material={materials['SVGMat.024']} />
-          <mesh name="Curve011_13" geometry={nodes.Curve011_13.geometry} material={materials['SVGMat.025']} />
-          <mesh name="Curve011_14" geometry={nodes.Curve011_14.geometry} material={materials['SVGMat.026']} />
-          <mesh name="Curve011_15" geometry={nodes.Curve011_15.geometry} material={materials['SVGMat.027']} />
-          <mesh name="Curve011_16" geometry={nodes.Curve011_16.geometry} material={materials['SVGMat.028']} />
-          <mesh name="Curve011_17" geometry={nodes.Curve011_17.geometry} material={materials['SVGMat.029']} />
-          <mesh name="Curve011_18" geometry={nodes.Curve011_18.geometry} material={materials['SVGMat.030']} />
-          <mesh name="Curve011_19" geometry={nodes.Curve011_19.geometry} material={materials['SVGMat.031']} />
-          <mesh name="Curve011_20" geometry={nodes.Curve011_20.geometry} material={materials['SVGMat.032']} />
-          <mesh name="Curve011_21" geometry={nodes.Curve011_21.geometry} material={materials['SVGMat.033']} />
-          <mesh name="Curve011_22" geometry={nodes.Curve011_22.geometry} material={materials['SVGMat.034']} />
-          <mesh name="Curve011_23" geometry={nodes.Curve011_23.geometry} material={materials['SVGMat.035']} />
-          <mesh name="Curve011_24" geometry={nodes.Curve011_24.geometry} material={materials['SVGMat.036']} />
-          <mesh name="Curve011_25" geometry={nodes.Curve011_25.geometry} material={materials['SVGMat.037']} />
-          <mesh name="Curve011_26" geometry={nodes.Curve011_26.geometry} material={materials['SVGMat.038']} />
-          <mesh name="Curve011_27" geometry={nodes.Curve011_27.geometry} material={materials['SVGMat.039']} />
-          <mesh name="Curve011_28" geometry={nodes.Curve011_28.geometry} material={materials['SVGMat.040']} />
-          <mesh name="Curve011_29" geometry={nodes.Curve011_29.geometry} material={materials['SVGMat.041']} />
-          <mesh name="Curve011_30" geometry={nodes.Curve011_30.geometry} material={materials['SVGMat.042']} />
-          <mesh name="Curve011_31" geometry={nodes.Curve011_31.geometry} material={materials['SVGMat.043']} />
-          <mesh name="Curve011_32" geometry={nodes.Curve011_32.geometry} material={materials['SVGMat.044']} />
-          <mesh name="Curve011_33" geometry={nodes.Curve011_33.geometry} material={materials['SVGMat.045']} />
-          <mesh name="Curve011_34" geometry={nodes.Curve011_34.geometry} material={materials['SVGMat.046']} />
-          <mesh name="Curve011_35" geometry={nodes.Curve011_35.geometry} material={materials['SVGMat.047']} />
-          <mesh name="Curve011_36" geometry={nodes.Curve011_36.geometry} material={materials['SVGMat.048']} />
-          <mesh name="Curve011_37" geometry={nodes.Curve011_37.geometry} material={materials['SVGMat.049']} />
-          <mesh name="Curve011_38" geometry={nodes.Curve011_38.geometry} material={materials['SVGMat.050']} />
-          <mesh name="Curve011_39" geometry={nodes.Curve011_39.geometry} material={materials['SVGMat.051']} />
+          <mesh name="Curve011_1" geometry={nodes.Curve011_1.geometry as any} material={materials['SVGMat.013'] as any} />
+          <mesh name="Curve011_2" geometry={nodes.Curve011_2.geometry as any} material={materials['SVGMat.014'] as any} />
+          <mesh name="Curve011_3" geometry={nodes.Curve011_3.geometry as any} material={materials['SVGMat.015'] as any} />
+          <mesh name="Curve011_4" geometry={nodes.Curve011_4.geometry as any} material={materials['SVGMat.016'] as any} />
+          <mesh name="Curve011_5" geometry={nodes.Curve011_5.geometry as any} material={materials['SVGMat.017'] as any} />
+          <mesh name="Curve011_6" geometry={nodes.Curve011_6.geometry as any} material={materials['SVGMat.018'] as any} />
+          <mesh name="Curve011_7" geometry={nodes.Curve011_7.geometry as any} material={materials['SVGMat.019'] as any} />
+          <mesh name="Curve011_8" geometry={nodes.Curve011_8.geometry as any} material={materials['SVGMat.020'] as any} />
+          <mesh name="Curve011_9" geometry={nodes.Curve011_9.geometry as any} material={materials['SVGMat.021'] as any} />
+          <mesh name="Curve011_10" geometry={nodes.Curve011_10.geometry as any} material={materials['SVGMat.022'] as any} />
+          <mesh name="Curve011_11" geometry={nodes.Curve011_11.geometry as any} material={materials['SVGMat.023'] as any} />
+          <mesh name="Curve011_12" geometry={nodes.Curve011_12.geometry as any} material={materials['SVGMat.024'] as any} />
+          <mesh name="Curve011_13" geometry={nodes.Curve011_13.geometry as any} material={materials['SVGMat.025'] as any} />
+          <mesh name="Curve011_14" geometry={nodes.Curve011_14.geometry as any} material={materials['SVGMat.026'] as any} />
+          <mesh name="Curve011_15" geometry={nodes.Curve011_15.geometry as any} material={materials['SVGMat.027'] as any} />
+          <mesh name="Curve011_16" geometry={nodes.Curve011_16.geometry as any} material={materials['SVGMat.028'] as any} />
+          <mesh name="Curve011_17" geometry={nodes.Curve011_17.geometry as any} material={materials['SVGMat.029'] as any} />
+          <mesh name="Curve011_18" geometry={nodes.Curve011_18.geometry as any} material={materials['SVGMat.030'] as any} />
+          <mesh name="Curve011_19" geometry={nodes.Curve011_19.geometry as any} material={materials['SVGMat.031'] as any} />
+          <mesh name="Curve011_20" geometry={nodes.Curve011_20.geometry as any} material={materials['SVGMat.032'] as any} />
+          <mesh name="Curve011_21" geometry={nodes.Curve011_21.geometry as any} material={materials['SVGMat.033'] as any} />
+          <mesh name="Curve011_22" geometry={nodes.Curve011_22.geometry as any} material={materials['SVGMat.034'] as any} />
+          <mesh name="Curve011_23" geometry={nodes.Curve011_23.geometry as any} material={materials['SVGMat.035'] as any} />
+          <mesh name="Curve011_24" geometry={nodes.Curve011_24.geometry as any} material={materials['SVGMat.036'] as any} />
+          <mesh name="Curve011_25" geometry={nodes.Curve011_25.geometry as any} material={materials['SVGMat.037'] as any} />
+          <mesh name="Curve011_26" geometry={nodes.Curve011_26.geometry as any} material={materials['SVGMat.038'] as any} />
+          <mesh name="Curve011_27" geometry={nodes.Curve011_27.geometry as any} material={materials['SVGMat.039'] as any} />
+          <mesh name="Curve011_28" geometry={nodes.Curve011_28.geometry as any} material={materials['SVGMat.040'] as any} />
+          <mesh name="Curve011_29" geometry={nodes.Curve011_29.geometry as any} material={materials['SVGMat.041'] as any} />
+          <mesh name="Curve011_30" geometry={nodes.Curve011_30.geometry as any} material={materials['SVGMat.042'] as any} />
+          <mesh name="Curve011_31" geometry={nodes.Curve011_31.geometry as any} material={materials['SVGMat.043'] as any} />
+          <mesh name="Curve011_32" geometry={nodes.Curve011_32.geometry as any} material={materials['SVGMat.044'] as any} />
+          <mesh name="Curve011_33" geometry={nodes.Curve011_33.geometry as any} material={materials['SVGMat.045'] as any} />
+          <mesh name="Curve011_34" geometry={nodes.Curve011_34.geometry as any} material={materials['SVGMat.046'] as any} />
+          <mesh name="Curve011_35" geometry={nodes.Curve011_35.geometry as any} material={materials['SVGMat.047'] as any} />
+          <mesh name="Curve011_36" geometry={nodes.Curve011_36.geometry as any} material={materials['SVGMat.048'] as any} />
+          <mesh name="Curve011_37" geometry={nodes.Curve011_37.geometry as any} material={materials['SVGMat.049'] as any} />
+          <mesh name="Curve011_38" geometry={nodes.Curve011_38.geometry as any} material={materials['SVGMat.050'] as any} />
+          <mesh name="Curve011_39" geometry={nodes.Curve011_39.geometry as any} material={materials['SVGMat.051'] as any} />
         </group>
         <group ref={Curve007} name="Curve007" position={[6.588, 2.439, 5.444]} rotation={[1.58, 0.038, 2.34]}>
-          <mesh name="Curve275" geometry={nodes.Curve275.geometry} material={materials['SVGMat.055']} />
-          <mesh name="Curve275_1" geometry={nodes.Curve275_1.geometry} material={materials['SVGMat.053']} />
-          <mesh name="Curve275_2" geometry={nodes.Curve275_2.geometry} material={materials['SVGMat.054']} />
+          <mesh name="Curve275" geometry={nodes.Curve275.geometry as any} material={materials['SVGMat.055'] as any} />
+          <mesh name="Curve275_1" geometry={nodes.Curve275_1.geometry as any} material={materials['SVGMat.053'] as any} />
+          <mesh name="Curve275_2" geometry={nodes.Curve275_2.geometry as any} material={materials['SVGMat.054'] as any} />
           <pointLight ref={Curve07light} intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
         </group>
-        <mesh ref={Curve005} name="Curve005" geometry={nodes.Curve005.geometry} material={materials['Material.035']} position={[5.482, 2.376, 6.267]} rotation={[1.567, 0.006, 2.678]} >
+        <mesh ref={Curve005} name="Curve005" geometry={nodes.Curve005.geometry as any} material={materials['Material.035'] as any} position={[5.482, 2.376, 6.267]} rotation={[1.567, 0.006, 2.678]} >
           <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} />
         </mesh>
         <group ref={Curve011} castShadow receiveShadow name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
-          <mesh name="Curve281" geometry={nodes.Curve281.geometry} material={materials['SVGMat.060']} />
-          <mesh name="Curve281_1" geometry={nodes.Curve281_1.geometry} material={materials['SVGMat.058']} />
-          <mesh name="Curve281_2" geometry={nodes.Curve281_2.geometry} material={materials['SVGMat.059']} />
-          <mesh name="Curve281_3" geometry={nodes.Curve281_3.geometry} material={materials['SVGMat.061']} />
-          <mesh name="Curve281_4" geometry={nodes.Curve281_4.geometry} material={materials['SVGMat.062']} />
+          <mesh name="Curve281" geometry={nodes.Curve281.geometry as any} material={materials['SVGMat.060'] as any} />
+          <mesh name="Curve281_1" geometry={nodes.Curve281_1.geometry as any} material={materials['SVGMat.058'] as any} />
+          <mesh name="Curve281_2" geometry={nodes.Curve281_2.geometry as any} material={materials['SVGMat.059'] as any} />
+          <mesh name="Curve281_3" geometry={nodes.Curve281_3.geometry as any} material={materials['SVGMat.061'] as any} />
+          <mesh name="Curve281_4" geometry={nodes.Curve281_4.geometry as any} material={materials['SVGMat.062'] as any} />
           <pointLight ref={Curve011light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />
 
         </group>
         <group ref={Curve008} castShadow receiveShadow name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
-          <mesh name="Curve291" geometry={nodes.Curve291.geometry} material={materials['SVGMat.066']} />
-          <mesh name="Curve291_1" geometry={nodes.Curve291_1.geometry} material={materials['SVGMat.068']} />
+          <mesh name="Curve291" geometry={nodes.Curve291.geometry as any} material={materials['SVGMat.066'] as any} />
+          <mesh name="Curve291_1" geometry={nodes.Curve291_1.geometry as any} material={materials['SVGMat.068'] as any} />
           <pointLight ref={Curve08light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />
         </group>
-        <mesh ref={Curve006} name="Curve006" geometry={nodes.Curve006.geometry} material={materials['SVGMat.075']} position={[-5.289, 0.781, 6.297]} rotation={[1.551, 0.124, -3.024]} >
+        <mesh ref={Curve006} name="Curve006" geometry={nodes.Curve006.geometry as any} material={materials['SVGMat.075'] as any} position={[-5.289, 0.781, 6.297]} rotation={[1.551, 0.124, -3.024]} >
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
         </mesh>
         <group ref={Curve009} name="Curve009" position={[-5.215, 2.578, 6.324]} rotation={[1.554, 0.016, -2.878]}>
-          <mesh name="Curve304" geometry={nodes.Curve304.geometry} material={materials['SVGMat.077']} />
-          <mesh name="Curve304_1" geometry={nodes.Curve304_1.geometry} material={materials['SVGMat.078']} />
+          <mesh name="Curve304" geometry={nodes.Curve304.geometry as any} material={materials['SVGMat.077'] as any} />
+          <mesh name="Curve304_1" geometry={nodes.Curve304_1.geometry as any} material={materials['SVGMat.078'] as any} />
           <pointLight ref={Curve09light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />
         </group>
-        <mesh ref={Curve010} name="Curve010" geometry={nodes.Curve010.geometry} material={materials['SVGMat.079']} position={[-6.959, 2.883, 5.636]} rotation={[2.068, -0.544, -2.511]} >
+        <mesh ref={Curve010} name="Curve010" geometry={nodes.Curve010.geometry as any} material={materials['SVGMat.079'] as any} position={[-6.959, 2.883, 5.636]} rotation={[2.068, -0.544, -2.511]} >
           <pointLight ref={Curve010light} castShadow intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />
 
         </mesh>

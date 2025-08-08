@@ -268,7 +268,7 @@ const GlowingTriangle: React.FC<GlowingTriangleProps> = ({ techList, triangleId,
 const SecondSec: React.FC = () => {
     const [selectedTriangle, setSelectedTriangle] = useState<number>(1); // Default to first triangle
     const triangleRefs = useRef<(HTMLDivElement | null)[]>([]);
-      const centcir = useRef<(SVGSVGElement | null)[]>([]);
+      const centcir = useRef<SVGSVGElement | null>(null);
     const handleTriangleClick = (triangleId: number): void => {
         setSelectedTriangle(triangleId);
     };
@@ -535,7 +535,9 @@ tl.to(triangleWrapperRef.current, {
                 {triangleConfigs.map((config: TriangleConfig, index: number) => (
                     <div
                         key={config.id}
-                        ref={(el: HTMLDivElement | null) => (triangleRefs.current[index] = el)}
+                        ref={(el) => {
+    triangleRefs.current[index] = el;
+}}
                         className="absolute opacity-0"
                     >
                         <GlowingTriangle
