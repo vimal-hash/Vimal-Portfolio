@@ -5,10 +5,10 @@ Command: npx gltfjsx@6.5.3 public/Portfolio3.glb -o src/components/Portfolio3.ts
 "use client"
 import * as THREE from 'three'
 import React from 'react'
-import { useGLTF, useTexture, MeshReflectorMaterial} from '@react-three/drei'
+import { useGLTF, useTexture, MeshReflectorMaterial } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useRef, useLayoutEffect, useState } from 'react'
+import { useEffect, useRef, useLayoutEffect, useState, useMemo } from 'react'
 import { LinearSRGBColorSpace, RepeatWrapping, TextureLoader } from 'three';
 import gsap from "gsap";
 type GLTFResult = GLTF & {
@@ -239,70 +239,41 @@ export function Portfolio3(props: Portfolio3Props) {
   const { onAnimationComplete } = props;
   const { nodes, materials } = useGLTF('/Portfolio3.glb') as unknown as GLTFResult
 
-  const [roughness, normal] = useLoader(TextureLoader, [
-    '/terrain-roughness.jpg',
-    '/terrain-normal.jpg'
-  ]);
-
-  const [diffuse, normalw, rough, roughnessMap,
-    displacementMap,
-    metalnessMap] = useTexture([
-      '/color-wall.jpg',
-      '/Rough-wall.jpg',
-      '/Normal-wall.jpg',
-      '/roughness-wall.jpg',
-      '/Arm-wall.jpg',
-      '/ao-wall.jpg',
 
 
-    ])
+  const [normalw, rough] = useTexture([
 
-  const [cdiffuse, cnormalw, crough, cao,
-    cdisplacementMap,
-    carm] = useTexture([
-      '/Lw/diffuse.jpg',
-      '/Lw/normal.jpg',
-      '/Lw/rough.jpg',
-      '/Lw/ao.jpg',
-      '/Lw/displacement.jpg',
-      '/Lw/arm.jpg',
+    '/Rw/Rough-wall.webp',
+    '/Rw/Normal-wall.webp',
 
 
-    ])
 
-  const [wdiffuse, wnormalw, wrough, wao,
-    wdisplacementMap,
+  ])
+
+  const [cdiffuse] = useTexture([
+    '/Cw/diffuse.webp',
+
+
+
+  ])
+
+  const [wdiffuse,
     warm] = useTexture([
-      '/Wood/diff.jpg',
-      '/Wood/normal.jpg',
-      '/Wood/rough.jpg',
-      '/Wood/ao.jpg',
-      '/Wood/displacement.jpg',
-      '/Wood/arm.jpg',
+      '/Wood/diff.webp',
+
+      '/Wood/arm.webp',
 
 
     ])
 
-  const [rdiffuse, rnormalw, rrough, rao,
-    rdisplacementMap,
-    rarm] = useTexture([
-      '/Rw/diffuse.jpg',
-      '/Rw/normal.jpg',
-      '/Rw/rough.jpg',
-      '/Rw/ao.jpg',
-      '/Rw/displacement.jpg',
-      '/Rw/arm.jpg',
 
-
-    ])
   useEffect(() => {
     const textures = [
-      diffuse,
+
       normalw,
-      roughnessMap,
+
       rough,
-      displacementMap,
-      metalnessMap
+
     ]
 
     textures.forEach((tex) => {
@@ -322,11 +293,7 @@ export function Portfolio3(props: Portfolio3Props) {
   useEffect(() => {
     const textures = [
       cdiffuse,
-      cnormalw,
-      crough,
-      cao,
-      cdisplacementMap,
-      carm
+
     ]
 
     textures.forEach((tex) => {
@@ -336,32 +303,16 @@ export function Portfolio3(props: Portfolio3Props) {
     })
   }, [])
 
-  useEffect(() => {
-    const textures = [
-      rdiffuse,
-      rnormalw,
-      rrough,
-      rao,
-      rdisplacementMap,
-      rarm
-    ]
 
-    textures.forEach((tex) => {
-      tex.flipY = false
-      tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-      tex.repeat.set(5, 5) // Adjust to scale tile size
-    })
-  }, [])
+  // useEffect(() => {
+  //   [normal, roughness].forEach((t) => {
+  //     t.wrapS = RepeatWrapping;
+  //     t.wrapT = RepeatWrapping;
+  //     t.repeat.set(5, 5);
+  //   });
 
-  useEffect(() => {
-    [normal, roughness].forEach((t) => {
-      t.wrapS = RepeatWrapping;
-      t.wrapT = RepeatWrapping;
-      t.repeat.set(5, 5);
-    });
-
-    normal.colorSpace = LinearSRGBColorSpace;
-  }, [normal, roughness]);
+  //   normal.colorSpace = LinearSRGBColorSpace;
+  // }, [normal, roughness]);
 
 
   const groupRef = useRef<THREE.Group>(null!)
@@ -379,10 +330,10 @@ export function Portfolio3(props: Portfolio3Props) {
 
   // Glow
   const shelftoplight = useRef<THREE.MeshBasicMaterial>(null!)
-const Lefttoplight = useRef<THREE.MeshBasicMaterial>(null!)
+  const Lefttoplight = useRef<THREE.MeshBasicMaterial>(null!)
   const tri7 = useRef<THREE.MeshBasicMaterial>(null!)
-const tri8 = useRef<THREE.MeshBasicMaterial>(null!)
-const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
+  const tri8 = useRef<THREE.MeshBasicMaterial>(null!)
+  const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
   useFrame(() => {
@@ -508,9 +459,9 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
   useLayoutEffect(() => {
-  tl.current = gsap.timeline();
+    tl.current = gsap.timeline();
 
-  if (groupRef.current) {
+    if (groupRef.current) {
 
 
 
@@ -557,419 +508,420 @@ const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
       if (floor.current) {
-  tl.current.set(floor.current.scale, {
-    x: 0,
-    y: 0,
-    z: 0,
-  }, 0);
+        tl.current.set(floor.current.scale, {
+          x: 0,
+          y: 0,
+          z: 0,
+        }, 0);
 
-  tl.current.to(floor.current.scale, {
-    duration: 0.1,
-    x: 1,
-    y: 1,
-    z: 1,
-  }, 4);
-}
+        tl.current.to(floor.current.scale, {
+          duration: 0.1,
+          x: 1,
+          y: 1,
+          z: 1,
+        }, 4);
+      }
 
 
       if (lwall.current) {
-  tl.current.from(lwall.current.scale, {
-    x: 0,
-    y: 0,
-    z: 0,
-  }, 0);
+        tl.current.from(lwall.current.scale, {
+          x: 0,
+          y: 0,
+          z: 0,
+        }, 0);
 
-  tl.current.to(lwall.current.scale, {
-    duration: 0.1,
-    x: 0.032,
-    y: 1.856,
-    z: 6.427,
-    ease: "back.out(1.7)"
-  }, 4);
-}
+        tl.current.to(lwall.current.scale, {
+          duration: 0.1,
+          x: 0.032,
+          y: 1.856,
+          z: 6.427,
+          ease: "back.out(1.7)"
+        }, 4);
+      }
 
 
-if (rwall.current) {
-      tl.current.from(rwall.current.scale, {
-        x: 0,
-        y: 0,
-        z: 0,
-      }, 0);
+      if (rwall.current) {
+        tl.current.from(rwall.current.scale, {
+          x: 0,
+          y: 0,
+          z: 0,
+        }, 0);
 
 
-      tl.current.to(rwall.current.scale, {
-        duration: 0.1,
-        x: 0.032,
-        y: 1.856,
-        z: 6.427,
-        ease: "back.out(1.7)"
-      }, 4);
+        tl.current.to(rwall.current.scale, {
+          duration: 0.1,
+          x: 0.032,
+          y: 1.856,
+          z: 6.427,
+          ease: "back.out(1.7)"
+        }, 4);
 
-    }
-
-    if (showcase.current) {
-      tl.current.from(showcase.current.position, {
-        x: 0,
-        y: -10,
-        z: 0,
-      }, 0);
+      }
+
+      if (showcase.current) {
+        tl.current.from(showcase.current.position, {
+          x: 0,
+          y: -10,
+          z: 0,
+        }, 0);
 
-
-      tl.current.to(showcase.current.position, {
-        duration: 2,
-        x: 0.087,
-        y: 1.863,
-        z: 7.487,
-        ease: "back.out(1.7)"
-      }, 4.5);
-    }
-
-
-
-
-if (showcaselight.current) {
-      tl.current.set(showcaselight.current.scale, { x: 0, y: 0, z: 0 }, 0);
-      tl.current.to(showcaselight.current.scale, {
-        duration: 1,
-        x: 1, y: 1, z: 1,
-        ease: "back.out(1.7)"
-      }, 4.5);
-    }
-
-if (showcaselightself.current) {
-      tl.current.set(showcaselightself.current.scale, { x: 0, y: 0, z: 0 }, 0);
-      tl.current.to(showcaselightself.current.scale, {
-        duration: 1,
-        x: 1, y: 1, z: 1,
-        ease: "back.out(1.7)"
-      }, 4.5);
-
-}
-if (showcasepillar.current) {
-      tl.current.from(showcasepillar.current.position, {
-        x: -5.962,
-        y: 50,
-        z: 5.961,
-      }, 0);
-
-
-      tl.current.to(showcasepillar.current.position, {
-        duration: 2,
-        x: -5.962,
-        y: 1.857,
-        z: 5.961,
-
-      }, 4.5);
-
-
-
-
-
-
-
-
-}
-if (striplight1.current) {
-
-      tl.current.from(striplight1.current.position, {
-        x: -5.801,
-        y: 50,
-        z: 5.657,
-      }, 0);
-
-
-      tl.current.to(striplight1.current.position, {
-        duration: 2,
-        x: -5.801,
-        y: 1.902,
-        z: 5.657,
-
-      }, 4.5);
-}
-if (showcasepillar1.current) {
-      tl.current.from(showcasepillar1.current.position, {
-        x: -4.501,
-        y: 50,
-        z: 6.452,
-      }, 0);
-
-
-      tl.current.to(showcasepillar1.current.position, {
-        duration: 2,
-        x: -4.501,
-        y: 1.857,
-        z: 6.452,
-
-      }, 4.5);
-}
-if (striplight2.current) {
-      tl.current.from(striplight2.current.position, {
-        x: -4.401,
-        y: 50,
-        z: 6.16,
-      }, 0);
-
-
-      tl.current.to(striplight2.current.position, {
-        duration: 2,
-        x: -4.401,
-        y: 1.902,
-        z: 6.16,
-
-      }, 4.5);
-}
-if (showcasepillar2.current) {
-      tl.current.from(showcasepillar2.current.position, {
-        x: -3.026,
-        y: 50,
-        z: 6.808,
-      }, 0);
-
-
-      tl.current.to(showcasepillar2.current.position, {
-        duration: 2,
-        x: -3.026,
-        y: 1.857,
-        z: 6.808,
-
-      }, 4.5);
-}
-if (showcasepillar3.current) {
-      tl.current.from(showcasepillar3.current.position, {
-        x: -1.547,
-        y: 50,
-        z: 7.08,
-      }, 0);
-
-
-      tl.current.to(showcasepillar3.current.position, {
-        duration: 2,
-        x: -1.547,
-        y: 1.857,
-        z: 7.08,
-
-      }, 4.5);
-}
-if (showcasepillar4.current) {
-      tl.current.from(showcasepillar4.current.position, {
-        x: 0.042,
-        y: 50,
-        z: 7.129,
-      }, 0);
-
-
-      tl.current.to(showcasepillar4.current.position, {
-        duration: 2,
-        x: 0.042,
-        y: 1.857,
-        z: 7.129,
-
-      }, 4.5);
-}
-if (showcasepillar5.current) {
-      tl.current.from(showcasepillar5.current.position, {
-        x: 1.599,
-        y: 50,
-        z: 7.129,
-      }, 0);
-
-
-      tl.current.to(showcasepillar5.current.position, {
-        duration: 2,
-        x: 1.599,
-        y: 1.857,
-        z: 7.063,
-
-      }, 4.5);}
-if (showcasepillar6.current) {
-      tl.current.from(showcasepillar6.current.position, {
-        x: 3.094,
-        y: 50,
-        z: 6.843,
-      }, 0);
-
-
-      tl.current.to(showcasepillar6.current.position, {
-        duration: 2,
-        x: 3.094,
-        y: 1.857,
-        z: 6.843,
-
-      }, 4.5);
-}
-if (showcasepillar7.current) {
-      tl.current.from(showcasepillar7.current.position, {
-        x: 4.566,
-        y: 50,
-        z: 6.454,
-      }, 0);
-
-
-      tl.current.to(showcasepillar7.current.position, {
-        duration: 2,
-        x: 4.566,
-        y: 1.857,
-        z: 6.454,
-
-      }, 4.5);
-
-}
-if (showcasepillar8.current) {
-      tl.current.from(showcasepillar8.current.position, {
-        x: 5.984,
-        y: 50,
-        z: 6.843,
-      }, 0);
-
-
-      tl.current.to(showcasepillar8.current.position, {
-        duration: 2,
-        x: 5.984,
-        y: 1.857,
-        z: 5.895,
-
-      }, 4.5);
-
-
-}
-if (striplight3.current) {
-      tl.current.from(striplight3.current.position, {
-        x: -2.946,
-        y: 50,
-        z: 6.527,
-      }, 0);
-
-
-      tl.current.to(striplight3.current.position, {
-        duration: 2,
-        x: -2.946,
-        y: 1.902,
-        z: 6.527,
-
-      }, 4.5);
-
-}
-if (striplight4.current) {
-      tl.current.from(striplight4.current.position, {
-        x: -1.475,
-        y: 50,
-        z: 6.749,
-      }, 0);
-
-
-      tl.current.to(striplight4.current.position, {
-        duration: 2,
-        x: -1.475,
-        y: 1.902,
-        z: 6.749,
-
-      }, 4.5);
-
-
-}
-if (striplight5.current) {
-      tl.current.from(striplight5.current.position, {
-        x: 0.044,
-        y: 50,
-        z: 6.812,
-      }, 0);
-
-
-      tl.current.to(striplight5.current.position, {
-        duration: 2,
-        x: 0.044,
-        y: 1.902,
-        z: 6.812,
-
-      }, 4.5);
-
-}
-if (striplight6.current) {
-      tl.current.from(striplight6.current.position, {
-        x: 1.554,
-        y: 50,
-        z: 6.767,
-      }, 0);
-
-
-      tl.current.to(striplight6.current.position, {
-        duration: 2,
-        x: 1.554,
-        y: 1.902,
-        z: 6.767,
-
-      }, 4.5);
-}
-if (striplight7.current) {
-
-      tl.current.from(striplight7.current.position, {
-        x: 3.049,
-        y: 50,
-        z: 6.528,
-      }, 0);
-
-
-      tl.current.to(striplight7.current.position, {
-        duration: 2,
-        x: 3.049,
-        y: 1.902,
-        z: 6.528,
-
-      }, 4.5);
-
-
-}
-if (striplight8.current) {
-      tl.current.from(striplight8.current.position, {
-        x: 4.486,
-        y: 50,
-        z: 6.137,
-      }, 0);
-
-
-      tl.current.to(striplight8.current.position, {
-        duration: 2,
-        x: 4.486,
-        y: 1.902,
-        z: 6.137,
-
-      }, 4.5);
-
-}
-if (striplight9.current) {
-      tl.current.from(striplight9.current.position, {
-        x: 5.88,
-        y: 50,
-        z: 5.587,
-      }, 0);
-
-
-      tl.current.to(striplight9.current.position, {
-        duration: 2,
-        x: 5.88,
-        y: 1.902,
-        z: 5.587,
-
-      }, 4.5);
-
-
-}
-if (striplight10.current) {
-      tl.current.from(striplight10.current.position, {
-        x: -7.661,
-        y: 50,
-        z: 5.185,
-      }, 0);
-
-
-      tl.current.to(striplight10.current.position, {
-        duration: 2,
-        x: -7.661,
-        y: 1.857,
-        z: 5.185,
-
-      }, 4.5);
-    }
+
+        tl.current.to(showcase.current.position, {
+          duration: 2,
+          x: 0.087,
+          y: 1.863,
+          z: 7.487,
+          ease: "back.out(1.7)"
+        }, 4.5);
+      }
+
+
+
+
+      if (showcaselight.current) {
+        tl.current.set(showcaselight.current.scale, { x: 0, y: 0, z: 0 }, 0);
+        tl.current.to(showcaselight.current.scale, {
+          duration: 1,
+          x: 1, y: 1, z: 1,
+          ease: "back.out(1.7)"
+        }, 4.5);
+      }
+
+      if (showcaselightself.current) {
+        tl.current.set(showcaselightself.current.scale, { x: 0, y: 0, z: 0 }, 0);
+        tl.current.to(showcaselightself.current.scale, {
+          duration: 1,
+          x: 1, y: 1, z: 1,
+          ease: "back.out(1.7)"
+        }, 4.5);
+
+      }
+      if (showcasepillar.current) {
+        tl.current.from(showcasepillar.current.position, {
+          x: -5.962,
+          y: 50,
+          z: 5.961,
+        }, 0);
+
+
+        tl.current.to(showcasepillar.current.position, {
+          duration: 2,
+          x: -5.962,
+          y: 1.857,
+          z: 5.961,
+
+        }, 4.5);
+
+
+
+
+
+
+
+
+      }
+      if (striplight1.current) {
+
+        tl.current.from(striplight1.current.position, {
+          x: -5.801,
+          y: 50,
+          z: 5.657,
+        }, 0);
+
+
+        tl.current.to(striplight1.current.position, {
+          duration: 2,
+          x: -5.801,
+          y: 1.902,
+          z: 5.657,
+
+        }, 4.5);
+      }
+      if (showcasepillar1.current) {
+        tl.current.from(showcasepillar1.current.position, {
+          x: -4.501,
+          y: 50,
+          z: 6.452,
+        }, 0);
+
+
+        tl.current.to(showcasepillar1.current.position, {
+          duration: 2,
+          x: -4.501,
+          y: 1.857,
+          z: 6.452,
+
+        }, 4.5);
+      }
+      if (striplight2.current) {
+        tl.current.from(striplight2.current.position, {
+          x: -4.401,
+          y: 50,
+          z: 6.16,
+        }, 0);
+
+
+        tl.current.to(striplight2.current.position, {
+          duration: 2,
+          x: -4.401,
+          y: 1.902,
+          z: 6.16,
+
+        }, 4.5);
+      }
+      if (showcasepillar2.current) {
+        tl.current.from(showcasepillar2.current.position, {
+          x: -3.026,
+          y: 50,
+          z: 6.808,
+        }, 0);
+
+
+        tl.current.to(showcasepillar2.current.position, {
+          duration: 2,
+          x: -3.026,
+          y: 1.857,
+          z: 6.808,
+
+        }, 4.5);
+      }
+      if (showcasepillar3.current) {
+        tl.current.from(showcasepillar3.current.position, {
+          x: -1.547,
+          y: 50,
+          z: 7.08,
+        }, 0);
+
+
+        tl.current.to(showcasepillar3.current.position, {
+          duration: 2,
+          x: -1.547,
+          y: 1.857,
+          z: 7.08,
+
+        }, 4.5);
+      }
+      if (showcasepillar4.current) {
+        tl.current.from(showcasepillar4.current.position, {
+          x: 0.042,
+          y: 50,
+          z: 7.129,
+        }, 0);
+
+
+        tl.current.to(showcasepillar4.current.position, {
+          duration: 2,
+          x: 0.042,
+          y: 1.857,
+          z: 7.129,
+
+        }, 4.5);
+      }
+      if (showcasepillar5.current) {
+        tl.current.from(showcasepillar5.current.position, {
+          x: 1.599,
+          y: 50,
+          z: 7.129,
+        }, 0);
+
+
+        tl.current.to(showcasepillar5.current.position, {
+          duration: 2,
+          x: 1.599,
+          y: 1.857,
+          z: 7.063,
+
+        }, 4.5);
+      }
+      if (showcasepillar6.current) {
+        tl.current.from(showcasepillar6.current.position, {
+          x: 3.094,
+          y: 50,
+          z: 6.843,
+        }, 0);
+
+
+        tl.current.to(showcasepillar6.current.position, {
+          duration: 2,
+          x: 3.094,
+          y: 1.857,
+          z: 6.843,
+
+        }, 4.5);
+      }
+      if (showcasepillar7.current) {
+        tl.current.from(showcasepillar7.current.position, {
+          x: 4.566,
+          y: 50,
+          z: 6.454,
+        }, 0);
+
+
+        tl.current.to(showcasepillar7.current.position, {
+          duration: 2,
+          x: 4.566,
+          y: 1.857,
+          z: 6.454,
+
+        }, 4.5);
+
+      }
+      if (showcasepillar8.current) {
+        tl.current.from(showcasepillar8.current.position, {
+          x: 5.984,
+          y: 50,
+          z: 6.843,
+        }, 0);
+
+
+        tl.current.to(showcasepillar8.current.position, {
+          duration: 2,
+          x: 5.984,
+          y: 1.857,
+          z: 5.895,
+
+        }, 4.5);
+
+
+      }
+      if (striplight3.current) {
+        tl.current.from(striplight3.current.position, {
+          x: -2.946,
+          y: 50,
+          z: 6.527,
+        }, 0);
+
+
+        tl.current.to(striplight3.current.position, {
+          duration: 2,
+          x: -2.946,
+          y: 1.902,
+          z: 6.527,
+
+        }, 4.5);
+
+      }
+      if (striplight4.current) {
+        tl.current.from(striplight4.current.position, {
+          x: -1.475,
+          y: 50,
+          z: 6.749,
+        }, 0);
+
+
+        tl.current.to(striplight4.current.position, {
+          duration: 2,
+          x: -1.475,
+          y: 1.902,
+          z: 6.749,
+
+        }, 4.5);
+
+
+      }
+      if (striplight5.current) {
+        tl.current.from(striplight5.current.position, {
+          x: 0.044,
+          y: 50,
+          z: 6.812,
+        }, 0);
+
+
+        tl.current.to(striplight5.current.position, {
+          duration: 2,
+          x: 0.044,
+          y: 1.902,
+          z: 6.812,
+
+        }, 4.5);
+
+      }
+      if (striplight6.current) {
+        tl.current.from(striplight6.current.position, {
+          x: 1.554,
+          y: 50,
+          z: 6.767,
+        }, 0);
+
+
+        tl.current.to(striplight6.current.position, {
+          duration: 2,
+          x: 1.554,
+          y: 1.902,
+          z: 6.767,
+
+        }, 4.5);
+      }
+      if (striplight7.current) {
+
+        tl.current.from(striplight7.current.position, {
+          x: 3.049,
+          y: 50,
+          z: 6.528,
+        }, 0);
+
+
+        tl.current.to(striplight7.current.position, {
+          duration: 2,
+          x: 3.049,
+          y: 1.902,
+          z: 6.528,
+
+        }, 4.5);
+
+
+      }
+      if (striplight8.current) {
+        tl.current.from(striplight8.current.position, {
+          x: 4.486,
+          y: 50,
+          z: 6.137,
+        }, 0);
+
+
+        tl.current.to(striplight8.current.position, {
+          duration: 2,
+          x: 4.486,
+          y: 1.902,
+          z: 6.137,
+
+        }, 4.5);
+
+      }
+      if (striplight9.current) {
+        tl.current.from(striplight9.current.position, {
+          x: 5.88,
+          y: 50,
+          z: 5.587,
+        }, 0);
+
+
+        tl.current.to(striplight9.current.position, {
+          duration: 2,
+          x: 5.88,
+          y: 1.902,
+          z: 5.587,
+
+        }, 4.5);
+
+
+      }
+      if (striplight10.current) {
+        tl.current.from(striplight10.current.position, {
+          x: -7.661,
+          y: 50,
+          z: 5.185,
+        }, 0);
+
+
+        tl.current.to(striplight10.current.position, {
+          duration: 2,
+          x: -7.661,
+          y: 1.857,
+          z: 5.185,
+
+        }, 4.5);
+      }
       if (books.current) {
         tl.current.set(books.current.scale, { x: 0, y: 0, z: 0 }, 0);
         tl.current.to(books.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
@@ -1317,9 +1269,9 @@ if (striplight10.current) {
   return (
     <>
       <group ref={groupRef} visible={ready} {...({} as any)}>
-        <mesh ref={Cube002} castShadow receiveShadow name="Cube002" geometry={nodes.Cube007.geometry as any as any} material={materials['Material.009'] as any} position={[7.048, 0.664, -1.984]} />
-        <mesh ref={Cube003} name="Cube003" geometry={nodes.Cube003.geometry as any} material={materials['Material.014'] as any} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
-        <mesh ref={Cube005} name="Cube005" geometry={nodes.Cube005.geometry as any} material={materials['Material.014'] as any} position={[7.313, 1.238, -0.467]} />
+        <mesh ref={Cube002}  receiveShadow  name="Cube002" geometry={nodes.Cube002.geometry as any} material={materials['Material.009'] as any} position={[7.048, 0.664, -1.984]} />
+        <mesh ref={Cube003} castShadow name="Cube003" geometry={nodes.Cube003.geometry as any} material={materials['Material.014'] as any} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
+        <mesh ref={Cube005} castShadow name="Cube005" geometry={nodes.Cube005.geometry as any} material={materials['Material.014'] as any} position={[7.313, 1.238, -0.467]} />
         <mesh castShadow receiveShadow name="Cube007" geometry={nodes.Cube007.geometry as any} position={[-0.019, 0.122, 3.471]} rotation={[0, Math.PI / 2, 0]} >
           <meshBasicMaterial ref={tri7} toneMapped={false} />
         </mesh>
@@ -1341,14 +1293,10 @@ if (striplight10.current) {
         <mesh ref={showcaselight} name="Cube019" geometry={nodes.Cube019.geometry as any} position={[0, 3.69, 7.153]} >
           <meshBasicMaterial ref={shelftoplight} toneMapped={false} />
         </mesh>
-        <mesh ref={showcaselightself} name="Cube021" geometry={nodes.Cube021.geometry as any} position={[0, 1.772, 7.305]} scale={[1.04, 1, 1]} >
+        <mesh ref={showcaselightself} receiveShadow name="Cube021" geometry={nodes.Cube021.geometry as any} position={[0, 1.772, 7.305]} scale={[1.04, 1, 1]} >
           <meshStandardMaterial
             map={wdiffuse}
-            normalMap={wnormalw}
-            roughnessMap={wrough}
-            aoMap={wao}
             metalnessMap={warm}
-            displacementMap={wdisplacementMap}
             displacementScale={0.03}
             displacementBias={-0.05}
             aoMapIntensity={1}
@@ -1358,7 +1306,7 @@ if (striplight10.current) {
           />
 
         </mesh>
-        <mesh ref={Cube024} name="Cube024" geometry={nodes.Cube024.geometry as any} material={materials['Material.022']  as any} position={[7.431, 3.606, -1.007]} rotation={[0.003, 0, 0]} >
+        <mesh ref={Cube024} name="Cube024" geometry={nodes.Cube024.geometry as any} position={[7.431, 3.606, -1.007]} rotation={[0.003, 0, 0]} >
           <meshBasicMaterial ref={Lefttoplight} toneMapped={false} />
         </mesh>
         <mesh name="Cylinder" geometry={nodes.Cylinder.geometry as any} material={materials['Material.019'] as any} position={[0, 0.519, 0]} rotation={[0, -0.178, 0]} />
@@ -1370,47 +1318,33 @@ if (striplight10.current) {
         <mesh ref={Cactus} name="Catcus" geometry={nodes.Catcus.geometry as any} material={materials['Material.033'] as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
         <mesh ref={chair} name="chair" geometry={nodes.chair.geometry as any} material={materials['Material.010'] as any} position={[5.701, 0.224, -0.663]} rotation={[Math.PI, -0.011, Math.PI]} />
         <mesh ref={mouse} name="mouse" geometry={nodes.mouse.geometry as any} material={materials['Material.013'] as any} position={[6.368, 0.013, 1.149]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={penguin} name="penguin" geometry={nodes.penguin.geometry as any} material={nodes.penguin.material  as any} position={[6.303, 0.828, -2.613]} rotation={[Math.PI, -1.186, Math.PI]}>
-          <mesh name="penguin-wing-0" geometry={nodes['penguin-wing-0'].geometry as any} material={nodes['penguin-wing-0'].material  as any} />
-          <mesh name="penguin-wing-1" geometry={nodes['penguin-wing-1'].geometry as any} material={nodes['penguin-wing-1'].material  as any} />
+        <mesh ref={penguin} name="penguin" geometry={nodes.penguin.geometry as any} material={nodes.penguin.material as any} position={[6.303, 0.828, -2.613]} rotation={[Math.PI, -1.186, Math.PI]}>
+          <mesh name="penguin-wing-0" geometry={nodes['penguin-wing-0'].geometry as any} material={nodes['penguin-wing-0'].material as any} />
+          <mesh name="penguin-wing-1" geometry={nodes['penguin-wing-1'].geometry as any} material={nodes['penguin-wing-1'].material as any} />
         </mesh>
         <mesh ref={picture} name="picture" geometry={nodes.picture.geometry as any} material={materials['Material.018'] as any} position={[7.638, 2.13, 0.711]} rotation={[Math.PI, -0.011, Math.PI]} />
         <mesh ref={picture001} name="picture001" geometry={nodes.picture001.geometry as any} material={materials['Material.017'] as any} position={[7.621, 2.165, 0.711]} rotation={[Math.PI, -0.011, Math.PI]} />
         <mesh ref={plant} name="plant" geometry={nodes.plant.geometry as any} material={materials['Material.016'] as any} position={[6.833, 0.18, 1.463]} rotation={[Math.PI, -0.011, Math.PI]} />
         <mesh ref={plant001} name="plant001" geometry={nodes.plant001.geometry as any} material={materials['Material.011'] as any} position={[6.833, 0.18, 1.463]} rotation={[Math.PI, -0.011, Math.PI]} />
-        <mesh ref={speaker} name="speaker" geometry={nodes.speaker.geometry as any} material={nodes.speaker.material  as any} position={[5.844, 0.732, -2.568]} rotation={[0, -1, 0.049]} />
-        <mesh ref={Table_small} name="Table_small" geometry={nodes.Table_small.geometry as any} material={nodes.Table_small.material  as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
+        <mesh ref={speaker} name="speaker" geometry={nodes.speaker.geometry as any} material={nodes.speaker.material as any} position={[5.844, 0.732, -2.568]} rotation={[0, -1, 0.049]} />
+        <mesh ref={Table_small} name="Table_small" geometry={nodes.Table_small.geometry as any} material={nodes.Table_small.material as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
         <mesh ref={Cactusleaf} name="Catcus_leaf" geometry={nodes.Catcus_leaf.geometry as any} material={materials['Material.032'] as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
-        <mesh ref={showcase} receiveShadow name="Cube" geometry={nodes.Cube.geometry as any} position={[0.087, 1.863, 7.487]} scale={[7.081, 1.809, 0.058]} >
+        <mesh ref={showcase}  name="Cube" geometry={nodes.Cube.geometry as any} position={[0.087, 1.863, 7.487]} scale={[7.081, 1.809, 0.058]} >
           <meshStandardMaterial
             map={cdiffuse}
-            normalMap={cnormalw}
-            roughnessMap={crough}
-
             roughness={1}
-
-
-
-
-
-
             metalness={0.8}
-
-
-
             color="#111111"
           />
 
         </mesh>
         <mesh ref={lwall} name="Cube027" geometry={nodes.Cube027.geometry as any} position={[7.692, 1.904, -0.998]} scale={[0.032, 1.856, 6.427]} >
           <MeshReflectorMaterial
-            map={rdiffuse}
-            normalMap={rnormalw}
-            roughnessMap={rrough}
+
 
             roughness={10}
             blur={[1000, 1000]}
-            resolution={1024}
+            resolution={512}
             mixBlur={20}
             mixStrength={50}
             metalness={0.5}
@@ -1432,7 +1366,7 @@ if (striplight10.current) {
 
 
             blur={[500, 1000]}
-            resolution={1024}
+            resolution={512}
             mixBlur={10}
             mixStrength={80}
             roughness={20}
@@ -1443,7 +1377,7 @@ if (striplight10.current) {
             metalness={0.7}
           />
         </mesh>
-        <mesh castShadow receiveShadow name="Cylinder002" geometry={nodes.Cylinder002.geometry as any} material={materials['Material.003'] as any} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} />
+        <mesh castShadow  name="Cylinder002" geometry={nodes.Cylinder002.geometry as any} material={materials['Material.003'] as any} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} />
         <mesh ref={Cube006} name="Cube006" geometry={nodes.Cube006.geometry as any} material={materials['Material.005'] as any} position={[6.805, 0.753, -0.41]} rotation={[-Math.PI, 0, -Math.PI]} scale={[-0.17, -0.026, -0.539]} />
         <mesh ref={showcasepillar4} name="Cube028" geometry={nodes.Cube028.geometry as any} material={materials['Material.036'] as any} position={[0.042, 1.857, 7.129]} scale={[0.047, 1.771, 0.263]} />
         <mesh ref={showcasepillar3} name="Cube030" geometry={nodes.Cube030.geometry as any} material={materials['Material.036'] as any} position={[-1.547, 1.857, 7.08]} rotation={[0, -0.201, 0]} scale={[0.047, 1.771, 0.263]} />
@@ -1457,14 +1391,14 @@ if (striplight10.current) {
         <mesh ref={striplight10} name="Cube038" geometry={nodes.Cube038.geometry as any} material={materials['Material.036'] as any} position={[-7.661, 1.857, 5.185]} rotation={[0, -0.435, 0]} scale={[0.047, 1.771, 0.263]} />
         <mesh ref={rwall} name="Cube039" geometry={nodes.Cube039.geometry as any} position={[-7.623, 1.904, -0.998]} rotation={[Math.PI, -0.001, Math.PI]} scale={[0.032, 1.856, 6.427]} >
           <MeshReflectorMaterial
-            map={diffuse}
+
             normalMap={normalw}
             roughnessMap={rough}
 
             roughness={1}
 
             blur={[1000, 1000]}
-            resolution={1024}
+            resolution={512}
             mixBlur={20}
             mixStrength={50}
 
@@ -1475,31 +1409,31 @@ if (striplight10.current) {
             color="#111111"
           />
         </mesh>
-        <mesh ref={Face_new} castShadow receiveShadow name="Face_new" geometry={nodes.Face_new.geometry as any} material={materials['Material.030'] as any} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
-        <mesh ref={Hair} castShadow receiveShadow name="Hair" geometry={nodes.Hair.geometry as any} material={materials['Material.027'] as any} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Hand} castShadow receiveShadow name="Hand" geometry={nodes.Hand.geometry as any} material={materials['Material.026'] as any} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Leg} castShadow receiveShadow name="Leg" geometry={nodes.Leg.geometry as any} material={materials['Material.028'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Pant} castShadow receiveShadow name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Shirt} castShadow receiveShadow name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Curve} castShadow receiveShadow name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
-          <pointLight ref={Curve001light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />
+        <mesh ref={Face_new} castShadow  name="Face_new" geometry={nodes.Face_new.geometry as any} material={materials['Material.030'] as any} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
+        <mesh ref={Hair} castShadow  name="Hair" geometry={nodes.Hair.geometry as any} material={materials['Material.027'] as any} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Hand} castShadow  name="Hand" geometry={nodes.Hand.geometry as any} material={materials['Material.026'] as any} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Leg} castShadow  name="Leg" geometry={nodes.Leg.geometry as any} material={materials['Material.028'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Pant} castShadow  name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Shirt} castShadow  name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Curve} castShadow  name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
+          <pointLight ref={Curve001light} castShadow  intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />
         </mesh>
-        <group ref={Curve001} castShadow receiveShadow name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
+        <group ref={Curve001} castShadow  name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
           <mesh name="Curve002_1" geometry={nodes.Curve002_1.geometry as any} material={materials['Material.006'] as any} >
 
           </mesh>
           <mesh name="Curve002_2" geometry={nodes.Curve002_2.geometry as any} material={materials['Material.023'] as any} />
-          <pointLight ref={Curve01light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />
+          <pointLight ref={Curve01light} castShadow  intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />
         </group>
-        <mesh ref={Curve002} castShadow receiveShadow name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
+        <mesh ref={Curve002} castShadow  name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
           <pointLight ref={Curve02light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />
 
         </mesh>
-        <group ref={Curve003} castShadow receiveShadow name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
+        <group ref={Curve003} castShadow  name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
           <mesh name="Curve008_1" geometry={nodes.Curve008_1.geometry as any} material={materials['SVGMat.009'] as any} />
           <mesh name="Curve008_2" geometry={nodes.Curve008_2.geometry as any} material={materials['SVGMat.010'] as any} />
           <mesh name="Curve008_3" geometry={nodes.Curve008_3.geometry as any} material={materials['SVGMat.011'] as any} />
-          <pointLight ref={Curve03light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
+          <pointLight ref={Curve03light} castShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
         </group>
         <group ref={Curve004} name="Curve004" position={[-6.78, 0.804, 5.681]} rotation={[1.571, -0.002, -2.743]}>
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1552,19 +1486,19 @@ if (striplight10.current) {
         <mesh ref={Curve005} name="Curve005" geometry={nodes.Curve005.geometry as any} material={materials['Material.035'] as any} position={[5.482, 2.376, 6.267]} rotation={[1.567, 0.006, 2.678]} >
           <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} />
         </mesh>
-        <group ref={Curve011} castShadow receiveShadow name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
+        <group ref={Curve011} castShadow  name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
           <mesh name="Curve281" geometry={nodes.Curve281.geometry as any} material={materials['SVGMat.060'] as any} />
           <mesh name="Curve281_1" geometry={nodes.Curve281_1.geometry as any} material={materials['SVGMat.058'] as any} />
           <mesh name="Curve281_2" geometry={nodes.Curve281_2.geometry as any} material={materials['SVGMat.059'] as any} />
           <mesh name="Curve281_3" geometry={nodes.Curve281_3.geometry as any} material={materials['SVGMat.061'] as any} />
           <mesh name="Curve281_4" geometry={nodes.Curve281_4.geometry as any} material={materials['SVGMat.062'] as any} />
-          <pointLight ref={Curve011light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />
+          <pointLight ref={Curve011light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />
 
         </group>
-        <group ref={Curve008} castShadow receiveShadow name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
+        <group ref={Curve008} castShadow name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
           <mesh name="Curve291" geometry={nodes.Curve291.geometry as any} material={materials['SVGMat.066'] as any} />
           <mesh name="Curve291_1" geometry={nodes.Curve291_1.geometry as any} material={materials['SVGMat.068'] as any} />
-          <pointLight ref={Curve08light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />
+          <pointLight ref={Curve08light} castShadow  intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />
         </group>
         <mesh ref={Curve006} name="Curve006" geometry={nodes.Curve006.geometry as any} material={materials['SVGMat.075'] as any} position={[-5.289, 0.781, 6.297]} rotation={[1.551, 0.124, -3.024]} >
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1572,7 +1506,7 @@ if (striplight10.current) {
         <group ref={Curve009} name="Curve009" position={[-5.215, 2.578, 6.324]} rotation={[1.554, 0.016, -2.878]}>
           <mesh name="Curve304" geometry={nodes.Curve304.geometry as any} material={materials['SVGMat.077'] as any} />
           <mesh name="Curve304_1" geometry={nodes.Curve304_1.geometry as any} material={materials['SVGMat.078'] as any} />
-          <pointLight ref={Curve09light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />
+          <pointLight ref={Curve09light} castShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />
         </group>
         <mesh ref={Curve010} name="Curve010" geometry={nodes.Curve010.geometry as any} material={materials['SVGMat.079'] as any} position={[-6.959, 2.883, 5.636]} rotation={[2.068, -0.544, -2.511]} >
           <pointLight ref={Curve010light} castShadow intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />
