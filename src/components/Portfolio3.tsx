@@ -376,9 +376,9 @@ export function Portfolio3(props: { onAnimationComplete: any }) {
   // Glow
   const shelftoplight = useRef<THREE.Group>(null!)
   const Lefttoplight = useRef<THREE.Group>(null!)
-  const tri7 = useRef<THREE.Group>(null!)
-  const tri8 = useRef<THREE.Group>(null!)
-  const tri9 = useRef<THREE.Group>(null!)
+  const tri7 = useRef<THREE.MeshBasicMaterial>(null!)
+const tri8 = useRef<THREE.MeshBasicMaterial>(null!)
+const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
   useFrame(() => {
