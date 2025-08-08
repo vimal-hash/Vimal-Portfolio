@@ -1416,24 +1416,24 @@ export function Portfolio3(props: Portfolio3Props) {
         <mesh ref={Pant} castShadow  name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
         <mesh ref={Shirt} castShadow  name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
         <mesh ref={Curve} castShadow  name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
-          <pointLight ref={Curve001light} castShadow  intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />
+          {/* <pointLight ref={Curve001light} castShadow  intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} /> */}
         </mesh>
         <group ref={Curve001} castShadow  name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
           <mesh name="Curve002_1" geometry={nodes.Curve002_1.geometry as any} material={materials['Material.006'] as any} >
 
           </mesh>
           <mesh name="Curve002_2" geometry={nodes.Curve002_2.geometry as any} material={materials['Material.023'] as any} />
-          <pointLight ref={Curve01light} castShadow  intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />
+          {/* <pointLight ref={Curve01light} castShadow  intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} /> */}
         </group>
         <mesh ref={Curve002} castShadow  name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
-          <pointLight ref={Curve02light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />
+          {/* <pointLight ref={Curve02light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} /> */}
 
         </mesh>
         <group ref={Curve003} castShadow  name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
           <mesh name="Curve008_1" geometry={nodes.Curve008_1.geometry as any} material={materials['SVGMat.009'] as any} />
           <mesh name="Curve008_2" geometry={nodes.Curve008_2.geometry as any} material={materials['SVGMat.010'] as any} />
           <mesh name="Curve008_3" geometry={nodes.Curve008_3.geometry as any} material={materials['SVGMat.011'] as any} />
-          <pointLight ref={Curve03light} castShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
+          {/* <pointLight ref={Curve03light} castShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} /> */}
         </group>
         <group ref={Curve004} name="Curve004" position={[-6.78, 0.804, 5.681]} rotation={[1.571, -0.002, -2.743]}>
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1481,10 +1481,10 @@ export function Portfolio3(props: Portfolio3Props) {
           <mesh name="Curve275" geometry={nodes.Curve275.geometry as any} material={materials['SVGMat.055'] as any} />
           <mesh name="Curve275_1" geometry={nodes.Curve275_1.geometry as any} material={materials['SVGMat.053'] as any} />
           <mesh name="Curve275_2" geometry={nodes.Curve275_2.geometry as any} material={materials['SVGMat.054'] as any} />
-          <pointLight ref={Curve07light} intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
+          {/* <pointLight ref={Curve07light} intensity={10} color="#96DCFF" position={[0, 0, -1.1]} /> */}
         </group>
         <mesh ref={Curve005} name="Curve005" geometry={nodes.Curve005.geometry as any} material={materials['Material.035'] as any} position={[5.482, 2.376, 6.267]} rotation={[1.567, 0.006, 2.678]} >
-          <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} />
+          {/* <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} /> */}
         </mesh>
         <group ref={Curve011} castShadow  name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
           <mesh name="Curve281" geometry={nodes.Curve281.geometry as any} material={materials['SVGMat.060'] as any} />
@@ -1492,13 +1492,13 @@ export function Portfolio3(props: Portfolio3Props) {
           <mesh name="Curve281_2" geometry={nodes.Curve281_2.geometry as any} material={materials['SVGMat.059'] as any} />
           <mesh name="Curve281_3" geometry={nodes.Curve281_3.geometry as any} material={materials['SVGMat.061'] as any} />
           <mesh name="Curve281_4" geometry={nodes.Curve281_4.geometry as any} material={materials['SVGMat.062'] as any} />
-          <pointLight ref={Curve011light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />
+          {/* <pointLight ref={Curve011light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} /> */}
 
         </group>
         <group ref={Curve008} castShadow name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
           <mesh name="Curve291" geometry={nodes.Curve291.geometry as any} material={materials['SVGMat.066'] as any} />
           <mesh name="Curve291_1" geometry={nodes.Curve291_1.geometry as any} material={materials['SVGMat.068'] as any} />
-          <pointLight ref={Curve08light} castShadow  intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />
+          {/* <pointLight ref={Curve08light} castShadow  intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} /> */}
         </group>
         <mesh ref={Curve006} name="Curve006" geometry={nodes.Curve006.geometry as any} material={materials['SVGMat.075'] as any} position={[-5.289, 0.781, 6.297]} rotation={[1.551, 0.124, -3.024]} >
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1506,10 +1506,10 @@ export function Portfolio3(props: Portfolio3Props) {
         <group ref={Curve009} name="Curve009" position={[-5.215, 2.578, 6.324]} rotation={[1.554, 0.016, -2.878]}>
           <mesh name="Curve304" geometry={nodes.Curve304.geometry as any} material={materials['SVGMat.077'] as any} />
           <mesh name="Curve304_1" geometry={nodes.Curve304_1.geometry as any} material={materials['SVGMat.078'] as any} />
-          <pointLight ref={Curve09light} castShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />
+          {/* <pointLight ref={Curve09light} castShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} /> */}
         </group>
         <mesh ref={Curve010} name="Curve010" geometry={nodes.Curve010.geometry as any} material={materials['SVGMat.079'] as any} position={[-6.959, 2.883, 5.636]} rotation={[2.068, -0.544, -2.511]} >
-          <pointLight ref={Curve010light} castShadow intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />
+          {/* <pointLight ref={Curve010light} castShadow intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} /> */}
 
         </mesh>
       </group>
