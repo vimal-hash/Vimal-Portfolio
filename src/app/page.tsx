@@ -2,7 +2,7 @@
 import ShowCase from "@/components/Showcase"
 import SecondSec from '@/components/secondsec'
 import ContactForm from '@/components/ContactForm'
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 export default function Home() {
  
 
@@ -11,6 +11,7 @@ export default function Home() {
    <ShowCase />
     <SecondSec/>
     <ContactForm/>
+    <SpeedInsights/>
     </>
   )
 }
