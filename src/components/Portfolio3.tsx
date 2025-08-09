@@ -279,7 +279,7 @@ export function Portfolio3(props: Portfolio3Props) {
     textures.forEach((tex) => {
       tex.flipY = false
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-      tex.repeat.set(4, 4) // Adjust to scale tile size
+      tex.repeat.set(2, 2) // Adjust to scale tile size
     })
   }, [])
   useEffect(() => {
@@ -299,7 +299,7 @@ export function Portfolio3(props: Portfolio3Props) {
     textures.forEach((tex) => {
       tex.flipY = false
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-      tex.repeat.set(4, 4) // Adjust to scale tile size
+      tex.repeat.set(2, 2) // Adjust to scale tile size
     })
   }, [])
 
@@ -316,16 +316,8 @@ export function Portfolio3(props: Portfolio3Props) {
 
 
   const groupRef = useRef<THREE.Group>(null!)
+  const groupRef1 = useRef<THREE.Group>(null!)
 
-  useEffect(() => {
-    groupRef.current?.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-      }
-    })
-  }, [])
 
 
   // Glow
@@ -336,7 +328,7 @@ export function Portfolio3(props: Portfolio3Props) {
   const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
-  useFrame(() => {
+  useFrame(({ camera }) => {
     // shelftoplight.current.color.set(0.5, 0.5, 0.5)
     // Lefttoplight.current.color.set(50, 50, 50)
 
@@ -345,19 +337,40 @@ export function Portfolio3(props: Portfolio3Props) {
     tri9.current.color.set(120, 120, 120)
     // light.current.intensity = 1 * 4
 
+    // Performance optimization for distant objects
+    groupRef.current?.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        const distance = camera.position.distanceTo(mesh.position);
 
+        // Disable shadows for distant objects
+        if (distance > 10) {
+          mesh.castShadow = false;
+          mesh.receiveShadow = false;
+        }
+
+       // Hide detailed meshes when far
+      if (distance > 15 && mesh.name.includes('Curve')) {
+        mesh.visible = false;
+      } else if (distance <= 15 && mesh.name.includes('Curve')) {
+        mesh.visible = true;
+      }
+      }
+    });
   })
+
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (shelftoplight.current?.color?.set) {
-        shelftoplight.current.color.set(80, 80, 80)
+        shelftoplight.current.color.set(60, 60, 60)
       }
-    }, 8000)
+    }, 6400)
     const timeout1 = setTimeout(() => {
       if (Lefttoplight.current?.color?.set) {
         Lefttoplight.current.color.set(50, 50, 50)
       }
-    }, 8200)
+    }, 6600)
 
 
     return () => {
@@ -484,7 +497,7 @@ export function Portfolio3(props: Portfolio3Props) {
       }, 50)
 
       tl.current.to(groupRef.current.position, {
-        duration: 4,
+        duration: 3,
         x: 10,
         y: -4,
         z: 20,
@@ -496,782 +509,141 @@ export function Portfolio3(props: Portfolio3Props) {
         x: 0,
         y: 0,
         z: 0,
-      }, 3);
+      }, 2);
 
       tl.current.to(groupRef.current.rotation, {
         duration: 1,
         x: 0,
         y: 0,
         z: 0,
-      }, 3);
+      }, 2);
 
 
 
-      if (floor.current) {
-        tl.current.set(floor.current.scale, {
-          x: 0,
-          y: 0,
-          z: 0,
-        }, 0);
 
-        tl.current.to(floor.current.scale, {
-          duration: 0.1,
-          x: 1,
-          y: 1,
-          z: 1,
-        }, 4);
-      }
-
-
-      if (lwall.current) {
-        tl.current.from(lwall.current.scale, {
-          x: 0,
-          y: 0,
-          z: 0,
-        }, 0);
-
-        tl.current.to(lwall.current.scale, {
-          duration: 0.1,
-          x: 0.032,
-          y: 1.856,
-          z: 6.427,
-          ease: "back.out(1.7)"
-        }, 4);
-      }
-
-
-      if (rwall.current) {
-        tl.current.from(rwall.current.scale, {
-          x: 0,
-          y: 0,
-          z: 0,
-        }, 0);
-
-
-        tl.current.to(rwall.current.scale, {
-          duration: 0.1,
-          x: 0.032,
-          y: 1.856,
-          z: 6.427,
-          ease: "back.out(1.7)"
-        }, 4);
-
-      }
-
-      if (showcase.current) {
-        tl.current.from(showcase.current.position, {
-          x: 0,
-          y: -10,
-          z: 0,
-        }, 0);
-
-
-        tl.current.to(showcase.current.position, {
-          duration: 2,
-          x: 0.087,
-          y: 1.863,
-          z: 7.487,
-          ease: "back.out(1.7)"
-        }, 4.5);
-      }
-
-
-
-
-      if (showcaselight.current) {
-        tl.current.set(showcaselight.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(showcaselight.current.scale, {
-          duration: 1,
-          x: 1, y: 1, z: 1,
-          ease: "back.out(1.7)"
-        }, 4.5);
-      }
-
-      if (showcaselightself.current) {
-        tl.current.set(showcaselightself.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(showcaselightself.current.scale, {
-          duration: 1,
-          x: 1, y: 1, z: 1,
-          ease: "back.out(1.7)"
-        }, 4.5);
-
-      }
-      if (showcasepillar.current) {
-        tl.current.from(showcasepillar.current.position, {
-          x: -5.962,
-          y: 50,
-          z: 5.961,
-        }, 0);
-
-
-        tl.current.to(showcasepillar.current.position, {
-          duration: 2,
-          x: -5.962,
-          y: 1.857,
-          z: 5.961,
-
-        }, 4.5);
-
-
-
-
-
-
-
-
-      }
-      if (striplight1.current) {
-
-        tl.current.from(striplight1.current.position, {
-          x: -5.801,
-          y: 50,
-          z: 5.657,
-        }, 0);
-
-
-        tl.current.to(striplight1.current.position, {
-          duration: 2,
-          x: -5.801,
-          y: 1.902,
-          z: 5.657,
-
-        }, 4.5);
-      }
-      if (showcasepillar1.current) {
-        tl.current.from(showcasepillar1.current.position, {
-          x: -4.501,
-          y: 50,
-          z: 6.452,
-        }, 0);
-
-
-        tl.current.to(showcasepillar1.current.position, {
-          duration: 2,
-          x: -4.501,
-          y: 1.857,
-          z: 6.452,
-
-        }, 4.5);
-      }
-      if (striplight2.current) {
-        tl.current.from(striplight2.current.position, {
-          x: -4.401,
-          y: 50,
-          z: 6.16,
-        }, 0);
-
-
-        tl.current.to(striplight2.current.position, {
-          duration: 2,
-          x: -4.401,
-          y: 1.902,
-          z: 6.16,
-
-        }, 4.5);
-      }
-      if (showcasepillar2.current) {
-        tl.current.from(showcasepillar2.current.position, {
-          x: -3.026,
-          y: 50,
-          z: 6.808,
-        }, 0);
-
-
-        tl.current.to(showcasepillar2.current.position, {
-          duration: 2,
-          x: -3.026,
-          y: 1.857,
-          z: 6.808,
-
-        }, 4.5);
-      }
-      if (showcasepillar3.current) {
-        tl.current.from(showcasepillar3.current.position, {
-          x: -1.547,
-          y: 50,
-          z: 7.08,
-        }, 0);
-
-
-        tl.current.to(showcasepillar3.current.position, {
-          duration: 2,
-          x: -1.547,
-          y: 1.857,
-          z: 7.08,
-
-        }, 4.5);
-      }
-      if (showcasepillar4.current) {
-        tl.current.from(showcasepillar4.current.position, {
-          x: 0.042,
-          y: 50,
-          z: 7.129,
-        }, 0);
-
-
-        tl.current.to(showcasepillar4.current.position, {
-          duration: 2,
-          x: 0.042,
-          y: 1.857,
-          z: 7.129,
-
-        }, 4.5);
-      }
-      if (showcasepillar5.current) {
-        tl.current.from(showcasepillar5.current.position, {
-          x: 1.599,
-          y: 50,
-          z: 7.129,
-        }, 0);
-
-
-        tl.current.to(showcasepillar5.current.position, {
-          duration: 2,
-          x: 1.599,
-          y: 1.857,
-          z: 7.063,
-
-        }, 4.5);
-      }
-      if (showcasepillar6.current) {
-        tl.current.from(showcasepillar6.current.position, {
-          x: 3.094,
-          y: 50,
-          z: 6.843,
-        }, 0);
-
-
-        tl.current.to(showcasepillar6.current.position, {
-          duration: 2,
-          x: 3.094,
-          y: 1.857,
-          z: 6.843,
-
-        }, 4.5);
-      }
-      if (showcasepillar7.current) {
-        tl.current.from(showcasepillar7.current.position, {
-          x: 4.566,
-          y: 50,
-          z: 6.454,
-        }, 0);
-
-
-        tl.current.to(showcasepillar7.current.position, {
-          duration: 2,
-          x: 4.566,
-          y: 1.857,
-          z: 6.454,
-
-        }, 4.5);
-
-      }
-      if (showcasepillar8.current) {
-        tl.current.from(showcasepillar8.current.position, {
-          x: 5.984,
-          y: 50,
-          z: 6.843,
-        }, 0);
-
-
-        tl.current.to(showcasepillar8.current.position, {
-          duration: 2,
-          x: 5.984,
-          y: 1.857,
-          z: 5.895,
-
-        }, 4.5);
-
-
-      }
-      if (striplight3.current) {
-        tl.current.from(striplight3.current.position, {
-          x: -2.946,
-          y: 50,
-          z: 6.527,
-        }, 0);
-
-
-        tl.current.to(striplight3.current.position, {
-          duration: 2,
-          x: -2.946,
-          y: 1.902,
-          z: 6.527,
-
-        }, 4.5);
-
-      }
-      if (striplight4.current) {
-        tl.current.from(striplight4.current.position, {
-          x: -1.475,
-          y: 50,
-          z: 6.749,
-        }, 0);
-
-
-        tl.current.to(striplight4.current.position, {
-          duration: 2,
-          x: -1.475,
-          y: 1.902,
-          z: 6.749,
-
-        }, 4.5);
-
-
-      }
-      if (striplight5.current) {
-        tl.current.from(striplight5.current.position, {
-          x: 0.044,
-          y: 50,
-          z: 6.812,
-        }, 0);
-
-
-        tl.current.to(striplight5.current.position, {
-          duration: 2,
-          x: 0.044,
-          y: 1.902,
-          z: 6.812,
-
-        }, 4.5);
-
-      }
-      if (striplight6.current) {
-        tl.current.from(striplight6.current.position, {
-          x: 1.554,
-          y: 50,
-          z: 6.767,
-        }, 0);
-
-
-        tl.current.to(striplight6.current.position, {
-          duration: 2,
-          x: 1.554,
-          y: 1.902,
-          z: 6.767,
-
-        }, 4.5);
-      }
-      if (striplight7.current) {
-
-        tl.current.from(striplight7.current.position, {
-          x: 3.049,
-          y: 50,
-          z: 6.528,
-        }, 0);
-
-
-        tl.current.to(striplight7.current.position, {
-          duration: 2,
-          x: 3.049,
-          y: 1.902,
-          z: 6.528,
-
-        }, 4.5);
-
-
-      }
-      if (striplight8.current) {
-        tl.current.from(striplight8.current.position, {
-          x: 4.486,
-          y: 50,
-          z: 6.137,
-        }, 0);
-
-
-        tl.current.to(striplight8.current.position, {
-          duration: 2,
-          x: 4.486,
-          y: 1.902,
-          z: 6.137,
-
-        }, 4.5);
-
-      }
-      if (striplight9.current) {
-        tl.current.from(striplight9.current.position, {
-          x: 5.88,
-          y: 50,
-          z: 5.587,
-        }, 0);
-
-
-        tl.current.to(striplight9.current.position, {
-          duration: 2,
-          x: 5.88,
-          y: 1.902,
-          z: 5.587,
-
-        }, 4.5);
-
-
-      }
-      if (striplight10.current) {
-        tl.current.from(striplight10.current.position, {
-          x: -7.661,
-          y: 50,
-          z: 5.185,
-        }, 0);
-
-
-        tl.current.to(striplight10.current.position, {
-          duration: 2,
-          x: -7.661,
-          y: 1.857,
-          z: 5.185,
-
-        }, 4.5);
-      }
-      if (books.current) {
-        tl.current.set(books.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(books.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cactus.current) {
-        tl.current.set(Cactus.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cactus.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cactusleaf.current) {
-        tl.current.set(Cactusleaf.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cactusleaf.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (chair.current) {
-        tl.current.set(chair.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(chair.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cube.current) {
-        tl.current.set(Cube.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cube.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cube002.current) {
-        tl.current.set(Cube002.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cube002.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cube003.current) {
-        tl.current.set(Cube003.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cube003.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cube005.current) {
-        tl.current.set(Cube005.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cube005.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cube006.current) {
-        tl.current.set(Cube006.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cube006.current.scale, { duration: 1, x: -0.17, y: -0.026, z: -0.539, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cube024.current) {
-        tl.current.set(Cube024.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cube024.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Cube027.current) {
-        tl.current.set(Cube027.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Cube027.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (mouse.current) {
-        tl.current.set(mouse.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(mouse.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (penguin.current) {
-        tl.current.set(penguin.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(penguin.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (picture.current) {
-        tl.current.set(picture.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(picture.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (picture001.current) {
-        tl.current.set(picture001.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(picture001.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Plane004.current) {
-        tl.current.set(Plane004.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Plane004.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Plane005.current) {
-        tl.current.set(Plane005.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Plane005.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (plant.current) {
-        tl.current.set(plant.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(plant.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (plant001.current) {
-        tl.current.set(plant001.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(plant001.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (speaker.current) {
-        tl.current.set(speaker.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(speaker.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      if (Table_small.current) {
-        tl.current.set(Table_small.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Table_small.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "back.out(1.7)" }, 4.5);
-      }
-
-      // Man
-      if (Face_new.current) {
-        tl.current.set(Face_new.current.position, { x: 5.777, y: 50, z: 0.932 }, 0);
-        tl.current.to(Face_new.current.position, {
-          duration: 1,
-          x: 5.777,
-          y: 1.751,
-          z: 0.932,
-          ease: "power2.out"
-        }, 4.5);
-      }
-
-      if (Hair.current) {
-        tl.current.set(Hair.current.position, { x: 5.725, y: 50, z: 0.964 }, 0);
-        tl.current.to(Hair.current.position, {
-          duration: 1,
-          x: 5.725,
-          y: 0.407,
-          z: 0.964,
-          ease: "power2.out"
-        }, 4.5);
-      }
-
-      if (Hand.current) {
-        tl.current.set(Hand.current.position, { x: 5.729, y: 50, z: 0.961 }, 0);
-        tl.current.to(Hand.current.position, {
-          duration: 1,
-          x: 5.729,
-          y: 0.322,
-          z: 0.961,
-          ease: "power2.out"
-        }, 4.5);
-      }
-
-      if (Leg.current) {
-        tl.current.set(Leg.current.position, { x: 5.722, y: 50, z: 0.966 }, 0);
-        tl.current.to(Leg.current.position, {
-          duration: 1,
-          x: 5.722,
-          y: 0.322,
-          z: 0.966,
-          ease: "power2.out"
-        }, 4.5);
-      }
-
-      if (Pant.current) {
-        tl.current.set(Pant.current.position, { x: 5.722, y: 50, z: 0.966 }, 0);
-        tl.current.to(Pant.current.position, {
-          duration: 1,
-          x: 5.722,
-          y: 0.322,
-          z: 0.966,
-          ease: "power2.out"
-        }, 4.5);
-      }
-
-      if (Shirt.current) {
-        tl.current.set(Shirt.current.position, { x: 5.722, y: 50, z: 0.966 }, 0);
-        tl.current.to(Shirt.current.position, {
-          duration: 1,
-          x: 5.722,
-          y: 0.322,
-          z: 0.966,
-          ease: "power2.out"
-        }, 4.5);
-      }
-
-
-
-      // Animation for Curve
-      if (Curve.current) {
-        tl.current.set(Curve.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve001
-      if (Curve001.current) {
-        tl.current.set(Curve001.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve001.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve002
-      if (Curve002.current) {
-        tl.current.set(Curve002.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve002.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve003
-      if (Curve003.current) {
-        tl.current.set(Curve003.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve003.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve004
-      if (Curve004.current) {
-        tl.current.set(Curve004.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve004.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve007
-      if (Curve007.current) {
-        tl.current.set(Curve007.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve007.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve005
-      if (Curve005.current) {
-        tl.current.set(Curve005.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve005.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve011
-      if (Curve011.current) {
-        tl.current.set(Curve011.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve011.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve008
-      if (Curve008.current) {
-        tl.current.set(Curve008.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve008.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve006
-      if (Curve006.current) {
-        tl.current.set(Curve006.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve006.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve009
-      if (Curve009.current) {
-        tl.current.set(Curve009.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve009.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
-
-      // Animation for Curve010
-      if (Curve010.current) {
-        tl.current.set(Curve010.current.scale, { x: 0, y: 0, z: 0 }, 0);
-        tl.current.to(Curve010.current.scale, { duration: 1, x: 1, y: 1, z: 1, ease: "sine.out" }, 4.5);
-      }
 
 
 
     }
 
-    tl.current.fromTo(Curve010light.current, {
+    if (groupRef1.current) {
+      tl.current.set(groupRef1.current.position, {
+        x: 0,
+        y: -20,
+        z: 0,
+      }, 0);
+
+
+
+      // 👇 Delay visibility by 50ms after set() so it's ready
+      setTimeout(() => {
+        setReady(true)
+      }, 50)
+
+
+
+
+      tl.current.to(groupRef1.current.position, {
+        duration: 2.5,
+        x: 0,
+        y: 0,
+        z: 0,
+        ease: "power2.out", // Changed from "back.out(1.7)"
+      }, 3);
+      tl.current.fromTo(Curve010light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+
+      tl.current.fromTo(Curve09light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+
+      tl.current.fromTo(Curve03light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+
+      tl.current.fromTo(Curve01light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+      tl.current.fromTo(Curve02light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+      tl.current.fromTo(Curve08light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+
+      tl.current.fromTo(Curve011light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+
+
+      tl.current.fromTo(Curve001light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+
+      tl.current.fromTo(Curve005light.current, {
+        intensity: 0
+      }, {
+        intensity: 10,
+        duration: 1,
+        ease: 'power2.out'
+      }, 6);
+tl.current.fromTo(Curve07light.current, {
       intensity: 0
     }, {
       intensity: 10,
       duration: 1,
       ease: 'power2.out'
-    }, 7.3);
-
-
-    tl.current.fromTo(Curve09light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
-
-
-    tl.current.fromTo(Curve03light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
-
-
-    tl.current.fromTo(Curve01light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
-
-    tl.current.fromTo(Curve02light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
-
-    tl.current.fromTo(Curve08light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
-
-
-    tl.current.fromTo(Curve011light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
+    }, 6);
 
 
 
-    tl.current.fromTo(Curve001light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
-
-    tl.current.to(camera.rotation, {
-      duration: 3,
-      y: THREE.MathUtils.degToRad(80),
-      ease: 'sine.inOut'
-    }, 8.5);
-
-    tl.current.fromTo(Curve005light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
-
-    tl.current.fromTo(Curve07light.current, {
-      intensity: 0
-    }, {
-      intensity: 10,
-      duration: 1,
-      ease: 'power2.out'
-    }, 7.3);
+    }
 
   }, []);
 
   return (
     <>
       <group ref={groupRef} visible={ready} {...({} as any)}>
-        <mesh ref={Cube002}  receiveShadow  name="Cube002" geometry={nodes.Cube002.geometry as any} material={materials['Material.009'] as any} position={[7.048, 0.664, -1.984]} />
-        <mesh ref={Cube003} castShadow name="Cube003" geometry={nodes.Cube003.geometry as any} material={materials['Material.014'] as any} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
-        <mesh ref={Cube005} castShadow name="Cube005" geometry={nodes.Cube005.geometry as any} material={materials['Material.014'] as any} position={[7.313, 1.238, -0.467]} />
         <mesh castShadow receiveShadow name="Cube007" geometry={nodes.Cube007.geometry as any} position={[-0.019, 0.122, 3.471]} rotation={[0, Math.PI / 2, 0]} >
           <meshBasicMaterial ref={tri7} toneMapped={false} />
         </mesh>
@@ -1281,6 +653,16 @@ export function Portfolio3(props: Portfolio3Props) {
         <mesh castShadow receiveShadow name="Cube009" geometry={nodes.Cube009.geometry as any} position={[2.058, 0.122, -1.036]} rotation={[0, 0.402, 0]} >
           <meshBasicMaterial ref={tri9} toneMapped={false} />
         </mesh>
+        <mesh name="Cylinder" geometry={nodes.Cylinder.geometry as any} material={materials['Material.019'] as any} position={[0, 0.519, 0]} rotation={[0, -0.178, 0]} />
+        <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry as any} material={materials['Material.020'] as any} position={[0, 0.667, 0]} />
+        <mesh castShadow name="Cylinder002" geometry={nodes.Cylinder002.geometry as any} material={materials['Material.003'] as any} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} />
+
+      </group>
+      <group ref={groupRef1} visible={ready} {...({} as any)}>
+        <mesh ref={Cube002} receiveShadow name="Cube002" geometry={nodes.Cube002.geometry as any} material={materials['Material.009'] as any} position={[7.048, 0.664, -1.984]} />
+        <mesh ref={Cube003} castShadow name="Cube003" geometry={nodes.Cube003.geometry as any} material={materials['Material.014'] as any} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
+        <mesh ref={Cube005} castShadow name="Cube005" geometry={nodes.Cube005.geometry as any} material={materials['Material.014'] as any} position={[7.313, 1.238, -0.467]} />
+
         <mesh ref={striplight5} name="Cube010" geometry={nodes.Cube010.geometry as any} material={materials['Material.007'] as any} position={[0.044, 1.902, 6.812]} />
         <mesh ref={striplight4} name="Cube011" geometry={nodes.Cube011.geometry as any} material={materials['Material.007'] as any} position={[-1.475, 1.902, 6.749]} />
         <mesh ref={striplight3} name="Cube012" geometry={nodes.Cube012.geometry as any} material={materials['Material.007'] as any} position={[-2.946, 1.902, 6.527]} />
@@ -1309,9 +691,9 @@ export function Portfolio3(props: Portfolio3Props) {
         <mesh ref={Cube024} name="Cube024" geometry={nodes.Cube024.geometry as any} position={[7.431, 3.606, -1.007]} rotation={[0.003, 0, 0]} >
           <meshBasicMaterial ref={Lefttoplight} toneMapped={false} />
         </mesh>
-        <mesh name="Cylinder" geometry={nodes.Cylinder.geometry as any} material={materials['Material.019'] as any} position={[0, 0.519, 0]} rotation={[0, -0.178, 0]} />
+
         <mesh castShadow receiveShadow name="Cylinder001" geometry={nodes.Cylinder001.geometry as any} material={materials['Material.021'] as any} position={[0, 0.314, 0]} />
-        <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry as any} material={materials['Material.020'] as any} position={[0, 0.667, 0]} />
+
         <mesh ref={Plane004} name="Plane004" geometry={nodes.Plane004.geometry as any} material={materials['Material.015'] as any} position={[7.287, 1.233, -0.466]} rotation={[0, 0, -Math.PI / 2]} />
         <mesh ref={Plane005} name="Plane005" geometry={nodes.Plane005.geometry as any} material={materials['Material.015'] as any} position={[7.083, 1.226, -1.947]} rotation={[-Math.PI, 0.45, Math.PI / 2]} />
         <mesh ref={books} name="books" geometry={nodes.books.geometry as any} material={materials['Material.034'] as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
@@ -1329,7 +711,7 @@ export function Portfolio3(props: Portfolio3Props) {
         <mesh ref={speaker} name="speaker" geometry={nodes.speaker.geometry as any} material={nodes.speaker.material as any} position={[5.844, 0.732, -2.568]} rotation={[0, -1, 0.049]} />
         <mesh ref={Table_small} name="Table_small" geometry={nodes.Table_small.geometry as any} material={nodes.Table_small.material as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
         <mesh ref={Cactusleaf} name="Catcus_leaf" geometry={nodes.Catcus_leaf.geometry as any} material={materials['Material.032'] as any} position={[7.486, 2.345, -2.989]} rotation={[-1.571, 0.004, 0.011]} />
-        <mesh ref={showcase}  name="Cube" geometry={nodes.Cube.geometry as any} position={[0.087, 1.863, 7.487]} scale={[7.081, 1.809, 0.058]} >
+        <mesh ref={showcase} name="Cube" geometry={nodes.Cube.geometry as any} position={[0.087, 1.863, 7.487]} scale={[7.081, 1.809, 0.058]} >
           <meshStandardMaterial
             map={cdiffuse}
             roughness={1}
@@ -1343,10 +725,7 @@ export function Portfolio3(props: Portfolio3Props) {
 
 
             roughness={10}
-            blur={[1000, 1000]}
-            resolution={512}
-            mixBlur={20}
-            mixStrength={50}
+
             metalness={0.5}
             depthScale={1.2}
 
@@ -1365,10 +744,10 @@ export function Portfolio3(props: Portfolio3Props) {
           <MeshReflectorMaterial
 
 
-            blur={[500, 1000]}
+            blur={[500, 400]}
             resolution={512}
-            mixBlur={10}
-            mixStrength={80}
+            mixBlur={5}
+            mixStrength={30}
             roughness={20}
             depthScale={0.5}
             minDepthThreshold={0.4}
@@ -1377,7 +756,6 @@ export function Portfolio3(props: Portfolio3Props) {
             metalness={0.7}
           />
         </mesh>
-        <mesh castShadow  name="Cylinder002" geometry={nodes.Cylinder002.geometry as any} material={materials['Material.003'] as any} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} />
         <mesh ref={Cube006} name="Cube006" geometry={nodes.Cube006.geometry as any} material={materials['Material.005'] as any} position={[6.805, 0.753, -0.41]} rotation={[-Math.PI, 0, -Math.PI]} scale={[-0.17, -0.026, -0.539]} />
         <mesh ref={showcasepillar4} name="Cube028" geometry={nodes.Cube028.geometry as any} material={materials['Material.036'] as any} position={[0.042, 1.857, 7.129]} scale={[0.047, 1.771, 0.263]} />
         <mesh ref={showcasepillar3} name="Cube030" geometry={nodes.Cube030.geometry as any} material={materials['Material.036'] as any} position={[-1.547, 1.857, 7.08]} rotation={[0, -0.201, 0]} scale={[0.047, 1.771, 0.263]} />
@@ -1397,10 +775,7 @@ export function Portfolio3(props: Portfolio3Props) {
 
             roughness={1}
 
-            blur={[1000, 1000]}
-            resolution={512}
-            mixBlur={20}
-            mixStrength={50}
+
 
             metalness={0.3}
             depthScale={1.2}
@@ -1409,31 +784,31 @@ export function Portfolio3(props: Portfolio3Props) {
             color="#111111"
           />
         </mesh>
-        <mesh ref={Face_new} castShadow  name="Face_new" geometry={nodes.Face_new.geometry as any} material={materials['Material.030'] as any} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
-        <mesh ref={Hair} castShadow  name="Hair" geometry={nodes.Hair.geometry as any} material={materials['Material.027'] as any} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Hand} castShadow  name="Hand" geometry={nodes.Hand.geometry as any} material={materials['Material.026'] as any} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Leg} castShadow  name="Leg" geometry={nodes.Leg.geometry as any} material={materials['Material.028'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Pant} castShadow  name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Shirt} castShadow  name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Curve} castShadow  name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
-          {/* <pointLight ref={Curve001light} castShadow  intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} /> */}
+        <mesh ref={Face_new} castShadow name="Face_new" geometry={nodes.Face_new.geometry as any} material={materials['Material.030'] as any} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
+        <mesh ref={Hair} castShadow name="Hair" geometry={nodes.Hair.geometry as any} material={materials['Material.027'] as any} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Hand} castShadow name="Hand" geometry={nodes.Hand.geometry as any} material={materials['Material.026'] as any} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Leg} castShadow name="Leg" geometry={nodes.Leg.geometry as any} material={materials['Material.028'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Pant} castShadow name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Shirt} castShadow name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Curve} castShadow name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
+          <pointLight ref={Curve001light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />
         </mesh>
-        <group ref={Curve001} castShadow  name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
+        <group ref={Curve001} castShadow name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
           <mesh name="Curve002_1" geometry={nodes.Curve002_1.geometry as any} material={materials['Material.006'] as any} >
 
           </mesh>
           <mesh name="Curve002_2" geometry={nodes.Curve002_2.geometry as any} material={materials['Material.023'] as any} />
-          {/* <pointLight ref={Curve01light} castShadow  intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} /> */}
+          <pointLight ref={Curve01light} castShadow intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />
         </group>
-        <mesh ref={Curve002} castShadow  name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
-          {/* <pointLight ref={Curve02light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} /> */}
+        <mesh ref={Curve002} castShadow name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
+          <pointLight ref={Curve02light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />
 
         </mesh>
-        <group ref={Curve003} castShadow  name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
+        <group ref={Curve003} castShadow name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
           <mesh name="Curve008_1" geometry={nodes.Curve008_1.geometry as any} material={materials['SVGMat.009'] as any} />
           <mesh name="Curve008_2" geometry={nodes.Curve008_2.geometry as any} material={materials['SVGMat.010'] as any} />
           <mesh name="Curve008_3" geometry={nodes.Curve008_3.geometry as any} material={materials['SVGMat.011'] as any} />
-          {/* <pointLight ref={Curve03light} castShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} /> */}
+          <pointLight ref={Curve03light} castShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
         </group>
         <group ref={Curve004} name="Curve004" position={[-6.78, 0.804, 5.681]} rotation={[1.571, -0.002, -2.743]}>
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1481,24 +856,24 @@ export function Portfolio3(props: Portfolio3Props) {
           <mesh name="Curve275" geometry={nodes.Curve275.geometry as any} material={materials['SVGMat.055'] as any} />
           <mesh name="Curve275_1" geometry={nodes.Curve275_1.geometry as any} material={materials['SVGMat.053'] as any} />
           <mesh name="Curve275_2" geometry={nodes.Curve275_2.geometry as any} material={materials['SVGMat.054'] as any} />
-          {/* <pointLight ref={Curve07light} intensity={10} color="#96DCFF" position={[0, 0, -1.1]} /> */}
+          <pointLight ref={Curve07light} intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
         </group>
         <mesh ref={Curve005} name="Curve005" geometry={nodes.Curve005.geometry as any} material={materials['Material.035'] as any} position={[5.482, 2.376, 6.267]} rotation={[1.567, 0.006, 2.678]} >
-          {/* <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} /> */}
+          <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} />
         </mesh>
-        <group ref={Curve011} castShadow  name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
+        <group ref={Curve011} castShadow name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
           <mesh name="Curve281" geometry={nodes.Curve281.geometry as any} material={materials['SVGMat.060'] as any} />
           <mesh name="Curve281_1" geometry={nodes.Curve281_1.geometry as any} material={materials['SVGMat.058'] as any} />
           <mesh name="Curve281_2" geometry={nodes.Curve281_2.geometry as any} material={materials['SVGMat.059'] as any} />
           <mesh name="Curve281_3" geometry={nodes.Curve281_3.geometry as any} material={materials['SVGMat.061'] as any} />
           <mesh name="Curve281_4" geometry={nodes.Curve281_4.geometry as any} material={materials['SVGMat.062'] as any} />
-          {/* <pointLight ref={Curve011light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} /> */}
+          <pointLight ref={Curve011light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />
 
         </group>
         <group ref={Curve008} castShadow name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
           <mesh name="Curve291" geometry={nodes.Curve291.geometry as any} material={materials['SVGMat.066'] as any} />
           <mesh name="Curve291_1" geometry={nodes.Curve291_1.geometry as any} material={materials['SVGMat.068'] as any} />
-          {/* <pointLight ref={Curve08light} castShadow  intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} /> */}
+          <pointLight ref={Curve08light} castShadow intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />
         </group>
         <mesh ref={Curve006} name="Curve006" geometry={nodes.Curve006.geometry as any} material={materials['SVGMat.075'] as any} position={[-5.289, 0.781, 6.297]} rotation={[1.551, 0.124, -3.024]} >
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1506,10 +881,10 @@ export function Portfolio3(props: Portfolio3Props) {
         <group ref={Curve009} name="Curve009" position={[-5.215, 2.578, 6.324]} rotation={[1.554, 0.016, -2.878]}>
           <mesh name="Curve304" geometry={nodes.Curve304.geometry as any} material={materials['SVGMat.077'] as any} />
           <mesh name="Curve304_1" geometry={nodes.Curve304_1.geometry as any} material={materials['SVGMat.078'] as any} />
-          {/* <pointLight ref={Curve09light} castShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} /> */}
+          <pointLight ref={Curve09light} castShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />
         </group>
         <mesh ref={Curve010} name="Curve010" geometry={nodes.Curve010.geometry as any} material={materials['SVGMat.079'] as any} position={[-6.959, 2.883, 5.636]} rotation={[2.068, -0.544, -2.511]} >
-          {/* <pointLight ref={Curve010light} castShadow intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} /> */}
+          <pointLight ref={Curve010light} castShadow intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />
 
         </mesh>
       </group>
