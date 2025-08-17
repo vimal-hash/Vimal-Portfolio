@@ -49,6 +49,14 @@ export default function Showcase() {
               >
                 Get in touch
               </Link>
+              <Link
+                  href="/resume/vimal-frontend-dev.pdf"
+  target="_blank"
+  rel="noopener noreferrer"
+                className="inline-flex items-center rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:translate-y-[-1px] hover:bg-orange-600 active:translate-y-0"
+              >
+                Resume
+              </Link>
               {/* <Link
                 href="#work"
                 className="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50"
