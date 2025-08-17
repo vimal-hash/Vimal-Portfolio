@@ -25,6 +25,8 @@ const ContactForm: React.FC = () => {
     message: false
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -45,6 +47,53 @@ const ContactForm: React.FC = () => {
       ...prev,
       [fieldName]: false
     }));
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.email || !formData.message) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // FREE Option 1: Formspree (100 submissions/month free)
+      const response = await fetch('https://formspree.io/f/mgvzbkpz', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _replyto: formData.email,
+          _subject: `New message from ${formData.name}`
+        })
+      });
+
+      if (response.ok) {
+        alert('Message sent successfully! I\'ll get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      
+      // FREE Fallback: Open email client
+      const subject = encodeURIComponent(`Message from ${formData.name}`);
+      const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+      const mailtoLink = `mailto:vimaloffi1@gmail.com?subject=${subject}&body=${body}`;
+      
+      if (confirm('Direct email sending failed. Would you like to open your email client instead?')) {
+        window.open(mailtoLink);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -76,7 +125,8 @@ const ContactForm: React.FC = () => {
                 onFocus={() => handleFocus('name')}
                 onBlur={() => handleBlur('name')}
                 required
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-200 border-0 text-gray-700 placeholder-gray-500 focus:outline-none transition-all duration-200 text-sm sm:text-base"
+                disabled={isSubmitting}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-200 border-0 text-gray-700 placeholder-gray-500 focus:outline-none transition-all duration-200 text-sm sm:text-base disabled:opacity-50"
                 style={{
                   borderRadius: '24px',
                   boxShadow: 'inset 8px 8px 12px #b3b3b3, inset -8px -8px 12px #ffffff'
@@ -99,7 +149,8 @@ const ContactForm: React.FC = () => {
                 onFocus={() => handleFocus('email')}
                 onBlur={() => handleBlur('email')}
                 required
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-200 border-0 text-gray-700 placeholder-gray-500 focus:outline-none transition-all duration-200 text-sm sm:text-base"
+                disabled={isSubmitting}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-200 border-0 text-gray-700 placeholder-gray-500 focus:outline-none transition-all duration-200 text-sm sm:text-base disabled:opacity-50"
                 style={{
                   borderRadius: '24px',
                   boxShadow: 'inset 8px 8px 12px #b3b3b3, inset -8px -8px 12px #ffffff'
@@ -121,8 +172,9 @@ const ContactForm: React.FC = () => {
                 onFocus={() => handleFocus('message')}
                 onBlur={() => handleBlur('message')}
                 required
+                disabled={isSubmitting}
                 rows={4}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-200 border-0 text-gray-700 placeholder-gray-500 focus:outline-none resize-none transition-all duration-200 text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-200 border-0 text-gray-700 placeholder-gray-500 focus:outline-none resize-none transition-all duration-200 text-sm sm:text-base disabled:opacity-50"
                 style={{
                   borderRadius: '24px',
                   boxShadow: 'inset 8px 8px 12px #b3b3b3, inset -8px -8px 12px #ffffff'
@@ -134,29 +186,33 @@ const ContactForm: React.FC = () => {
             {/* Submit Button */}
             <button
               type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                console.log('Form submitted:', formData);
-                alert('Form submitted successfully!');
-                setFormData({ name: '', email: '', message: '' });
-              }}
-              className="w-full py-3 sm:py-4 bg-gray-200 text-gray-700 font-semibold hover:text-gray-800 focus:outline-none transition-all duration-200 active:scale-95 text-sm sm:text-base"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="w-full py-3 sm:py-4 bg-gray-200 text-gray-700 font-semibold hover:text-gray-800 focus:outline-none transition-all duration-200 active:scale-95 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
                 borderRadius: '36px',
                 boxShadow: '8px 8px 16px #b3b3b3, -8px -8px 16px #ffffff'
               }}
               onMouseDown={(e) => {
-                e.currentTarget.style.boxShadow = 'inset 4px 4px 8px #b3b3b3, inset -4px -4px 8px #ffffff';
+                if (!isSubmitting) {
+                  e.currentTarget.style.boxShadow = 'inset 4px 4px 8px #b3b3b3, inset -4px -4px 8px #ffffff';
+                }
               }}
               onMouseUp={(e) => {
-                e.currentTarget.style.boxShadow = '8px 8px 16px #b3b3b3, -8px -8px 16px #ffffff';
+                if (!isSubmitting) {
+                  e.currentTarget.style.boxShadow = '8px 8px 16px #b3b3b3, -8px -8px 16px #ffffff';
+                }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = '8px 8px 16px #b3b3b3, -8px -8px 16px #ffffff';
+                if (!isSubmitting) {
+                  e.currentTarget.style.boxShadow = '8px 8px 16px #b3b3b3, -8px -8px 16px #ffffff';
+                }
               }}
             >
-              Submit
+              {isSubmitting ? 'Sending...' : 'Submit'}
             </button>
+
+           
           </div>
         </div>
       </div>

@@ -10,7 +10,9 @@ export default function Home() {
     <>
    <ShowCase />
     <SecondSec/>
+     <div id="contact">
     <ContactForm/>
+    </div>
     <SpeedInsights/>
     </>
   )
