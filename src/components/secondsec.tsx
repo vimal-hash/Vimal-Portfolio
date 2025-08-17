@@ -32,7 +32,7 @@ interface GlowingTriangleProps {
 const triangleConfigs: TriangleConfig[] = [
     {
         id: 1,
-        techList: ['MongoDB', 'ex', 'React', 'Node.js'],
+        techList: ['MongoDB', 'ex', 'react', 'Node.js'],
         title: "Full Stack Development",
         skills: [
             { name: "MongoDB", percentage: 85 },
