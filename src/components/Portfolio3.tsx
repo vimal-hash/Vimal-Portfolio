@@ -266,6 +266,20 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     ])
 
+ const [diffuse, normal, roughness, ao] = useTexture([
+    '/textures/floor/floor_diffuse.jpg',
+    '/textures/floor/floor_normal.jpg',
+    '/textures/floor/floor_roughness.jpg',
+    '/textures/floor/floor_ao.jpg',
+  ])
+
+  // Setup texture tiling
+  React.useEffect(() => {
+    [diffuse, normal, roughness, ao].forEach((texture) => {
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+      texture.repeat.set(8, 8) // Tile 8x8 times across floor
+    })
+  }, [diffuse, normal, roughness, ao])
 
   useEffect(() => {
     const textures = [
@@ -328,14 +342,54 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const tri9 = useRef<THREE.MeshBasicMaterial>(null!)
 
 
-  useFrame(({ camera }) => {
-    // shelftoplight.current.color.set(0.5, 0.5, 0.5)
-    // Lefttoplight.current.color.set(50, 50, 50)
-    tri7.current.color.set(120, 120, 120)
-    tri8.current.color.set(120, 120, 120)
-    tri9.current.color.set(120, 120, 120)
-    // light.current.intensity = 1 * 4
- if (!isMobile) {
+//   useFrame(({ camera }) => {
+//     // shelftoplight.current.color.set(0.5, 0.5, 0.5)
+//     // Lefttoplight.current.color.set(50, 50, 50)
+//     tri7.current.color.set(120, 120, 120)
+//     tri8.current.color.set(120, 120, 120)
+//     tri9.current.color.set(120, 120, 120)
+//     // light.current.intensity = 1 * 4
+//  if (!isMobile) {
+    
+
+//     // Performance optimization for distant objects
+//     groupRef.current?.traverse((child) => {
+//       if ((child as THREE.Mesh).isMesh) {
+//         const mesh = child as THREE.Mesh;
+//         const distance = camera.position.distanceTo(mesh.position);
+
+//         // Disable shadows for distant objects
+//         if (distance > 10) {
+//           mesh. = false;
+//           mesh. = false;
+//         }
+
+//        // Hide detailed meshes when far
+//       if (distance > 15 && mesh.name.includes('Curve')) {
+//         mesh.visible = false;
+//       } else if (distance <= 15 && mesh.name.includes('Curve')) {
+//         mesh.visible = true;
+//       }
+//       }
+//     });
+//   }
+    
+//   })
+
+// ✅ Set colors once, not every frame:
+useEffect(() => {
+  if (tri7.current?.color) tri7.current.color.set(120, 120, 120)
+  if (tri8.current?.color) tri8.current.color.set(120, 120, 120)
+  if (tri9.current?.color) tri9.current.color.set(120, 120, 120)
+}, [])
+
+// ✅ Throttle distance checks:
+let frameCount = 0
+useFrame(({ camera }) => {
+  frameCount++
+  if (frameCount % 10 !== 0) return // Only check every 10 frames
+  
+  if (!isMobile) {
     
 
     // Performance optimization for distant objects
@@ -359,10 +413,7 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       }
     });
   }
-    
-  })
-
-
+})
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (shelftoplight.current?.color?.set) {
@@ -371,7 +422,7 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     }, 6400)
     const timeout1 = setTimeout(() => {
       if (Lefttoplight.current?.color?.set) {
-        Lefttoplight.current.color.set(50, 50, 50)
+        Lefttoplight.current.color.set(229, 204, 167)
       }
     }, 6600)
 
@@ -825,24 +876,24 @@ tl.current.fromTo(Curve07light.current, {
   return (
     <>
       <group ref={groupRef} visible={ready} {...({} as any)}>
-        <mesh castShadow receiveShadow name="Cube007" geometry={nodes.Cube007.geometry as any} position={[-0.019, 0.122, 3.471]} rotation={[0, Math.PI / 2, 0]} >
-          <meshBasicMaterial ref={tri7} toneMapped={false} />
+        <mesh castShadow   name="Cube007" geometry={nodes.Cube007.geometry as any} position={[-0.019, 0.122, 3.471]} rotation={[0, Math.PI / 2, 0]} > //triangle
+          <meshBasicMaterial  ref={tri7} toneMapped={false} />
         </mesh>
-        <mesh castShadow receiveShadow name="Cube008" geometry={nodes.Cube008.geometry as any} position={[-2.096, 0.122, -1.017]} rotation={[0, -0.402, 0]} >
+        <mesh castShadow  name="Cube008" geometry={nodes.Cube008.geometry as any} position={[-2.096, 0.122, -1.017]} rotation={[0, -0.402, 0]} > //triangle
           <meshBasicMaterial ref={tri8} toneMapped={false} />
         </mesh>
-        <mesh castShadow receiveShadow name="Cube009" geometry={nodes.Cube009.geometry as any} position={[2.058, 0.122, -1.036]} rotation={[0, 0.402, 0]} >
+        <mesh castShadow  name="Cube009" geometry={nodes.Cube009.geometry as any} position={[2.058, 0.122, -1.036]} rotation={[0, 0.402, 0]} > //triangle
           <meshBasicMaterial ref={tri9} toneMapped={false} />
         </mesh>
         <mesh name="Cylinder" geometry={nodes.Cylinder.geometry as any} material={materials['Material.019'] as any} position={[0, 0.519, 0]} rotation={[0, -0.178, 0]} />
         <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry as any} material={materials['Material.020'] as any} position={[0, 0.667, 0]} />
-        <mesh castShadow name="Cylinder002" geometry={nodes.Cylinder002.geometry as any} material={materials['Material.003'] as any} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} />
+        <mesh castShadow receiveShadow  name="Cylinder002" geometry={nodes.Cylinder002.geometry as any} material={materials['Material.003'] as any} position={[0, 0.087, -0.056]} scale={[5.607, 0.067, 5.607]} /> //center circle
 
       </group>
       <group ref={groupRef1} visible={ready} {...({} as any)}>
-        <mesh ref={Cube002} receiveShadow name="Cube002" geometry={nodes.Cube002.geometry as any} material={materials['Material.009'] as any} position={[7.048, 0.664, -1.984]} />
-        <mesh ref={Cube003} castShadow name="Cube003" geometry={nodes.Cube003.geometry as any} material={materials['Material.014'] as any} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
-        <mesh ref={Cube005} castShadow name="Cube005" geometry={nodes.Cube005.geometry as any} material={materials['Material.014'] as any} position={[7.313, 1.238, -0.467]} />
+        <mesh ref={Cube002}  name="Cube002" geometry={nodes.Cube002.geometry as any} material={materials['Material.009'] as any} position={[7.048, 0.664, -1.984]} />
+        <mesh ref={Cube003}  name="Cube003" geometry={nodes.Cube003.geometry as any} material={materials['Material.014'] as any} position={[7.124, 1.23, -2.215]} rotation={[0, 0.365, 0]} />
+        <mesh ref={Cube005}  name="Cube005" geometry={nodes.Cube005.geometry as any} material={materials['Material.014'] as any} position={[7.313, 1.238, -0.467]} />
 
         <mesh ref={striplight5} name="Cube010" geometry={nodes.Cube010.geometry as any} material={materials['Material.007'] as any} position={[0.044, 1.902, 6.812]} />
         <mesh ref={striplight4} name="Cube011" geometry={nodes.Cube011.geometry as any} material={materials['Material.007'] as any} position={[-1.475, 1.902, 6.749]} />
@@ -856,7 +907,7 @@ tl.current.fromTo(Curve07light.current, {
         <mesh ref={showcaselight} name="Cube019" geometry={nodes.Cube019.geometry as any} position={[0, 3.69, 7.153]} >
           <meshBasicMaterial ref={shelftoplight} toneMapped={false} />
         </mesh>
-        <mesh ref={showcaselightself} receiveShadow name="Cube021" geometry={nodes.Cube021.geometry as any} position={[0, 1.772, 7.305]} scale={[1.04, 1, 1]} >
+        <mesh ref={showcaselightself}  name="Cube021" geometry={nodes.Cube021.geometry as any} position={[0, 1.772, 7.305]} scale={[1.04, 1, 1]} >
           <meshStandardMaterial
             map={wdiffuse}
             metalnessMap={warm}
@@ -865,15 +916,21 @@ tl.current.fromTo(Curve07light.current, {
             aoMapIntensity={1}
             roughness={0.5}
             metalness={100}
-            color="#ffffff"
+            color="#000000ff"
           />
 
         </mesh>
         <mesh ref={Cube024} name="Cube024" geometry={nodes.Cube024.geometry as any} position={[7.431, 3.606, -1.007]} rotation={[0.003, 0, 0]} >
-          <meshBasicMaterial ref={Lefttoplight} toneMapped={false} />
+          <meshBasicMaterial ref={Lefttoplight} toneMapped={false} />  //leftlight
         </mesh>
 
-        <mesh castShadow receiveShadow name="Cylinder001" geometry={nodes.Cylinder001.geometry as any} material={materials['Material.021'] as any} position={[0, 0.314, 0]} />
+        <mesh castShadow receiveShadow    name="Cylinder001" geometry={nodes.Cylinder001.geometry as any} material={materials['Material.021'] as any} position={[0, 0.314, 0]} >
+          <meshStandardMaterial
+    {...materials['Material.021']}
+    emissive="#000000"        // No emission
+    emissiveIntensity={0}     // Responds to lights
+  />
+          </mesh> //centre stage
 
         <mesh ref={Plane004} name="Plane004" geometry={nodes.Plane004.geometry as any} material={materials['Material.015'] as any} position={[7.287, 1.233, -0.466]} rotation={[0, 0, -Math.PI / 2]} />
         <mesh ref={Plane005} name="Plane005" geometry={nodes.Plane005.geometry as any} material={materials['Material.015'] as any} position={[7.083, 1.226, -1.947]} rotation={[-Math.PI, 0.45, Math.PI / 2]} />
@@ -902,41 +959,28 @@ tl.current.fromTo(Curve07light.current, {
 
         </mesh>
         <mesh ref={lwall} name="Cube027" geometry={nodes.Cube027.geometry as any} position={[7.692, 1.904, -0.998]} scale={[0.032, 1.856, 6.427]} >
-          {isMobile ? (
-  <meshStandardMaterial color="#101010" roughness={0.8} />
-) : (
-          <MeshReflectorMaterial
-
-
-            roughness={10}
-
-            metalness={0.5}
-            depthScale={1.2}
-
-            color="#111111"
-            aoMapIntensity={1.5}
-          />
-          )}
+          <meshStandardMaterial color="#101010" roughness={0.8} />
         </mesh>
 
         <mesh
-          receiveShadow
+          
           rotation={[-Math.PI / 2, 0, 0]}
           position={[0, -0.001, 0]}
           ref={floor}
         >
           <planeGeometry args={[30, 30]} />
           {isMobile ? (
-  <meshStandardMaterial color="#101010" roughness={0.8} />
+  <meshStandardMaterial color="#101010" roughness={0.8} 
+            metalness={0.7}/>
 ) : (
           <MeshReflectorMaterial
 
 
             blur={[500, 400]}
-            resolution={512}
-            mixBlur={5}
-            mixStrength={30}
-            roughness={20}
+            resolution={1029}
+            mixBlur={1}
+            mixStrength={10}
+            roughness={1}
             depthScale={0.5}
             minDepthThreshold={0.4}
             maxDepthThreshold={1.25}
@@ -945,6 +989,27 @@ tl.current.fromTo(Curve07light.current, {
           />
           )}
         </mesh>
+        {/* <mesh 
+      receiveShadow 
+      rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, -0.001, 0]}
+          ref={floor}
+    >
+      <planeGeometry args={[30, 30]} />
+      <meshStandardMaterial
+        map={diffuse}                    // Base color
+        normalMap={normal}               // Surface bumps
+        normalScale={[0.5, 0.5]}        // Bump strength
+        roughnessMap={roughness}        // Glossiness variation
+        roughness={0.8}                 // Base roughness
+        aoMap={ao}                      // Shadows in crevices
+        aoMapIntensity={1}              // AO strength
+        metalness={0.0}                 // Non-metallic floor
+        envMapIntensity={0.5}           // Subtle reflections
+ color="#1a1a1a"      // Simple dark gray
+        
+      />
+    </mesh> */}
         <mesh ref={Cube006} name="Cube006" geometry={nodes.Cube006.geometry as any} material={materials['Material.005'] as any} position={[6.805, 0.753, -0.41]} rotation={[-Math.PI, 0, -Math.PI]} scale={[-0.17, -0.026, -0.539]} />
         <mesh ref={showcasepillar4} name="Cube028" geometry={nodes.Cube028.geometry as any} material={materials['Material.036'] as any} position={[0.042, 1.857, 7.129]} scale={[0.047, 1.771, 0.263]} />
         <mesh ref={showcasepillar3} name="Cube030" geometry={nodes.Cube030.geometry as any} material={materials['Material.036'] as any} position={[-1.547, 1.857, 7.08]} rotation={[0, -0.201, 0]} scale={[0.047, 1.771, 0.263]} />
@@ -957,51 +1022,36 @@ tl.current.fromTo(Curve07light.current, {
         <mesh ref={showcasepillar8} name="Cube037" geometry={nodes.Cube037.geometry as any} material={materials['Material.036'] as any} position={[5.984, 1.857, 5.895]} rotation={[0, 0.361, 0]} scale={[0.047, 1.771, 0.263]} />
         <mesh ref={striplight10} name="Cube038" geometry={nodes.Cube038.geometry as any} material={materials['Material.036'] as any} position={[-7.661, 1.857, 5.185]} rotation={[0, -0.435, 0]} scale={[0.047, 1.771, 0.263]} />
         <mesh ref={rwall} name="Cube039" geometry={nodes.Cube039.geometry as any} position={[-7.623, 1.904, -0.998]} rotation={[Math.PI, -0.001, Math.PI]} scale={[0.032, 1.856, 6.427]} >
-         {isMobile ? (
-  <meshStandardMaterial color="#101010" roughness={0.8} />
-) : (
-          <MeshReflectorMaterial
-
-            normalMap={normalw}
-            roughnessMap={rough}
-
-            roughness={1}
-
-
-
-            metalness={0.3}
-            depthScale={1.2}
-            minDepthThreshold={0.4}
-            maxDepthThreshold={1.25}
-            color="#111111"
-          />
-          )}
+         <meshStandardMaterial color="#101010" roughness={0.8} />
         </mesh>
-        <mesh ref={Face_new} castShadow name="Face_new" geometry={nodes.Face_new.geometry as any} material={materials['Material.030'] as any} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
-        <mesh ref={Hair} castShadow name="Hair" geometry={nodes.Hair.geometry as any} material={materials['Material.027'] as any} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Hand} castShadow name="Hand" geometry={nodes.Hand.geometry as any} material={materials['Material.026'] as any} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Leg} castShadow name="Leg" geometry={nodes.Leg.geometry as any} material={materials['Material.028'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Pant} castShadow name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Shirt} castShadow name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
-        <mesh ref={Curve} castShadow name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
-          {!isMobile && <pointLight ref={Curve001light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />}
+        <mesh ref={Face_new}  name="Face_new" geometry={nodes.Face_new.geometry as any} material={materials['Material.030'] as any} position={[5.777, 1.751, 0.932]} rotation={[1.549, -0.036, -2.124]} />
+        <mesh ref={Hair}  name="Hair" geometry={nodes.Hair.geometry as any} material={materials['Material.027'] as any} position={[5.725, 0.407, 0.964]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Hand}  name="Hand" geometry={nodes.Hand.geometry as any} material={materials['Material.026'] as any} position={[5.729, 0.322, 0.961]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Leg}  name="Leg" geometry={nodes.Leg.geometry as any} material={materials['Material.028'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Pant}  name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Shirt}  name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
+        <mesh ref={Curve}  name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
+          {!isMobile && <pointLight ref={Curve001light}  intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />}
+
+
+          
         </mesh>
-        <group ref={Curve001} castShadow name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
+        <group ref={Curve001}  name="Curve001" position={[-2.178, 2.56, 7.079]} rotation={[1.585, 0.001, -3.139]}>
           <mesh name="Curve002_1" geometry={nodes.Curve002_1.geometry as any} material={materials['Material.006'] as any} >
 
           </mesh>
           <mesh name="Curve002_2" geometry={nodes.Curve002_2.geometry as any} material={materials['Material.023'] as any} />
-          {!isMobile && <pointLight ref={Curve01light} castShadow intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />}
+          {!isMobile && <pointLight ref={Curve01light}  intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />}
         </group>
-        <mesh ref={Curve002} castShadow name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
-          {!isMobile && <pointLight ref={Curve02light} castShadow receiveShadow intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />}
+        <mesh ref={Curve002}  name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
+          {!isMobile && <pointLight ref={Curve02light}   intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />}
 
         </mesh>
-        <group ref={Curve003} castShadow name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
+        <group ref={Curve003}  name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
           <mesh name="Curve008_1" geometry={nodes.Curve008_1.geometry as any} material={materials['SVGMat.009'] as any} />
           <mesh name="Curve008_2" geometry={nodes.Curve008_2.geometry as any} material={materials['SVGMat.010'] as any} />
           <mesh name="Curve008_3" geometry={nodes.Curve008_3.geometry as any} material={materials['SVGMat.011'] as any} />
-          {!isMobile && <pointLight ref={Curve03light} castShadow intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />}
+          {!isMobile && <pointLight ref={Curve03light}  intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />}
         </group>
         <group ref={Curve004} name="Curve004" position={[-6.78, 0.804, 5.681]} rotation={[1.571, -0.002, -2.743]}>
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1054,19 +1104,19 @@ tl.current.fromTo(Curve07light.current, {
         <mesh ref={Curve005} name="Curve005" geometry={nodes.Curve005.geometry as any} material={materials['Material.035'] as any} position={[5.482, 2.376, 6.267]} rotation={[1.567, 0.006, 2.678]} >
           {!isMobile && <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} />}
         </mesh>
-        <group ref={Curve011} castShadow name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
+        <group ref={Curve011}  name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
           <mesh name="Curve281" geometry={nodes.Curve281.geometry as any} material={materials['SVGMat.060'] as any} />
           <mesh name="Curve281_1" geometry={nodes.Curve281_1.geometry as any} material={materials['SVGMat.058'] as any} />
           <mesh name="Curve281_2" geometry={nodes.Curve281_2.geometry as any} material={materials['SVGMat.059'] as any} />
           <mesh name="Curve281_3" geometry={nodes.Curve281_3.geometry as any} material={materials['SVGMat.061'] as any} />
           <mesh name="Curve281_4" geometry={nodes.Curve281_4.geometry as any} material={materials['SVGMat.062'] as any} />
-          {!isMobile && <pointLight ref={Curve011light} castShadow intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />}
+          {!isMobile && <pointLight ref={Curve011light}  intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />}
 
         </group>
-        <group ref={Curve008} castShadow name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
+        <group ref={Curve008}  name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
           <mesh name="Curve291" geometry={nodes.Curve291.geometry as any} material={materials['SVGMat.066'] as any} />
           <mesh name="Curve291_1" geometry={nodes.Curve291_1.geometry as any} material={materials['SVGMat.068'] as any} />
-          {!isMobile && <pointLight ref={Curve08light} castShadow intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />}
+          {!isMobile && <pointLight ref={Curve08light}  intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />}
         </group>
         <mesh ref={Curve006} name="Curve006" geometry={nodes.Curve006.geometry as any} material={materials['SVGMat.075'] as any} position={[-5.289, 0.781, 6.297]} rotation={[1.551, 0.124, -3.024]} >
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1074,10 +1124,10 @@ tl.current.fromTo(Curve07light.current, {
         <group ref={Curve009} name="Curve009" position={[-5.215, 2.578, 6.324]} rotation={[1.554, 0.016, -2.878]}>
           <mesh name="Curve304" geometry={nodes.Curve304.geometry as any} material={materials['SVGMat.077'] as any} />
           <mesh name="Curve304_1" geometry={nodes.Curve304_1.geometry as any} material={materials['SVGMat.078'] as any} />
-          {!isMobile && <pointLight ref={Curve09light} castShadow intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />}
+          {!isMobile && <pointLight ref={Curve09light}  intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />}
         </group>
         <mesh ref={Curve010} name="Curve010" geometry={nodes.Curve010.geometry as any} material={materials['SVGMat.079'] as any} position={[-6.959, 2.883, 5.636]} rotation={[2.068, -0.544, -2.511]} >
-          {!isMobile && <pointLight ref={Curve010light} castShadow intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />}
+          {!isMobile && <pointLight ref={Curve010light}  intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />}
 
         </mesh>
       </group>
