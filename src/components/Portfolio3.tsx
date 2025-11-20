@@ -267,10 +267,10 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     ])
 
  const [diffuse, normal, roughness, ao] = useTexture([
-    '/textures/floor/floor_diffuse.jpg',
-    '/textures/floor/floor_normal.jpg',
-    '/textures/floor/floor_roughness.jpg',
-    '/textures/floor/floor_ao.jpg',
+     '/textures/floor/floor_diffuse.jpg',  // Update these paths
+  '/textures/floor/floor_Normal.jpg',   // Note the capital N
+  '/textures/floor/floor_Roughness.jpg', // Note the capital R
+  '/textures/floor/floor_ao.jpg',
   ])
 
   // Setup texture tiling
