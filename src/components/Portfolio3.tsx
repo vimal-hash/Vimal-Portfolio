@@ -925,11 +925,7 @@ tl.current.fromTo(Curve07light.current, {
         </mesh>
 
         <mesh castShadow receiveShadow    name="Cylinder001" geometry={nodes.Cylinder001.geometry as any} material={materials['Material.021'] as any} position={[0, 0.314, 0]} >
-          <meshStandardMaterial
-    {...materials['Material.021']}
-    emissive="#000000"        // No emission
-    emissiveIntensity={0}     // Responds to lights
-  />
+          
           </mesh> //centre stage
 
         <mesh ref={Plane004} name="Plane004" geometry={nodes.Plane004.geometry as any} material={materials['Material.015'] as any} position={[7.287, 1.233, -0.466]} rotation={[0, 0, -Math.PI / 2]} />
