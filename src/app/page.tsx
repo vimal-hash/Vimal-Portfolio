@@ -5,6 +5,8 @@ import ShowCase from "@/components/Showcase"
 import ShowNew from "@/components/Shownew"
 import SecondSec from '@/components/secondsec'
 import ContactForm from '@/components/ContactForm'
+import ProjectCards from '@/components/ProjectCards'
+import AboutMe from '@/components/Aboutme'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 export default function Home() {
  
@@ -15,8 +17,10 @@ export default function Home() {
    {/* <TestCase/> */}
    {/* <ShowNew/> */}
     {/* <SecondSec/> */}
+    <ProjectCards/>
+    <AboutMe/>
      <div id="contact">
-    <ContactForm/>
+    {/* <ContactForm/> */}
     </div>
     <SpeedInsights/>
     </>

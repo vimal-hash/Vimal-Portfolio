@@ -419,12 +419,12 @@ useFrame(({ camera }) => {
       if (shelftoplight.current?.color?.set) {
         shelftoplight.current.color.set(60, 60, 60)
       }
-    }, 3400)
+    }, 6400)
     const timeout1 = setTimeout(() => {
       if (Lefttoplight.current?.color?.set) {
         Lefttoplight.current.color.set(229, 204, 167)
       }
-    }, 3600)
+    }, 6600)
 
 
     return () => {
@@ -527,12 +527,62 @@ useFrame(({ camera }) => {
 useLayoutEffect(() => {
   if (!isMobile) {
     tl.current = gsap.timeline();
-   
+     if (groupRef.current) {
+
+
+
+
+      tl.current.set(groupRef.current.position, {
+        x: 15,
+        y: -5,
+        z: 30,
+      }, 0);
+
+
+      tl.current.set(groupRef.current.rotation, {
+        x: -1,
+        y: 0.22,
+        z: 0.3,
+      }, 0);
+      // 👇 Delay visibility by 50ms after set() so it's ready
+      setTimeout(() => {
+        setReady(true)
+      }, 50)
+
+      tl.current.to(groupRef.current.position, {
+        duration: 3,
+        x: 10,
+        y: -4,
+        z: 20,
+      }, 0);
+
+
+      tl.current.to(groupRef.current.position, {
+        duration: 1,
+        x: 0,
+        y: 0,
+        z: 0,
+      }, 2);
+
+      tl.current.to(groupRef.current.rotation, {
+        duration: 1,
+        x: 0,
+        y: 0,
+        z: 0,
+      }, 2);
+
+
+
+
+
+
+
+    }
 
     if (groupRef1.current) {
       tl.current.set(groupRef1.current.position, {
         x: 0,
-        y: 0,
+        y: -20,
         z: 0,
       }, 0);
 
@@ -559,7 +609,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
 
       tl.current.fromTo(Curve09light.current, {
@@ -568,7 +618,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
 
       tl.current.fromTo(Curve03light.current, {
@@ -577,7 +627,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
 
       tl.current.fromTo(Curve01light.current, {
@@ -586,7 +636,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
       tl.current.fromTo(Curve02light.current, {
         intensity: 0
@@ -594,7 +644,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
       tl.current.fromTo(Curve08light.current, {
         intensity: 0
@@ -602,7 +652,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
 
       tl.current.fromTo(Curve011light.current, {
@@ -611,7 +661,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
 
 
@@ -621,7 +671,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 
       tl.current.fromTo(Curve005light.current, {
         intensity: 0
@@ -629,14 +679,14 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 3);
+      }, 6);
 tl.current.fromTo(Curve07light.current, {
       intensity: 0
     }, {
       intensity: 10,
       duration: 1,
       ease: 'power2.out'
-    }, 3);
+    }, 6);
 
 
 

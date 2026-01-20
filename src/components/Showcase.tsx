@@ -15,7 +15,7 @@ export default function Showcase() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowHero(true)
-    }, 8000) // 8 seconds
+    }, 5000) // 8 seconds
 
     return () => clearTimeout(timer)
   }, [])
@@ -44,13 +44,13 @@ export default function Showcase() {
 
             <div className="mt-6 flex gap-3">
               <Link
-                 href="#contact"
+                 href="mailto:vimaloffi1@gmail.com"
                 className="inline-flex items-center rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:translate-y-[-1px] hover:bg-orange-600 active:translate-y-0"
               >
                 Get in touch
               </Link>
               <Link
-                  href="./resume/vimal-frontend-dev.pdf"
+                  href="./resume/Vimal_sphere_resume.pdf"
   target="_blank"
   rel="noopener noreferrer"
                 className="inline-flex items-center rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:translate-y-[-1px] hover:bg-orange-600 active:translate-y-0"
