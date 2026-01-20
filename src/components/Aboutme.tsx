@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Lottie from 'lottie-react';
+import linkedin from '../../public/linkedin-icon.svg'
+import Ghub from '../../public/github-icon.svg'
 interface Project {
   id: number;
   title: string;
@@ -87,12 +89,28 @@ const aboutme: React.FC = () => {
             </p>
             
             <p className="text-gray-700 text-lg leading-relaxed mb-6">
-              I have been working as a Front-end Developer for over three years, gaining experience in  frontend  frameworks. While I particularly enjoy crafting intuitive frontend UIs, I am also comfortable handling the website animation part, creating animation using After effects. I have good knowledge in after effects and premier pro. Sometimes I'll do 3d models for websites using blender.  My journey in development is a continuous learning process, and I strive to expand my skills every day.
+              I have been working as a Front-end Developer for over three years, gaining experience in  frontend  frameworks, also I have experience with real-time frontend architecture and web sockets as well. While I particularly enjoy crafting intuitive frontend UIs, I am also comfortable handling the website animation part, creating animation using After effects. I have good knowledge in after effects and premier pro. Sometimes I'll do 3d models for websites using blender.  My journey in development is a continuous learning process, and I strive to expand my skills every day.
             </p>
             
             <p className="text-gray-700 text-lg leading-relaxed mb-6">
               The JavaScript ecosystem is evolving at an incredible pace, with new frameworks and tools emerging constantly to address various challenges. With the support of its mature developer community, I believe I can make meaningful contributions. I am always eager to build projects using JavaScript/TypeScript and explore new technologies.
             </p>
+            <div className='flex gap-6 flex-row'>
+              <a href='https://www.linkedin.com/in/vimalrjoffi/'>
+<img
+                    src={linkedin.src}
+                    alt="test"
+                    className="w-7 h-7 "
+                  />
+                  </a>
+                  <a href='https://github.com/vimal-hash'>
+                  <img
+                    src={Ghub.src}
+                    alt="test"
+                    className="w-7 h-7 "
+                  />
+                  </a>
+            </div>
             </div>
            
             
