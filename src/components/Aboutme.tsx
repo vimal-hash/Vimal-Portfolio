@@ -89,7 +89,7 @@ const aboutme: React.FC = () => {
             </p>
             
             <p className="text-gray-700 text-lg leading-relaxed mb-6">
-              I have been working as a Front-end Developer for over three years, gaining experience in  frontend  frameworks, also I have experience with real-time frontend architecture and web sockets as well. While I particularly enjoy crafting intuitive frontend UIs, I am also comfortable handling the website animation part, creating animation using After effects. I have good knowledge in after effects and premier pro. Sometimes I'll do 3d models for websites using blender.  My journey in development is a continuous learning process, and I strive to expand my skills every day.
+              I have been working as a Front-end Developer for over 5+ years, gaining experience in  frontend  frameworks, also I have experience with real-time frontend architecture and web sockets as well. While I particularly enjoy crafting intuitive frontend UIs, I am also comfortable handling the website animation part, creating animation using After effects. I have good knowledge in after effects and premier pro. Sometimes I'll do 3d models for websites using blender.  My journey in development is a continuous learning process, and I strive to expand my skills every day.
             </p>
             
             <p className="text-gray-700 text-lg leading-relaxed mb-6">

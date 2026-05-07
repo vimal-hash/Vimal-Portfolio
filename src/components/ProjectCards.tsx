@@ -1,6 +1,7 @@
 import React from 'react';
 import Sphere from './../../public/Sphere.png'
 import Modulus from './../../public/modulus.jpg'
+import Manvasam from './../../public/M.png'
 interface Project {
   id: number;
   title: string;
@@ -15,15 +16,6 @@ const ProjectCards: React.FC = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: "Sphere - Voice AI Interface",
-      date: "June 1, 2023",
-      description: "Real time voice AI interface with live audio streaming, low latency responses and 3D visual feedback build for the modern web.",
-      image: Sphere.src,
-      bgColor: "#ffffff",
-      link:'https://sphere-red.vercel.app/',
-    },
-    {
-      id: 2,
       title: "Modulus Housing",
       date: "June 1, 2023",
       description: "Production website for a modular hosuing company, focused on performance, responsive UX and conversion ready brand presentations.",
@@ -32,14 +24,26 @@ const ProjectCards: React.FC = () => {
       bgColor: "from-sky-100 to-blue-50",
       link:'https://www.modulushousing.com/',
     },
-    // {
-    //   id: 3,
-    //   title: "Blog Post Title",
-    //   date: "June 1, 2023",
-    //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    //   image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop",
-    //   bgColor: "from-sky-100 to-blue-50"
-    // }
+    {
+      id: 2,
+      title: "Sphere - Voice AI Interface",
+      date: "June 1, 2023",
+      description: "Real time voice AI interface with live audio streaming, low latency responses and 3D visual feedback build for the modern web.",
+      image: Sphere.src,
+      bgColor: "#ffffff",
+      link:'https://sphere-red.vercel.app/',
+      
+    },
+    {
+      id: 3,
+      title: "Manvasam - Singapore",
+      date: "June 1, 2023",
+      description: "Coconuts to export-ready products, we manage the complete supply chain for bulk orders, food industries, and global trade requirements.",
+      image: Manvasam.src,
+      bgColor: "#ffffff",
+      link:'https://manvasam.vercel.app/',
+      
+    },
   ];
 
   return (
@@ -81,7 +85,8 @@ const ProjectCards: React.FC = () => {
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover rounded-2xl"
+                  // className="w-full h-full object-cover rounded-2xl"
+                  className={`w-full h-full ${project.id === 3 ? 'object-none' : 'object-cover'} rounded-2xl`}
                 />
               </div>
 
