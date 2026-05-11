@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode — page below the hero */
+    --bg: #ffffff;
+    --bg-elevated: #fafafa;
+    --fg: #121212;
+    --fg-muted: #6b6b6b;
+    --fg-subtle: #a8a8a8;
+    --border: #e8e8e8;
+    --border-strong: #d4d4d4;
+    --surface: #fafafa;
+    --surface-hover: #f3f3f3;
+    --accent: #FF4500;
+    --grid-line: rgba(0, 0, 0, 0.04);
+  }
+
+  .dark {
+    --bg: #0a0a0a;
+    --bg-elevated: #111111;
+    --fg: #ededed;
+    --fg-muted: #8a8a8a;
+    --fg-subtle: #555555;
+    --border: #1f1f1f;
+    --border-strong: #2a2a2a;
+    --surface: #111111;
+    --surface-hover: #181818;
+    --accent: #FF6B35;
+    --grid-line: rgba(255, 255, 255, 0.04);
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    /* Prevent iOS auto-zoom on form input focus */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv11';
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Prevent overscroll bounce showing wrong color behind sections */
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--fg-muted); }
+
+  /* Prevent zoom on iOS form fields (font-size must be >= 16px) */
+  @media (max-width: 768px) {
+    input, textarea, select {
+      font-size: 16px;
+    }
+  }
+}
+
+@layer components {
+  .grid-backdrop {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: -1px -1px;
+  }
+
+  .link-underline { position: relative; display: inline-block; }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .link-underline:hover::after {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  .noise { position: relative; }
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .underline-input {
+    @apply w-full bg-transparent border-0 border-b py-3 text-base outline-none transition-colors duration-300;
+    border-color: var(--border-strong);
+  }
+  .underline-input:focus { border-color: var(--fg); }
+  .underline-input::placeholder { color: var(--fg-subtle); }
+
+  .bento-card {
+    position: relative;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.5s ease,
+                box-shadow 0.5s ease;
+  }
+  @media (hover: hover) {
+    .bento-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-strong);
+      box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.15);
+    }
+    .dark .bento-card:hover {
+      box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+}
+
+.font-display {
+  font-family: var(--font-instrument), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}

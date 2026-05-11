@@ -11,6 +11,7 @@ import { useLoader, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useRef, useLayoutEffect, useState, useMemo } from 'react'
 import { LinearSRGBColorSpace, RepeatWrapping, TextureLoader } from 'three';
 import gsap from "gsap";
+
 type GLTFResult = GLTF & {
   nodes: {
     Cube002: THREE.Mesh
@@ -419,12 +420,12 @@ useFrame(({ camera }) => {
       if (shelftoplight.current?.color?.set) {
         shelftoplight.current.color.set(60, 60, 60)
       }
-    }, 6400)
+    }, 3400)
     const timeout1 = setTimeout(() => {
       if (Lefttoplight.current?.color?.set) {
         Lefttoplight.current.color.set(229, 204, 167)
       }
-    }, 6600)
+    }, 3600)
 
 
     return () => {
@@ -494,16 +495,16 @@ useFrame(({ camera }) => {
   // collections
 
   const Curve = useRef<THREE.Mesh>(null!);
-  const Curve001 = useRef<THREE.Mesh>(null!);
+  const Curve001 = useRef<THREE.Group>(null!);
   const Curve002 = useRef<THREE.Mesh>(null!);
-  const Curve003 = useRef<THREE.Mesh>(null!);
-  const Curve004 = useRef<THREE.Mesh>(null!);
-  const Curve007 = useRef<THREE.Mesh>(null!);
+  const Curve003 = useRef<THREE.Group>(null!);
+  const Curve004 = useRef<THREE.Group>(null!);
+  const Curve007 = useRef<THREE.Group>(null!);
   const Curve005 = useRef<THREE.Mesh>(null!);
-  const Curve011 = useRef<THREE.Mesh>(null!);
-  const Curve008 = useRef<THREE.Mesh>(null!);
+  const Curve011 = useRef<THREE.Group>(null!);
+  const Curve008 = useRef<THREE.Group>(null!);
   const Curve006 = useRef<THREE.Mesh>(null!);
-  const Curve009 = useRef<THREE.Mesh>(null!);
+  const Curve009 = useRef<THREE.Group>(null!);
   const Curve010 = useRef<THREE.Mesh>(null!);
 
 
@@ -527,62 +528,12 @@ useFrame(({ camera }) => {
 useLayoutEffect(() => {
   if (!isMobile) {
     tl.current = gsap.timeline();
-     if (groupRef.current) {
-
-
-
-
-      tl.current.set(groupRef.current.position, {
-        x: 15,
-        y: -5,
-        z: 30,
-      }, 0);
-
-
-      tl.current.set(groupRef.current.rotation, {
-        x: -1,
-        y: 0.22,
-        z: 0.3,
-      }, 0);
-      // 👇 Delay visibility by 50ms after set() so it's ready
-      setTimeout(() => {
-        setReady(true)
-      }, 50)
-
-      tl.current.to(groupRef.current.position, {
-        duration: 3,
-        x: 10,
-        y: -4,
-        z: 20,
-      }, 0);
-
-
-      tl.current.to(groupRef.current.position, {
-        duration: 1,
-        x: 0,
-        y: 0,
-        z: 0,
-      }, 2);
-
-      tl.current.to(groupRef.current.rotation, {
-        duration: 1,
-        x: 0,
-        y: 0,
-        z: 0,
-      }, 2);
-
-
-
-
-
-
-
-    }
+   
 
     if (groupRef1.current) {
       tl.current.set(groupRef1.current.position, {
         x: 0,
-        y: -20,
+        y: 0,
         z: 0,
       }, 0);
 
@@ -609,7 +560,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
 
       tl.current.fromTo(Curve09light.current, {
@@ -618,7 +569,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
 
       tl.current.fromTo(Curve03light.current, {
@@ -627,7 +578,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
 
       tl.current.fromTo(Curve01light.current, {
@@ -636,7 +587,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
       tl.current.fromTo(Curve02light.current, {
         intensity: 0
@@ -644,7 +595,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
       tl.current.fromTo(Curve08light.current, {
         intensity: 0
@@ -652,7 +603,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
 
       tl.current.fromTo(Curve011light.current, {
@@ -661,7 +612,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
 
 
@@ -671,7 +622,7 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 
       tl.current.fromTo(Curve005light.current, {
         intensity: 0
@@ -679,14 +630,14 @@ useLayoutEffect(() => {
         intensity: 10,
         duration: 1,
         ease: 'power2.out'
-      }, 6);
+      }, 3);
 tl.current.fromTo(Curve07light.current, {
       intensity: 0
     }, {
       intensity: 10,
       duration: 1,
       ease: 'power2.out'
-    }, 6);
+    }, 3);
 
 
 
@@ -971,7 +922,7 @@ tl.current.fromTo(Curve07light.current, {
 ) : (
           <MeshReflectorMaterial
 
-
+ mirror={1}
             blur={[500, 400]}
             resolution={1029}
             mixBlur={1}
