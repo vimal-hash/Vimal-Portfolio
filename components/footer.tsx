@@ -76,9 +76,9 @@ export function Footer() {
 
         {/* Remote & Relocation — vital for UK/US hiring managers */}
         <div className="border-b border-[var(--border)] py-6 text-sm">
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--fg-subtle)] mr-3">
+          {/* <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--fg-subtle)] mr-3">
             Hiring
-          </span>
+          </span> */}
           <span className="text-[var(--fg)]">
             {footerCopy.taglineRelocation}
           </span>

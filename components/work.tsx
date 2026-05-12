@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { projects, type Project } from '@/lib/content';
-
+import Image from 'next/image';
 const ease = [0.16, 1, 0.3, 1] as const;
 
 function BentoCard({ project, index }: { project: Project; index: number }) {
@@ -48,18 +48,31 @@ function BentoCard({ project, index }: { project: Project; index: number }) {
           {project.year}
         </div>
         {/* Big glyph */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.div
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.05, rotate: 8 }}
-            transition={{ duration: 0.5, ease }}
-            className={`font-display text-white/90 ${
-              isLarge ? 'text-8xl md:text-9xl' : 'text-6xl md:text-7xl'
-            }`}
-          >
-            {project.glyph}
-          </motion.div>
-        </div>
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+  <motion.div
+    initial={{ scale: 1 }}
+    whileHover={{ scale: 1.05, rotate: 2 }} // Reduced rotation for images to keep them professional
+    transition={{ duration: 0.5, ease }}
+    className='relative w-full h-full '
+    style={{ backgroundColor: project.bgc }}
+  >
+    {project.image ? (
+      <Image
+        src={project.image}
+        alt={project.title}
+        fill
+        className="object-cover" // Or "object-contain" depending on your preference
+        sizes="(max-width: 1200px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      />
+    ) : (
+      <span className={`font-display text-white/90 ${
+        isLarge ? 'text-8xl md:text-9xl' : 'text-6xl md:text-7xl'
+      }`}>
+        {project.glyph}
+      </span>
+    )}
+  </motion.div>
+</div>
         {/* Title overlay */}
         <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 flex items-end justify-between">
           <div>

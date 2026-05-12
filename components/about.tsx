@@ -3,7 +3,9 @@
 import * as React from 'react';
 import { motion } from 'framer-motion';
 import { about } from '@/lib/content';
+import Lottie from 'lottie-react';
 
+import { useState, useEffect } from 'react';
 const ease = [0.16, 1, 0.3, 1] as const;
 
 // Helper: splits the headline into [before, italic, after] for styling
@@ -23,6 +25,21 @@ export function About() {
     about.italicPhrase
   );
 
+  // State to hold the animation data
+    const [animationData, setAnimationData] = useState<any>(null);
+  
+    // Fetch the JSON file from the public folder when component loads
+    useEffect(() => {
+      fetch('/watch_sample2.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => setAnimationData(data))
+        .catch((error) => console.error('Error loading animation:', error));
+    }, []);
   return (
     <section
       id="about"
@@ -35,7 +52,7 @@ export function About() {
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-9">
+          <div className="lg:col-span-8">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +78,7 @@ export function About() {
             </motion.div>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-4 flex items-center justify-center">
             {/* <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -78,6 +95,29 @@ export function About() {
                 </div>
               ))}
             </motion.div> */}
+
+            {/* animation */}
+            <div className='w-full max-w-[400px]'>
+                      {animationData ? (
+                        <div className="flex items-center justify-center max-w-full">
+                          <Lottie 
+                            animationData={animationData} 
+                            loop={true} 
+                            autoplay={true}
+                            style={{ 
+                              width: '100%', 
+                              maxWidth: '300px',
+                              height: 'auto',
+                              maxHeight: '300px'
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="text-gray-400 animate-pulse">
+                          Loading Animation...
+                        </div>
+                      )}
+                    </div>
           </div>
         </div>
       </div>

@@ -20,6 +20,8 @@ const nextConfig = {
     'three',
     '@react-three/fiber',
     '@react-three/drei',
+    '@react-three/postprocessing',
+    'postprocessing',
     'three-stdlib',
     'maath',
   ],

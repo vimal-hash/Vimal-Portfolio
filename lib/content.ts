@@ -95,7 +95,9 @@ export type Project = {
   accent: string;
   glyph?: string;
   size: 'sm' | 'lg';
-  featured: boolean; // shows on home bento; archive shows all
+  featured: boolean;
+  image: string;
+  bgc:string,
 };
 
 export const projects: Project[] = [
@@ -116,7 +118,9 @@ export const projects: Project[] = [
     glyph: '◉',
     size: 'lg',
     featured: true,
-    href: "https://sphere-red.vercel.app/"
+    href: "https://sphere-red.vercel.app/",
+    image: '/Sphere.svg',
+    bgc:'black',
   },
   // {
   //   slug: 'saas-landing',
@@ -147,12 +151,14 @@ export const projects: Project[] = [
       'Engineered a high-end branding and product showcase platform for a global coconut supplier, focusing on immersive visual storytelling and sustainability.',
     description:
       'A B2B trade portal handling bulk orders, multi-currency pricing, and document workflows across jurisdictions. Built the entire frontend architecture from scratch.',
-    stack: ['Next.js', 'TypeScript', 'React Query', 'i18n', 'Node.js'],
+    stack: ['Next.js', 'TypeScript', 'Tailwind', 'after efffects', 'illustrator', 'claude code'],
     accent: 'linear-gradient(135deg, #E8DDD0 0%, #8B7355 100%)',
     glyph: '⬡',
     size: 'sm',
     featured: true,
-    href: "https://manvasam.vercel.app/"
+    href: "https://manvasam.vercel.app/",
+    image: '/man.svg',
+    bgc:'white',
   },
   {
     slug: 'modulus',
@@ -162,15 +168,17 @@ export const projects: Project[] = [
     year: '2024',
     category: 'B2B SaaS',
     impact:
-      'Delivered an end-to-end SaaS product resulting in 30–50% growth in user engagement.',
+      'Delivered an end-to-end B2B branding website resulting in 30-50% growth in user engagement.',
     description:
       'Frontend lead on a multi-tenant property management SaaS. Owned the entire surface from auth to billing dashboard, with a custom design system shared across web and mobile webview.',
-    stack: ['Next.js', 'TypeScript', 'tRPC', 'PostgreSQL', 'Tailwind'],
+    stack: ['Next.js', 'TypeScript', 'Tailwind', 'after efffects'],
     accent: 'linear-gradient(135deg, #2D3142 0%, #4F5D75 100%)',
     glyph: '▣',
     size: 'lg',
     featured: true,
-    href: "https://www.modulushousing.com/"
+    href: "https://www.modulushousing.com/",
+    image: '/modulus.jpg',
+    bgc:'white',
   },
   // ─── /projects archive only (featured: false) ───
   // {
@@ -279,7 +287,7 @@ export const stackGroups = {
  * ─────────────────────────────────────────────────────────────────── */
 export const stats = [
   { value: '8+', label: 'Client websites delivered.' },
-  { value: '50–75%', label: 'Faster data fetch via type-safe REST APIs.' },
+  { value: '50 - 75%', label: 'Faster data fetch via type-safe REST APIs.' },
   { value: '60%', label: 'Reduction in client JS via SSR & serverless.' },
 ];
 
@@ -290,7 +298,7 @@ export const stats = [
 export const about = {
   // The single big quote
   headline:
-    'I bridge the gap between complex engineering and world class design - building the layer that founders demo, users trust, and CTOs approve in code reviews.',
+    'I bridge the gap between complex engineering and world class design - building the layers and interfaces that everyone likes and respects.',
   // The word(s) inside `headline` to italicize / mute
   italicPhrase: 'complex engineering',
 
@@ -315,7 +323,7 @@ export const marqueePhrases = [
   'Typography',
   'Motion',
   'Accessibility',
-  'WebGL',
+  // 'WebGL',
   'Edge rendering',
   'Design systems',
   'TypeScript',
@@ -332,7 +340,8 @@ export const contact = {
   headline: `Let's build`,
   headlineItalic: 'something memorable.',
   pitch:
-    'I take on a small number of new engagements each quarter. Tell me what you\u2019re shipping and I\u2019ll respond within 24 hours.',
+    `Tell me what you're shipping and I'll respond within 24 hours.`,
+    // I take on a small number of new engagements each quarter. 
   email: 'vimaloffi1@gmail.com',
   calendarUrl: 'https://cal.com/vimal',
   // Form success message — feels premium when subtle and direct
@@ -346,8 +355,8 @@ export const contact = {
  * Used in: components/footer.tsx
  * ─────────────────────────────────────────────────────────────────── */
 export const socials = [
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/vimal' },
-  { label: 'GitHub', href: 'https://github.com/vimal' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/vimalrjoffi/' },
+  { label: 'GitHub', href: 'https://github.com/vimal-hash' },
   // { label: 'Twitter / X', href: 'https://x.com/vimal' },
   // { label: 'Read.cv', href: 'https://read.cv/vimal' },
 ];
@@ -364,7 +373,7 @@ export const footerCopy = {
  * Used in: app/layout.tsx
  * ─────────────────────────────────────────────────────────────────── */
 export const seo = {
-  title: 'Vimal — Frontend Engineer',
+  title: 'Vimal - Frontend Engineer',
   titleTemplate: '%s — Vimal',
   description:
     'Frontend Engineer specializing in React, TypeScript, and 3D web environments. Building immersive, high-performance web experiences for founders in the UK and US.',

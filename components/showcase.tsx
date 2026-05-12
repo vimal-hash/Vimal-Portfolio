@@ -8,9 +8,14 @@ import {
   PerspectiveCamera,
   CubeCamera,
 } from '@react-three/drei';
+import {
+  EffectComposer,
+  Bloom,
+  ToneMapping,
+} from '@react-three/postprocessing';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Download } from 'lucide-react';
-// import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing'
+
 import { Portfolio3 } from '@/components/Portfolio3';
 import CameraRig from '@/components/CameraRig';
 import { hero } from '@/lib/content';
@@ -52,7 +57,7 @@ export default function Showcase() {
         aria-hidden
         style={{
           background:
-            'linear-gradient(to right, rgba(0, 0, 0, 0.53) 0%, rgba(0, 0, 0, 0.36) 20%, rgba(0, 0, 0, 0.25) 45%, transparent 60%)',
+            'linear-gradient(to right, rgba(0, 0, 0, 0.23) 0%, rgba(0, 0, 0, 0.17) 20%, rgba(0, 0, 0, 0) 45%, transparent 60%)',
         }}
       />
       {/* Bottom fade for the scroll hint + meta strip */}
@@ -247,10 +252,19 @@ export default function Showcase() {
             )}
           </CubeCamera>
 
-          {/* <EffectComposer enableNormalPass>
-        <Bloom luminanceThreshold={0.01} intensity={0.005} mipmapBlur />
-        <ToneMapping />
-      </EffectComposer> */}
+          {/* Post-processing — Bloom makes the emissive ceiling strip lights
+              and floor neon glow with proper haloes. Matches your original
+              Showcase exactly. Skipped on mobile to keep 60fps. */}
+          {!isMobile && (
+            <EffectComposer enableNormalPass>
+              <Bloom
+                luminanceThreshold={0.01}
+                intensity={0.005}
+                mipmapBlur
+              />
+              <ToneMapping />
+            </EffectComposer>
+          )}
 
           <CameraRig active={cameraSwayActive} />
         </Canvas>
