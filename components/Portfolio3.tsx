@@ -243,14 +243,18 @@ type GLTFResult = GLTF & {
 
 interface Portfolio3Props {
   onAnimationComplete?: () => void;
+  // Single source of truth, computed once in showcase.tsx and passed down —
+  // previously this component ran its own separate UA/width check that could
+  // disagree with showcase.tsx's (e.g. a landscape tablet), producing a scene
+  // that was half mobile-branch, half desktop-branch.
+  isMobile: boolean;
 }
 
 export function Portfolio3(props: Portfolio3Props) {
-  const { onAnimationComplete } = props;
+  const { onAnimationComplete, isMobile } = props;
   // Self-hosted decoder path (see DECODER_PATH below) — avoids depending on
   // gstatic.com at request time, see notes at the bottom of this file.
   const { nodes, materials } = useGLTF('/Portfolio3-draco.glb', DRACO_DECODER_PATH) as unknown as GLTFResult
-const [isMobile, setIsMobile] = useState(false);
 
   // KTX2 (BasisU/ETC1S) textures — downscaled 4096² → 1024² and GPU-compressed.
   // ~16× less VRAM than the original 4K webp set, identical at viewing distance.
@@ -286,11 +290,6 @@ const [isMobile, setIsMobile] = useState(false);
     wdiffuse.colorSpace = THREE.SRGBColorSpace
     warm.colorSpace = THREE.SRGBColorSpace
   }, [cdiffuse, wdiffuse, warm])
-
-  useEffect(() => {
-    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768);
-  }, []);
-
 
   // useEffect(() => {
   //   [normal, roughness].forEach((t) => {
@@ -953,7 +952,7 @@ tl.current.fromTo(Curve07light.current, {
         <mesh ref={Pant}  name="Pant" geometry={nodes.Pant.geometry as any} material={materials['Material.025'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
         <mesh ref={Shirt}  name="Shirt" geometry={nodes.Shirt.geometry as any} material={materials['Material.024'] as any} position={[5.722, 0.322, 0.966]} rotation={[-Math.PI, 0.94, -Math.PI]} />
         <mesh ref={Curve}  name="Curve" geometry={nodes.Curve.geometry as any} material={materials['SVGMat.001'] as any} position={[3.838, 2.434, 6.611]} rotation={[-1.58, -0.004, 0.434]} >
-          {!isMobile && <pointLight ref={Curve001light}  intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />}
+          <pointLight ref={Curve001light}  intensity={10} color="#96DCFF" position={[0, -0.2, 1.2]} />
 
 
           
@@ -963,17 +962,17 @@ tl.current.fromTo(Curve07light.current, {
 
           </mesh>
           <mesh name="Curve002_2" geometry={nodes.Curve002_2.geometry as any} material={materials['Material.023'] as any} />
-          {!isMobile && <pointLight ref={Curve01light}  intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />}
+          <pointLight ref={Curve01light}  intensity={10} color="#96DCFF" position={[0.15, 0, -1.1]} />
         </group>
         <mesh ref={Curve002}  name="Curve002" geometry={nodes.Curve002.geometry as any} material={materials['Material.031'] as any} position={[-0.728, 2.526, 7.038]} rotation={[-1.551, 0, 0]} >
-          {!isMobile && <pointLight ref={Curve02light}   intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />}
+          <pointLight ref={Curve02light}   intensity={10} color="#96DCFF" position={[-0.1, 0, 1.2]} />
 
         </mesh>
         <group ref={Curve003}  name="Curve003" position={[-3.833, 2.53, 6.689]} rotation={[1.568, -0.006, -2.725]}>
           <mesh name="Curve008_1" geometry={nodes.Curve008_1.geometry as any} material={materials['SVGMat.009'] as any} />
           <mesh name="Curve008_2" geometry={nodes.Curve008_2.geometry as any} material={materials['SVGMat.010'] as any} />
           <mesh name="Curve008_3" geometry={nodes.Curve008_3.geometry as any} material={materials['SVGMat.011'] as any} />
-          {!isMobile && <pointLight ref={Curve03light}  intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />}
+          <pointLight ref={Curve03light}  intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
         </group>
         <group ref={Curve004} name="Curve004" position={[-6.78, 0.804, 5.681]} rotation={[1.571, -0.002, -2.743]}>
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1021,10 +1020,10 @@ tl.current.fromTo(Curve07light.current, {
           <mesh name="Curve275" geometry={nodes.Curve275.geometry as any} material={materials['SVGMat.055'] as any} />
           <mesh name="Curve275_1" geometry={nodes.Curve275_1.geometry as any} material={materials['SVGMat.053'] as any} />
           <mesh name="Curve275_2" geometry={nodes.Curve275_2.geometry as any} material={materials['SVGMat.054'] as any} />
-          {!isMobile && <pointLight ref={Curve07light} intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />}
+          <pointLight ref={Curve07light} intensity={10} color="#96DCFF" position={[0, 0, -1.1]} />
         </group>
         <mesh ref={Curve005} name="Curve005" geometry={nodes.Curve005.geometry as any} material={materials['Material.035'] as any} position={[5.482, 2.376, 6.267]} rotation={[1.567, 0.006, 2.678]} >
-          {!isMobile && <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} />}
+          <pointLight ref={Curve005light} intensity={10} color="#96DCFF" position={[0.2, 0, -1.2]} />
         </mesh>
         <group ref={Curve011}  name="Curve011" position={[2.334, 2.416, 6.917]} rotation={[1.58, 0.018, 2.792]}>
           <mesh name="Curve281" geometry={nodes.Curve281.geometry as any} material={materials['SVGMat.060'] as any} />
@@ -1032,13 +1031,13 @@ tl.current.fromTo(Curve07light.current, {
           <mesh name="Curve281_2" geometry={nodes.Curve281_2.geometry as any} material={materials['SVGMat.059'] as any} />
           <mesh name="Curve281_3" geometry={nodes.Curve281_3.geometry as any} material={materials['SVGMat.061'] as any} />
           <mesh name="Curve281_4" geometry={nodes.Curve281_4.geometry as any} material={materials['SVGMat.062'] as any} />
-          {!isMobile && <pointLight ref={Curve011light}  intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />}
+          <pointLight ref={Curve011light}  intensity={10} color="#96DCFF" position={[0, -0.2, -1.15]} />
 
         </group>
         <group ref={Curve008}  name="Curve008" position={[1.02, 2.523, 6.909]} rotation={[1.579, 0.004, 2.995]}>
           <mesh name="Curve291" geometry={nodes.Curve291.geometry as any} material={materials['SVGMat.066'] as any} />
           <mesh name="Curve291_1" geometry={nodes.Curve291_1.geometry as any} material={materials['SVGMat.068'] as any} />
-          {!isMobile && <pointLight ref={Curve08light}  intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />}
+          <pointLight ref={Curve08light}  intensity={10} color="#96DCFF" position={[0.2, -0.2, -1.1]} />
         </group>
         <mesh ref={Curve006} name="Curve006" geometry={nodes.Curve006.geometry as any} material={materials['SVGMat.075'] as any} position={[-5.289, 0.781, 6.297]} rotation={[1.551, 0.124, -3.024]} >
           {/* <pointLight   intensity={10} color="#96DCFF"  position={[0, -0.2, 0]} /> */}
@@ -1046,10 +1045,10 @@ tl.current.fromTo(Curve07light.current, {
         <group ref={Curve009} name="Curve009" position={[-5.215, 2.578, 6.324]} rotation={[1.554, 0.016, -2.878]}>
           <mesh name="Curve304" geometry={nodes.Curve304.geometry as any} material={materials['SVGMat.077'] as any} />
           <mesh name="Curve304_1" geometry={nodes.Curve304_1.geometry as any} material={materials['SVGMat.078'] as any} />
-          {!isMobile && <pointLight ref={Curve09light}  intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />}
+          <pointLight ref={Curve09light}  intensity={10} color="#96DCFF" position={[0.1, 0, -1.1]} />
         </group>
         <mesh ref={Curve010} name="Curve010" geometry={nodes.Curve010.geometry as any} material={materials['SVGMat.079'] as any} position={[-6.959, 2.883, 5.636]} rotation={[2.068, -0.544, -2.511]} >
-          {!isMobile && <pointLight ref={Curve010light}  intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />}
+          <pointLight ref={Curve010light}  intensity={10} color="#96DCFF" position={[0.33, 0.2, -0.65]} />
 
         </mesh>
       </group>

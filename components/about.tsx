@@ -1,12 +1,18 @@
 'use client';
 
 import * as React from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { about } from '@/lib/content';
-import Lottie from 'lottie-react';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 const ease = [0.16, 1, 0.3, 1] as const;
+
+// lottie-react + the animation JSON (168KB) are only needed once this section
+// is actually scrolled into view — About is one of the last sections on the
+// page, so loading both eagerly on every page load was pure waste for anyone
+// who doesn't scroll that far.
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 // Helper: splits the headline into [before, italic, after] for styling
 function splitHeadline(headline: string, italic: string) {
@@ -27,9 +33,29 @@ export function About() {
 
   // State to hold the animation data
     const [animationData, setAnimationData] = useState<any>(null);
-  
-    // Fetch the JSON file from the public folder when component loads
+    const [inView, setInView] = useState(false);
+    const animRef = useRef<HTMLDivElement>(null!);
+
+    // Only start loading the Lottie JSON once the section is about to be
+    // visible, not the moment the homepage mounts.
     useEffect(() => {
+      const el = animRef.current;
+      if (!el || typeof IntersectionObserver === 'undefined') return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setInView(true);
+            observer.disconnect();
+          }
+        },
+        { rootMargin: '400px 0px' }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+      if (!inView) return;
       fetch('/watch_sample2.json')
         .then((response) => {
           if (!response.ok) {
@@ -39,7 +65,7 @@ export function About() {
         })
         .then((data) => setAnimationData(data))
         .catch((error) => console.error('Error loading animation:', error));
-    }, []);
+    }, [inView]);
   return (
     <section
       id="about"
@@ -97,7 +123,7 @@ export function About() {
             </motion.div> */}
 
             {/* animation */}
-            <div className='w-full max-w-[400px]'>
+            <div ref={animRef} className='w-full max-w-[400px]'>
                       {animationData ? (
                         <div className="flex items-center justify-center max-w-full">
                           <Lottie 

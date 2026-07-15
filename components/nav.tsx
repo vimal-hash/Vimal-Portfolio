@@ -28,10 +28,15 @@ export function Nav() {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-500',
+        // backdrop-blur is skipped on small/touch screens: it forces the
+        // browser to re-blur whatever's scrolling behind this fixed header
+        // on every single scroll frame, which is one of the most common
+        // causes of scroll jank on mobile GPUs. Desktop keeps the frosted
+        // look; mobile gets a more opaque flat tint instead (no live blur).
         scrolled && !overHero
-          ? 'border-b border-[var(--border)] bg-[var(--bg)]/70 backdrop-blur-xl'
+          ? 'border-b border-[var(--border)] bg-[var(--bg)]/70 md:backdrop-blur-xl max-md:bg-[var(--bg)]/95'
           : scrolled && overHero
-            ? 'bg-black/30 backdrop-blur-md border-b border-white/10'
+            ? 'bg-black/30 md:backdrop-blur-md border-b border-white/10 max-md:bg-black/70'
             : 'border-b border-transparent'
       )}
     >

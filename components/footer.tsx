@@ -13,24 +13,6 @@ import {
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export function Footer() {
-  const [time, setTime] = React.useState('');
-
-  React.useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      const formatter = new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      });
-      setTime(formatter.format(now));
-    };
-    update();
-    const id = setInterval(update, 60_000);
-    return () => clearInterval(id);
-  }, []);
-
   return (
     <footer className="relative border-t border-[var(--border)] pt-16 sm:pt-20 pb-10">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 md:px-10">

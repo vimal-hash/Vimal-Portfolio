@@ -34,6 +34,26 @@ export default function Showcase() {
   // poster so the live Canvas takes over.
   const [posterFaded, setPosterFaded] = React.useState(false);
   const dirLightRef = React.useRef<DirectionalLight>(null!);
+  const rootRef = React.useRef<HTMLDivElement>(null!);
+  // The hero is exactly one viewport tall (`h-[100svh]`) — once the user
+  // scrolls past it, the Canvas was still rendering at full quality every
+  // frame forever (`frameloop="always"`), for a scene nobody can see. That
+  // competes with scrolling/animations on every other section for the same
+  // main thread + GPU, which is the main cause of site-wide scroll jank.
+  // Pausing the render loop when off-screen costs nothing visually (it's
+  // identical the moment it's back in view) and is free once idle.
+  const [sceneInView, setSceneInView] = React.useState(true);
+
+  React.useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setSceneInView(entry.isIntersecting),
+      { rootMargin: '200px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // The scene is a static diorama — only the camera sways, nothing casting a
   // shadow ever moves. Three.js recomputes the shadow map every frame by
@@ -62,9 +82,14 @@ export default function Showcase() {
 
   React.useEffect(() => {
     setMounted(true);
-    const mobile = window.innerWidth < 768;
+    // Single source of truth for the whole scene (was previously computed a
+    // second, slightly different way inside Portfolio3.tsx — width-only vs.
+    // width-or-UA — which could disagree on e.g. a landscape tablet).
+    const detectMobile = () =>
+      window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const mobile = detectMobile();
     setIsMobile(mobile);
-    const onResize = () => setIsMobile(window.innerWidth < 768);
+    const onResize = () => setIsMobile(detectMobile());
     window.addEventListener('resize', onResize);
 
     // Hero reveal:
@@ -87,6 +112,7 @@ export default function Showcase() {
 
   return (
     <div
+      ref={rootRef}
       className="relative h-[100svh] w-full overflow-hidden"
       style={{ background: SCENE_BG }}
     >
@@ -280,7 +306,7 @@ export default function Showcase() {
             depth: true,
             preserveDrawingBuffer: false,
           }}
-          frameloop="always"
+          frameloop={sceneInView ? 'always' : 'never'}
         >
           <ambientLight color="#ffffff" />
 
@@ -316,6 +342,7 @@ export default function Showcase() {
                 <>
                   <Environment map={texture} />
                   <Portfolio3
+                    isMobile={isMobile}
                     onAnimationComplete={() => setCameraSwayActive(true)}
                   />
                 </>
@@ -351,7 +378,7 @@ function LoadingDots() {
     <div className="absolute inset-0 flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <div className="flex gap-1.5">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <span
               key={i}
               className="h-1.5 w-1.5 rounded-full animate-pulse"
