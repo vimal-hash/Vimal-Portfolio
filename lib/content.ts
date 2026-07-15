@@ -27,7 +27,7 @@ export const identity = {
   workingWith: 'UK & US founders',
   specialty: 'React · R3F · Performance',
   email: 'vimaloffi1@gmail.com',
-  resumePath: '/resume/Vimal-may-resume.pdf',
+  resumePath: '/resume/Vimal_frontend_developer.pdf',
   calendarUrl: 'https://cal.com/vimal',
   websiteUrl: 'https://vimal.dev',
 } as const;
@@ -47,7 +47,7 @@ export const hero = {
   subhead:
     'Frontend engineer building immersive, high-performance web experiences. React · TypeScript · 3D.',
   primaryCta: { label: 'Get in touch', href: 'mailto:vimaloffi1@gmail.com' },
-  secondaryCta: { label: 'Resume', href: '/resume/Vimal-may-resume.pdf' },
+  secondaryCta: { label: 'Resume', href: '/resume/Vimal_frontend_developer.pdf' },
   // Meta strip under the buttons
   meta: [
     // { label: 'Available', value: 'Q3 2026' },
