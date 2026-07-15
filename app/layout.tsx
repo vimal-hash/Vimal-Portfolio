@@ -72,10 +72,36 @@ export default function RootLayout({
       className={`${inter.variable} ${mono.variable} ${instrument.variable}`}
     >
       <head>
-        <ThemeScript defaultTheme="dark" />
+        <ThemeScript defaultTheme="light" />
+        <link
+          rel="preload"
+          as="fetch"
+          href="/Portfolio3-draco.glb"
+          type="model/gltf-binary"
+          crossOrigin="anonymous"
+        />
+        <link rel="preload" as="fetch" href="/Wood/diff.ktx2" crossOrigin="anonymous" />
+        <link rel="preload" as="fetch" href="/Wood/arm.ktx2" crossOrigin="anonymous" />
+        <link rel="preload" as="fetch" href="/Cw/diffuse.ktx2" crossOrigin="anonymous" />
+        {/* Self-hosted Draco/Basis decoder+transcoder (see components/Portfolio3.tsx).
+            Preloading lets the browser fetch these in parallel with the JS bundle
+            instead of discovering them only after the loader code runs. */}
+        <link rel="preload" as="script" href="/decoders/draco/draco_wasm_wrapper.js" crossOrigin="anonymous" />
+        <link rel="preload" as="fetch" href="/decoders/draco/draco_decoder.wasm" crossOrigin="anonymous" />
+        <link rel="preload" as="script" href="/decoders/basis/basis_transcoder.js" crossOrigin="anonymous" />
+        <link rel="preload" as="fetch" href="/decoders/basis/basis_transcoder.wasm" crossOrigin="anonymous" />
+        {/* Mobile-only poster preload — browser only fetches if media matches,
+            so desktop doesn't waste bandwidth on an image it won't render. */}
+        <link
+          rel="preload"
+          as="image"
+          href="/hero-poster.jpg"
+          type="image/jpeg"
+          media="(max-width: 767px)"
+        />
       </head>
       <body className="font-sans antialiased">
-        <ThemeProvider defaultTheme="dark" enableSystem>
+        <ThemeProvider defaultTheme="light" enableSystem>
           {children}
         </ThemeProvider>
       </body>

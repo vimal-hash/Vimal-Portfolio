@@ -39,7 +39,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*.(glb|webp|jpg|jpeg|png|svg|woff2|ico)',
+        source: '/:path*.(glb|ktx2|webp|jpg|jpeg|png|svg|woff2|ico)',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],

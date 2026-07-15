@@ -15,6 +15,7 @@ import {
 } from '@react-three/postprocessing';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Download } from 'lucide-react';
+import type { DirectionalLight } from 'three';
 
 import { Portfolio3 } from '@/components/Portfolio3';
 import CameraRig from '@/components/CameraRig';
@@ -28,18 +29,60 @@ export default function Showcase() {
   const [showHero, setShowHero] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
+  // Poster crossfade — only matters on mobile (CSS-gated below). When the 3D
+  // scene becomes interactive (cameraSwayActive fires) we fade out the static
+  // poster so the live Canvas takes over.
+  const [posterFaded, setPosterFaded] = React.useState(false);
+  const dirLightRef = React.useRef<DirectionalLight>(null!);
 
+  // The scene is a static diorama — only the camera sways, nothing casting a
+  // shadow ever moves. Three.js recomputes the shadow map every frame by
+  // default (`shadow.autoUpdate`), which is one of the most expensive parts
+  // of a frame and pure waste here. Turn it off and refresh it manually the
+  // couple of times visibility/content actually changes during mount.
   React.useEffect(() => {
-    setMounted(true);
-    setIsMobile(window.innerWidth < 768);
-    const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    const light = dirLightRef.current;
+    if (!light) return;
+    light.shadow.autoUpdate = false;
+    light.shadow.needsUpdate = true;
+    const t = setTimeout(() => {
+      light.shadow.needsUpdate = true;
+    }, 200);
+    return () => clearTimeout(t);
   }, []);
 
   React.useEffect(() => {
-    const timer = setTimeout(() => setShowHero(true), 5000);
-    return () => clearTimeout(timer);
+    if (!cameraSwayActive) return;
+    // Tiny delay lets the first 3D frame paint before the poster dissolves,
+    // avoiding a single-frame flash of black between poster fade-out and
+    // first live render.
+    const t = setTimeout(() => setPosterFaded(true), 250);
+    return () => clearTimeout(t);
+  }, [cameraSwayActive]);
+
+  React.useEffect(() => {
+    setMounted(true);
+    const mobile = window.innerWidth < 768;
+    setIsMobile(mobile);
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+
+    // Hero reveal:
+    //   - Desktop/tablet: 5s wait matches the GSAP intro choreography
+    //     (objects fly in t=3-5.5s, lights fade up t=3-4s).
+    //   - Mobile: GSAP timeline is skipped (objects snap to final position),
+    //     so the wait is dead time — reveal text immediately.
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (mobile) {
+      setShowHero(true);
+    } else {
+      timer = setTimeout(() => setShowHero(true), 5000);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   return (
@@ -47,6 +90,21 @@ export default function Showcase() {
       className="relative h-[100svh] w-full overflow-hidden"
       style={{ background: SCENE_BG }}
     >
+      {/* --- MOBILE POSTER — INSTANT HERO ------------------------------
+          A pre-rendered JPEG of the 3D scene. Visible from the moment HTML
+          parses, so mobile users see a "loaded" hero in ~1s instead of
+          staring at black while the GLB/KTX2 stream in. Fades out once the
+          live Canvas reports the scene is interactive.
+          CSS-gated to <768px so desktop never pays the bandwidth cost. */}
+      <img
+        src="/hero-poster.jpg"
+        alt=""
+        aria-hidden
+        decoding="async"
+        className="md:hidden pointer-events-none absolute inset-0 h-full w-full object-cover z-[5] transition-opacity duration-700 ease-out"
+        style={{ opacity: posterFaded ? 0 : 1 }}
+      />
+
       {/* --- LEFT-SIDE GRADIENT SCRIM -----------------------------------
           Dark gradient behind the text so it's always readable, even when
           the 3D scene's bright neon lights pass behind. The scrim is
@@ -212,17 +270,22 @@ export default function Showcase() {
           shadows
           camera={{ position: [7, 2.5, -5] }}
           className="!h-full !w-full"
-          dpr={isMobile ? [1, 1.5] : [1, 2]}
+          dpr={isMobile ? [1, 1.5] : [1, 1.75]}
+          performance={{ min: 0.5 }}
           gl={{
             antialias: true,
             powerPreference: 'high-performance',
             alpha: false,
+            stencil: false,
+            depth: true,
+            preserveDrawingBuffer: false,
           }}
           frameloop="always"
         >
           <ambientLight color="#ffffff" />
 
           <directionalLight
+            ref={dirLightRef}
             position={[-20, 10, 0]}
             intensity={0.5}
             castShadow
@@ -241,16 +304,24 @@ export default function Showcase() {
           <PerspectiveCamera makeDefault fov={50} position={[-4, 3, -9]} />
           <color args={[SCENE_BG]} attach="background" />
 
-          <CubeCamera resolution={isMobile ? 128 : 256} frames={Infinity}>
-            {(texture) => (
-              <>
-                <Environment map={texture} />
-                <Portfolio3
-                  onAnimationComplete={() => setCameraSwayActive(true)}
-                />
-              </>
-            )}
-          </CubeCamera>
+          {/* Suspense boundary: useGLTF/useKTX2 suspend while the GLB/textures
+              stream in. R3F's Canvas does not provide an implicit boundary —
+              without one, a slow/failed asset fetch has no defined fallback
+              inside the scene graph. fallback={null} is fine here: the poster
+              (mobile) / HeroPlaceholder (all sizes, pre-mount) already cover
+              the screen during this window. */}
+          <React.Suspense fallback={null}>
+            <CubeCamera resolution={isMobile ? 128 : 256} frames={1}>
+              {(texture) => (
+                <>
+                  <Environment map={texture} />
+                  <Portfolio3
+                    onAnimationComplete={() => setCameraSwayActive(true)}
+                  />
+                </>
+              )}
+            </CubeCamera>
+          </React.Suspense>
 
           {/* Post-processing — Bloom makes the emissive ceiling strip lights
               and floor neon glow with proper haloes. Matches your original
@@ -258,7 +329,7 @@ export default function Showcase() {
           {!isMobile && (
             <EffectComposer enableNormalPass>
               <Bloom
-                luminanceThreshold={0.01}
+                luminanceThreshold={0.1}
                 intensity={0.005}
                 mipmapBlur
               />

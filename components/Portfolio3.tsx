@@ -5,12 +5,21 @@ Command: npx gltfjsx@6.5.3 public/Portfolio3.glb -o src/components/Portfolio3.ts
 "use client"
 import * as THREE from 'three'
 import React from 'react'
-import { useGLTF, useTexture, MeshReflectorMaterial } from '@react-three/drei'
+import { useGLTF, useKTX2, MeshReflectorMaterial } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useRef, useLayoutEffect, useState, useMemo } from 'react'
 import { LinearSRGBColorSpace, RepeatWrapping, TextureLoader } from 'three';
 import gsap from "gsap";
+
+// Self-hosted decoder/transcoder paths. The drei/three-stdlib defaults reach
+// out to gstatic.com (Draco) and a jsdelivr GitHub proxy pinned to `@master`
+// (Basis/KTX2) — two extra third-party origins on the critical path, with no
+// timeout or Suspense fallback if either is slow/blocked on the visitor's
+// network. Self-hosting removes that failure mode entirely and skips two
+// DNS+TLS negotiations on every load.
+const DRACO_DECODER_PATH = '/decoders/draco/'
+const BASIS_TRANSCODER_PATH = '/decoders/basis/'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -238,85 +247,49 @@ interface Portfolio3Props {
 
 export function Portfolio3(props: Portfolio3Props) {
   const { onAnimationComplete } = props;
-  const { nodes, materials } = useGLTF('/Portfolio3.glb') as unknown as GLTFResult
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  // Self-hosted decoder path (see DECODER_PATH below) — avoids depending on
+  // gstatic.com at request time, see notes at the bottom of this file.
+  const { nodes, materials } = useGLTF('/Portfolio3-draco.glb', DRACO_DECODER_PATH) as unknown as GLTFResult
+const [isMobile, setIsMobile] = useState(false);
 
-
-  const [normalw, rough] = useTexture([
-
-    '/Rw/Rough-wall.webp',
-    '/Rw/Normal-wall.webp',
-
-
-
-  ])
-
-  const [cdiffuse] = useTexture([
-    '/Cw/diffuse.webp',
-
-
-
-  ])
-
-  const [wdiffuse,
-    warm] = useTexture([
-      '/Wood/diff.webp',
-
-      '/Wood/arm.webp',
-
-
-    ])
-
- const [diffuse, normal, roughness, ao] = useTexture([
-     '/textures/floor/floor_diffuse.jpg',  // Update these paths
-  '/textures/floor/floor_Normal.jpg',   // Note the capital N
-  '/textures/floor/floor_Roughness.jpg', // Note the capital R
-  '/textures/floor/floor_ao.jpg',
-  ])
-
-  // Setup texture tiling
-  React.useEffect(() => {
-    [diffuse, normal, roughness, ao].forEach((texture) => {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-      texture.repeat.set(8, 8) // Tile 8x8 times across floor
-    })
-  }, [diffuse, normal, roughness, ao])
-
+  // KTX2 (BasisU/ETC1S) textures — downscaled 4096² → 1024² and GPU-compressed.
+  // ~16× less VRAM than the original 4K webp set, identical at viewing distance.
+  const cdiffuse = useKTX2('/Cw/diffuse.ktx2', BASIS_TRANSCODER_PATH)
+  const wdiffuse = useKTX2('/Wood/diff.ktx2', BASIS_TRANSCODER_PATH)
+  const warm = useKTX2('/Wood/arm.ktx2', BASIS_TRANSCODER_PATH)
   useEffect(() => {
-    const textures = [
-
-      normalw,
-
-      rough,
-
-    ]
-
-    textures.forEach((tex) => {
-      tex.flipY = false
-      tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-      tex.repeat.set(2, 2) // Adjust to scale tile size
-    })
-  }, [])
-  useEffect(() => {
+    // Camera sway start:
+    //   - Desktop: wait 8s for the GSAP timeline to settle.
+    //   - Mobile: no GSAP, no settle period — start sway immediately so the
+    //     scene reacts to touch/orientation as soon as it appears.
+    if (isMobile) {
+      onAnimationComplete?.();
+      return;
+    }
     const timeout = setTimeout(() => {
-      onAnimationComplete?.(); // ← Remove 'props.' and use directly
+      onAnimationComplete?.();
     }, 8000);
-
     return () => clearTimeout(timeout);
-  }, []);
+    // onAnimationComplete is a new function each render; intentionally not in deps
+    // (matches the original behaviour — we want a single fire-and-forget timer).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
 
   useEffect(() => {
-    const textures = [
-      cdiffuse,
+    // Preserve original sampling — repeat 2× on the showcase mesh.
+    // KTX2 (CompressedTexture) is intrinsically flipY=false; do not toggle.
+    cdiffuse.wrapS = cdiffuse.wrapT = THREE.RepeatWrapping
+    cdiffuse.repeat.set(2, 2)
+    cdiffuse.needsUpdate = true
+    // Match the original webp pipeline (useTexture defaults to SRGB for color maps)
+    cdiffuse.colorSpace = THREE.SRGBColorSpace
+    wdiffuse.colorSpace = THREE.SRGBColorSpace
+    warm.colorSpace = THREE.SRGBColorSpace
+  }, [cdiffuse, wdiffuse, warm])
 
-    ]
-
-    textures.forEach((tex) => {
-      tex.flipY = false
-      tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-      tex.repeat.set(2, 2) // Adjust to scale tile size
-    })
-  }, [])
+  useEffect(() => {
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768);
+  }, []);
 
 
   // useEffect(() => {
@@ -384,48 +357,34 @@ useEffect(() => {
   if (tri9.current?.color) tri9.current.color.set(120, 120, 120)
 }, [])
 
-// ✅ Throttle distance checks:
-let frameCount = 0
-useFrame(({ camera }) => {
-  frameCount++
-  if (frameCount % 10 !== 0) return // Only check every 10 frames
-  
-  if (!isMobile) {
-    
-
-    // Performance optimization for distant objects
+// One-time optimization: disable shadows on distant objects (camera is mostly static)
+useEffect(() => {
+  if (isMobile) return;
+  const timer = setTimeout(() => {
     groupRef.current?.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-        const distance = camera.position.distanceTo(mesh.position);
-
-        // Disable shadows for distant objects
-        if (distance > 10) {
+        // Disable expensive shadow computation for small details
+        if (mesh.name.includes('Curve')) {
           mesh.castShadow = false;
           mesh.receiveShadow = false;
         }
-
-       // Hide detailed meshes when far
-      if (distance > 15 && mesh.name.includes('Curve')) {
-        mesh.visible = false;
-      } else if (distance <= 15 && mesh.name.includes('Curve')) {
-        mesh.visible = true;
-      }
       }
     });
-  }
-})
+  }, 100);
+  return () => clearTimeout(timer);
+}, [isMobile]);
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (shelftoplight.current?.color?.set) {
         shelftoplight.current.color.set(60, 60, 60)
       }
-    }, 3400)
+    }, 1400)
     const timeout1 = setTimeout(() => {
       if (Lefttoplight.current?.color?.set) {
         Lefttoplight.current.color.set(229, 204, 167)
       }
-    }, 3600)
+    }, 1600)
 
 
     return () => {
@@ -523,7 +482,23 @@ useFrame(({ camera }) => {
 
   const [ready, setReady] = useState(false)
 
-  const { camera } = useThree()
+  const { camera, gl, scene } = useThree()
+
+  // Pre-compile all shaders before the GSAP choreography starts at t=3s.
+  // Without this, ~80 materials compile one-by-one on first render, freezing
+  // the main thread for 1–3s. compileAsync uses KHR_parallel_shader_compile
+  // where available so the work is offloaded to the GPU driver.
+  useEffect(() => {
+    const renderer = gl as unknown as {
+      compileAsync?: (s: THREE.Scene, c: THREE.Camera) => Promise<void>;
+      compile: (s: THREE.Scene, c: THREE.Camera) => void;
+    };
+    if (typeof renderer.compileAsync === 'function') {
+      renderer.compileAsync(scene as THREE.Scene, camera).catch(() => {});
+    } else {
+      renderer.compile(scene as THREE.Scene, camera);
+    }
+  }, [gl, scene, camera])
 
 useLayoutEffect(() => {
   if (!isMobile) {
@@ -867,7 +842,7 @@ tl.current.fromTo(Curve07light.current, {
             aoMapIntensity={1}
             roughness={0.5}
             metalness={100}
-            color="#000000ff"
+            color="#ffffff"
           />
 
         </mesh>
@@ -923,8 +898,8 @@ tl.current.fromTo(Curve07light.current, {
           <MeshReflectorMaterial
 
  mirror={1}
-            blur={[500, 400]}
-            resolution={1029}
+            blur={[300, 250]}
+            resolution={512}
             mixBlur={1}
             mixStrength={10}
             roughness={1}
@@ -1084,4 +1059,9 @@ tl.current.fromTo(Curve07light.current, {
   )
 }
 
-useGLTF.preload('/Portfolio3.glb')
+useGLTF.preload('/Portfolio3-draco.glb', DRACO_DECODER_PATH)
+// NOTE: do NOT call useKTX2.preload — drei's preload helper does not invoke
+// `KTX2Loader.detectSupport(renderer)`, which the loader requires before any
+// transcoding can happen. The <link rel="preload"> tags in app/layout.tsx
+// already prefetch the bytes at the network layer; the actual loader is
+// initialised correctly inside Canvas by the useKTX2() calls above.

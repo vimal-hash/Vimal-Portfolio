@@ -4,10 +4,13 @@ import * as THREE from 'three'
 import { useRef } from 'react'
 import { easing } from 'maath'
 
+// Pre-allocated vectors — never GC'd
+const _initialPosition = new THREE.Vector3(-4, 3, -9)
+const _lookAtTarget = new THREE.Vector3(0, 0.5, 0)
+const _currentLookAt = new THREE.Vector3()
+const _targetLookAt = new THREE.Vector3()
+
 export default function CameraRig({ active }: { active: boolean }) {
-    const initialPosition = new THREE.Vector3(-4, 3, -9)
-    const lookAtTarget = new THREE.Vector3(0, 0.5, 0)
-    
     // Smooth mouse tracking state
     const smoothMouse = useRef({ x: 0, y: 0 })
     const velocity = useRef({ x: 0, y: 0 })
@@ -18,8 +21,8 @@ export default function CameraRig({ active }: { active: boolean }) {
 
         if (!active) {
             // Keep camera locked until animation ends
-            easing.damp3(camera.position, initialPosition, 0.2, delta)
-            camera.lookAt(lookAtTarget)
+            easing.damp3(camera.position, _initialPosition, 0.2, delta)
+            camera.lookAt(_lookAtTarget)
             return
         }
 
@@ -55,17 +58,16 @@ export default function CameraRig({ active }: { active: boolean }) {
         // Extra smooth camera interpolation
         easing.damp3(camera.position, [swayX, swayY, swayZ], 0.15, delta)
         
-        // Smooth look-at target with slight offset
-        const lookX = smoothMouse.current.x * 0.1
-        const lookY = 0.5 + (smoothMouse.current.y * 0.1)
-        const lookZ = 0
+        // Smooth look-at target with slight offset — reuse pre-allocated vectors
+        _targetLookAt.set(
+            smoothMouse.current.x * 0.1,
+            0.5 + (smoothMouse.current.y * 0.1),
+            0
+        )
         
-        const currentLookAt = new THREE.Vector3()
-        camera.getWorldDirection(currentLookAt)
-        const targetLookAt = new THREE.Vector3(lookX, lookY, lookZ)
-        
-        easing.damp3(currentLookAt, targetLookAt, 0.1, delta)
-        camera.lookAt(targetLookAt)
+        camera.getWorldDirection(_currentLookAt)
+        easing.damp3(_currentLookAt, _targetLookAt, 0.1, delta)
+        camera.lookAt(_targetLookAt)
     })
 
     return null

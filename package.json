@@ -21,6 +21,7 @@
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.460.0",
     "maath": "^0.10.8",
+    "meshoptimizer": "^1.1.1",
     "next": "14.2.18",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -29,6 +30,8 @@
     "three-stdlib": "^2.34.0"
   },
   "devDependencies": {
+    "@gltf-transform/core": "^4.4.0",
+    "@gltf-transform/extensions": "^4.4.0",
     "@types/node": "^22.9.0",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
@@ -36,7 +39,10 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.18",
+    "gltfpack": "^1.1.0",
     "postcss": "^8.4.49",
+    "puppeteer-core": "^25.1.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3"
   },

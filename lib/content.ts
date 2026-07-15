@@ -303,7 +303,7 @@ export const about = {
   italicPhrase: 'complex engineering',
 
   paragraphs: [
-    'Four years, eight production clients. Most of my work runs in front of paying customers today - at fintechs, marketplaces, and DTC brands across the world.',
+    'Four years, twelve production clients. Most of my work runs in front of paying customers today - at fintechs, marketplaces, and DTC brands across the world.',
     'The pattern is the same: a founder has a product where the interface is the product. They need someone who can hold both the typographic detail and the bundle size, the spring damping and the edge function. I do that.',
   ],
 
