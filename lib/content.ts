@@ -101,27 +101,7 @@ export type Project = {
 };
 
 export const projects: Project[] = [
-  {
-    slug: 'sphere',
-    index: '01',
-    title: 'Sphere',
-    client: 'Voice AI Interface',
-    year: '2025',
-    category: 'AI / Real-time',
-    // AI startup keywords: low-latency, streaming, audio-reactive
-    impact:
-      'Engineered a low-latency, browser-based voice AI interface with streaming audio I/O and audio-reactive 3D visualizations.',
-    description:
-      'A real-time conversational AI surface built on streaming WebSockets and the Web Audio API. The 3D visualizer reacts to amplitude and FFT data in real time, absorbing perceived round-trip latency. Sub-300ms voice-to-response on production load.',
-    stack: ['Next.js', 'TypeScript', 'WebSockets', 'R3F', 'Web Audio API'],
-    accent: 'linear-gradient(135deg, #FF4500 0%, #1a1a1a 100%)',
-    glyph: '◉',
-    size: 'lg',
-    featured: true,
-    href: "https://sphere-red.vercel.app/",
-    image: '/Sphere.svg',
-    bgc:'black',
-  },
+  
   // {
   //   slug: 'saas-landing',
   //   index: '02',
@@ -179,6 +159,27 @@ export const projects: Project[] = [
     href: "https://www.modulushousing.com/",
     image: '/modulus.jpg',
     bgc:'white',
+  },
+  {
+    slug: 'sphere',
+    index: '01',
+    title: 'Sphere',
+    client: 'Voice AI Interface',
+    year: '2025',
+    category: 'AI / Real-time',
+    // AI startup keywords: low-latency, streaming, audio-reactive
+    impact:
+      'Engineered a low-latency, browser-based voice AI interface with streaming audio I/O and audio-reactive 3D visualizations.',
+    description:
+      'A real-time conversational AI surface built on streaming WebSockets and the Web Audio API. The 3D visualizer reacts to amplitude and FFT data in real time, absorbing perceived round-trip latency. Sub-300ms voice-to-response on production load.',
+    stack: ['Next.js', 'TypeScript', 'WebSockets', 'R3F', 'Web Audio API'],
+    accent: 'linear-gradient(135deg, #FF4500 0%, #1a1a1a 100%)',
+    glyph: '◉',
+    size: 'lg',
+    featured: true,
+    href: "https://sphere-red.vercel.app/",
+    image: '/Sphere.svg',
+    bgc:'black',
   },
   // ─── /projects archive only (featured: false) ───
   // {
