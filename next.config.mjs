@@ -35,7 +35,8 @@ const nextConfig = {
     ],
   },
 
-  // Long-cache static assets and Next's static chunks
+  // Long-cache static assets. Next sets this itself for its hashed production chunks;
+  // dev chunks have stable names, so caching them here would pin browsers to old code.
   async headers() {
     return [
       {
@@ -44,12 +45,20 @@ const nextConfig = {
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
-      {
-        source: '/_next/static/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
+      // Dev only, once per browser: clears the old dev bundles an earlier header
+      // pinned for a year. Safe to delete once every dev browser has loaded the site.
+      ...(process.env.NODE_ENV === 'development'
+        ? [
+            {
+              source: '/',
+              missing: [{ type: 'cookie', key: 'dev-cache-reset' }],
+              headers: [
+                { key: 'Clear-Site-Data', value: '"cache"' },
+                { key: 'Set-Cookie', value: 'dev-cache-reset=1; Path=/; Max-Age=31536000' },
+              ],
+            },
+          ]
+        : []),
     ];
   },
 };

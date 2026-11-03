@@ -13,9 +13,8 @@ export function Stack() {
       className="relative border-t border-[var(--border)] py-20 md:py-32"
     >
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 md:px-10">
-        <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-          <span className="inline-block h-px w-8 bg-[var(--fg-muted)]" />
-          <span>Expertise & Durability</span>
+        <div className="text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          Skills
         </div>
 
         <motion.h2
@@ -25,9 +24,9 @@ export function Stack() {
           transition={{ duration: 0.8, ease }}
           className="mt-6 font-display text-[clamp(2.25rem,6vw,5rem)] tracking-tightest leading-[0.95] text-balance"
         >
-          Tools chosen for
+          The tools I use
           <br />
-          <em className="italic text-[var(--fg-muted)]">production durability.</em>
+          <em className="text-[var(--fg-muted)]">on real projects.</em>
         </motion.h2>
 
         {/* Impact stats */}
@@ -41,7 +40,7 @@ export function Stack() {
               transition={{ duration: 0.8, ease, delay: i * 0.1 }}
               className="border-t border-[var(--border)] pt-6"
             >
-              <div className="font-display text-[clamp(3.5rem,8vw,7rem)] leading-[0.9] tracking-tightest tabular text-[var(--fg)]">
+              <div className="font-display whitespace-nowrap text-[clamp(3rem,6.5vw,6rem)] leading-[0.9] tracking-tightest tabular text-[var(--fg)]">
                 {s.value}
               </div>
               <div className="mt-4 max-w-[28ch] text-base leading-relaxed text-[var(--fg-muted)] text-pretty">
@@ -54,21 +53,9 @@ export function Stack() {
         {/* Stack groups */}
         <div className="mt-20 md:mt-32 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start">
-            <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-              <span className="inline-block h-px w-8 bg-[var(--fg-muted)]" />
-              <span>Stack — by impact</span>
+            <div className="text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+              Stack
             </div>
-            <h3 className="mt-6 font-display text-2xl sm:text-3xl md:text-4xl tracking-tight leading-tight text-balance">
-              I don&apos;t collect tools.{' '}
-              <em className="italic text-[var(--fg-muted)]">
-                I select for shipping.
-              </em>
-            </h3>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-[var(--fg-muted)]">
-              Each tool below earned its place by surviving production —
-              measured against speed, maintainability, and the calibre of its
-              ecosystem.
-            </p>
           </div>
 
           <div className="lg:col-span-8">
@@ -85,7 +72,7 @@ export function Stack() {
                   <h4 className="font-display text-xl sm:text-2xl tracking-tight">
                     {group}
                   </h4>
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--fg-subtle)]">
+                  <span className="text-xs uppercase tracking-[0.2em] text-[var(--fg-subtle)]">
                     0{gi + 1}
                   </span>
                 </div>
@@ -98,7 +85,7 @@ export function Stack() {
                       <span className="text-[14px] sm:text-[15px] text-[var(--fg)]">
                         {item.name}
                       </span>
-                      <span className="font-mono text-xs text-[var(--fg-muted)] tabular">
+                      <span className="text-xs text-[var(--fg-muted)] tabular">
                         {item.detail}
                       </span>
                     </li>

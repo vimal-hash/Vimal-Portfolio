@@ -1,7 +1,6 @@
 import { Nav } from '@/components/nav';
 import { Hero } from '@/components/hero';
-import { Work } from '@/components/work';
-import { Marquee } from '@/components/marquee';
+import { WorkGallery } from '@/components/work-gallery';
 import { Stack } from '@/components/stack';
 import { About } from '@/components/about';
 import { Contact } from '@/components/contact';
@@ -15,8 +14,7 @@ export default function Home() {
       <Nav />
       <main className="relative">
         <Hero />
-        <Work />
-        <Marquee />
+        <WorkGallery />
         <Stack />
         <About />
         <Contact />

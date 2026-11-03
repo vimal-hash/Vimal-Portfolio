@@ -41,11 +41,11 @@ function BentoCard({ project, index }: { project: Project; index: number }) {
           className="absolute -right-20 -bottom-20 h-64 w-64 rounded-full border border-white/30 mix-blend-overlay"
           aria-hidden
         />
-        <div className="absolute left-4 sm:left-6 top-4 sm:top-6 font-mono text-[10px] uppercase tracking-[0.2em] text-white/70">
+        <div className="absolute left-4 sm:left-6 top-4 sm:top-6 text-[10px] uppercase tracking-[0.2em] text-white/70">
           {project.index} / {project.category}
         </div>
-        <div className="absolute right-4 sm:right-6 top-4 sm:top-6 font-mono text-[10px] uppercase tracking-[0.2em] text-white/70">
-          {project.year}
+        <div className="absolute right-4 sm:right-6 top-4 sm:top-6 text-[10px] uppercase tracking-[0.2em] text-white/70">
+          {project.year ?? project.location}
         </div>
         {/* Big glyph */}
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
@@ -93,7 +93,7 @@ function BentoCard({ project, index }: { project: Project; index: number }) {
 
       {/* Content band */}
       <div className="flex flex-1 flex-col p-5 sm:p-6 md:p-8">
-        <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-subtle)]">
+        <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--fg-subtle)]">
           Impact
         </div>
         <p className="mt-2 text-[14px] sm:text-[15px] leading-relaxed text-[var(--fg)] text-pretty">
@@ -112,18 +112,22 @@ function BentoCard({ project, index }: { project: Project; index: number }) {
         </div>
 
         <div className="mt-5 sm:mt-6 flex items-center justify-between border-t border-dashed border-[var(--border)] pt-4">
-          <Link
-            href={project.href ?? `/projects#${project.slug}`}
-            className="link-underline inline-flex items-center gap-1.5 text-sm font-medium text-[var(--fg)]"
-          >
-            View Project
-            <ArrowUpRight
-              size={14}
-              strokeWidth={1.75}
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Link>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-subtle)]">
+          {project.href ? (
+            <Link
+              href={project.href}
+              className="link-underline inline-flex items-center gap-1.5 text-sm font-medium text-[var(--fg)]"
+            >
+              View Project
+              <ArrowUpRight
+                size={14}
+                strokeWidth={1.75}
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </Link>
+          ) : (
+            <span className="text-sm font-medium text-[var(--fg-muted)]">Under NDA</span>
+          )}
+          <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--fg-subtle)]">
             {project.index}
           </span>
         </div>
@@ -139,12 +143,12 @@ export function Work() {
     <section id="work" className="relative">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 md:px-10 py-20 md:py-32">
         <div className="flex items-end justify-between border-t border-[var(--border)] py-8 sm:py-10">
-          <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
             <span className="inline-block h-px w-8 bg-[var(--fg-muted)]" />
             <span>Selected Work</span>
           </div>
           <div className="hidden text-right text-sm text-[var(--fg-muted)] md:block">
-            {featured.length} featured. {projects.length - featured.length} more shipped.
+            {featured.length} projects
           </div>
         </div>
 
@@ -155,9 +159,9 @@ export function Work() {
           transition={{ duration: 0.8, ease }}
           className="mb-10 sm:mb-12 font-display text-[clamp(2.25rem,6vw,5rem)] tracking-tightest leading-[0.95] text-balance"
         >
-          Work that has shipped,
+          A few things
           <br />
-          <em className="italic text-[var(--fg-muted)]">measured in outcomes.</em>
+          <em className="text-[var(--fg-muted)]">I&apos;ve built.</em>
         </motion.h2>
 
         {/* 2-col bento; lg cards span both cols */}
@@ -176,7 +180,7 @@ export function Work() {
           className="mt-10 sm:mt-12 flex flex-col items-start justify-between gap-4 border-t border-[var(--border)] pt-8 md:flex-row md:items-center"
         >
           <p className="max-w-md text-sm text-[var(--fg-muted)]">
-            A full archive of {projects.length} production engagements — fintech, SaaS, commerce, and editorial.
+            See the full list, with the stack behind each one.
           </p>
           <Link
             href="/projects"

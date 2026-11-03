@@ -3,9 +3,9 @@ import { Footer } from '@/components/footer';
 import { ProjectsCatalogue } from '@/components/projects-catalogue';
 
 export const metadata = {
-  title: 'Projects — Full Catalogue',
+  title: 'Projects',
   description:
-    'A complete archive of shipped projects across AI, commerce, SaaS, and editorial.',
+    'Every project I can show, from a voice AI interface to brand websites.',
 };
 
 export default function ProjectsPage() {

@@ -21,13 +21,12 @@ export const identity = {
   yearsOfExperience: '4',
   basedIn: 'Chennai, India',
   timezone: 'UTC+5:30',
-  // Hiring signals — UK/US hiring managers look for these
   availability: 'Available',
   remoteRelocation: 'Open to Remote',
   workingWith: 'UK & US founders',
   specialty: 'React · R3F · Performance',
   email: 'vimaloffi1@gmail.com',
-  resumePath: '/resume/Vimal_frontend_developer.pdf',
+  resumePath: '/resume/Vimal_resume_design_engineer.pdf',
   calendarUrl: 'https://cal.com/vimal',
   websiteUrl: 'https://vimal.dev',
 } as const;
@@ -37,23 +36,16 @@ export const identity = {
  * Used in: components/showcase.tsx
  * ─────────────────────────────────────────────────────────────────── */
 export const hero = {
-  // eyebrow: 'Portfolio / 2026',
   // Split into 3 parts for italic styling
   headline: {
     line1: 'Hi!',
-    line1Italic: `I'm`, // rendered italic, muted
+    line1Italic: `I'm`, // rendered muted
     line2: 'Vimal',
   },
   subhead:
-    'Frontend engineer building immersive, high-performance web experiences. React · TypeScript · 3D.',
+    "Design engineer / Full stack dev. I build fast websites, often with 3D in them, using React, TypeScript and Three.js.",
   primaryCta: { label: 'Get in touch', href: 'mailto:vimaloffi1@gmail.com' },
-  secondaryCta: { label: 'Resume', href: '/resume/Vimal_frontend_developer.pdf' },
-  // Meta strip under the buttons
-  meta: [
-    // { label: 'Available', value: 'Q3 2026' },
-    // { label: 'Based', value: 'Chennai · UTC+5:30' },
-    // { label: 'Working with', value: 'UK & US founders' },
-  ],
+  secondaryCta: { label: 'Resume', href: identity.resumePath },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────── *
@@ -68,26 +60,21 @@ export const navLinks = [
 ] as const;
 
 /* ─────────────────────────────────────────────────────────────────── *
- * 4. PROJECTS — bento grid + /projects archive
- * Used in: components/work.tsx, components/projects-catalogue.tsx
+ * 4. PROJECTS — 3D gallery + /projects archive
+ * Used in: components/work-gallery, components/work.tsx, components/projects-catalogue.tsx
  *
- * To reorder the bento grid: rearrange the array.
- * To change card sizes: set `size: 'lg' | 'sm'`.
- *   - 'lg' spans both columns (2 cols)
- *   - 'sm' spans one column
- *
- * Current bento layout (per spec):
- *   [01 Sphere — LARGE — top]
- *   [02 SaaS Landing — small ] [03 Manvasam — small]
- *   [04 Modulus Housing — LARGE — bottom]
+ * The order here is the order on the site.
  * ─────────────────────────────────────────────────────────────────── */
 export type Project = {
   slug: string;
   index: string;
   title: string;
   client: string;
-  year: string;
+  location: string;
+  year?: string;
   category: string;
+  /** One short result, shown as a pill on the gallery card. */
+  highlight?: string;
   impact: string;
   description: string;
   stack: string[];
@@ -97,160 +84,94 @@ export type Project = {
   size: 'sm' | 'lg';
   featured: boolean;
   image: string;
-  bgc:string,
+  bgc: string;
 };
 
 export const projects: Project[] = [
   {
-    slug: 'sphere',
+    slug: 'modulus',
     index: '01',
-    title: 'Sphere',
-    client: 'Voice AI Interface',
-    year: '2025',
-    category: 'AI / Real-time',
-    // AI startup keywords: low-latency, streaming, audio-reactive
+    title: 'Modulus Housing',
+    client: 'Prefab construction company',
+    location: 'Chennai, India',
+    year: '2024',
+    category: 'Branding site',
+    highlight: 'Raised $7M with this site',
     impact:
-      'Engineered a low-latency, browser-based voice AI interface with streaming audio I/O and audio-reactive 3D visualizations.',
+      'A branding site built to win over investors. Modulus raised $7M using it.',
     description:
-      'A real-time conversational AI surface built on streaming WebSockets and the Web Audio API. The 3D visualizer reacts to amplitude and FFT data in real time, absorbing perceived round-trip latency. Sub-300ms voice-to-response on production load.',
+      'The brand website for a prefab construction company in Chennai, made for their fundraise and built from start to launch. They raised $7M with it.',
+    stack: ['Next.js', 'TypeScript', 'Tailwind', 'After Effects'],
+    accent: 'linear-gradient(135deg, #2D3142 0%, #4F5D75 100%)',
+    glyph: '▣',
+    size: 'lg',
+    featured: true,
+    href: 'https://www.modulushousing.com/',
+    image: '/modulus.jpg',
+    bgc: 'white',
+  },
+  {
+    slug: 'sphere',
+    index: '02',
+    title: 'Sphere',
+    client: 'Voice AI interface',
+    location: 'Chennai, India',
+    year: '2025',
+    category: 'R3F + AI integration',
+    impact:
+      'A voice AI you talk to in the browser. Audio streams both ways with low latency, and the 3D visual moves with the sound.',
+    description:
+      'It talks to the model over WebSockets and handles sound with the Web Audio API. The 3D visual runs off live amplitude and FFT data, which also makes the wait for a reply feel shorter. Voice to response takes under 300ms in production.',
     stack: ['Next.js', 'TypeScript', 'WebSockets', 'R3F', 'Web Audio API'],
     accent: 'linear-gradient(135deg, #FF4500 0%, #1a1a1a 100%)',
     glyph: '◉',
     size: 'lg',
     featured: true,
-    href: "https://sphere-red.vercel.app/",
+    href: 'https://sphere-red.vercel.app/',
     image: '/Sphere.webp',
-    bgc:'black',
+    bgc: 'black',
   },
-  // {
-  //   slug: 'saas-landing',
-  //   index: '02',
-  //   title: 'SaaS Landing Pages',
-  //   client: 'Multiple Engagements',
-  //   year: '2023—2025',
-  //   category: 'Marketing / SEO',
-  //   impact:
-  //     'Optimized SEO and Core Web Vitals to boost organic traffic by 60% across multiple SaaS clients.',
-  //   description:
-  //     'Conversion-focused marketing sites for SaaS clients. Core Web Vitals at 95+, structured data, and edge rendering — engineered to win on search and convert on first scroll.',
-  //   stack: ['Next.js', 'Sanity', 'Framer Motion', 'Vercel Edge'],
-  //   accent: 'linear-gradient(135deg, #1a1a1a 0%, #444 100%)',
-  //   glyph: '↗',
-  //   size: 'sm',
-  //   featured: true,
-  //   href: ""
-  // },
   {
     slug: 'manvasam',
     index: '03',
     title: 'Manvasam',
-    client: 'B2B Branding site - Singapore',
+    client: 'Coconut supplier',
+    location: 'Singapore',
     year: '2024',
-    category: 'Supply Chain',
+    category: 'Branding site',
     impact:
-      'Engineered a high-end branding and product showcase platform for a global coconut supplier, focusing on immersive visual storytelling and sustainability.',
+      'A brand and product site for a coconut supplier that sells worldwide, built around strong visuals and their sustainability story.',
     description:
-      'A B2B trade portal handling bulk orders, multi-currency pricing, and document workflows across jurisdictions. Built the entire frontend architecture from scratch.',
-    stack: ['Next.js', 'TypeScript', 'Tailwind', 'after efffects', 'illustrator', 'claude code'],
+      'A site for a coconut processor that exports worldwide, covering its supply chain, certifications and product range. I built the whole frontend from scratch.',
+    stack: ['Next.js', 'TypeScript', 'Tailwind', 'After Effects', 'Illustrator', 'Claude Code'],
     accent: 'linear-gradient(135deg, #E8DDD0 0%, #8B7355 100%)',
     glyph: '⬡',
     size: 'sm',
     featured: true,
-    href: "https://manvasam.vercel.app/",
+    href: 'https://manvasam.vercel.app/',
     image: '/man.svg',
-    bgc:'white',
+    bgc: 'white',
   },
+  // Under NDA: the client name, logo, link and project details stay out of this file.
   {
-    slug: 'modulus',
+    slug: 'confidential',
     index: '04',
-    title: 'Modulus Housing',
-    client: 'B2B Branding site - Chennai',
-    year: '2024',
-    category: 'B2B SaaS',
+    title: 'Confidential Project',
+    client: 'Client withheld',
+    location: 'Singapore',
+    category: 'Full-stack grocery e-commerce',
     impact:
-      'Delivered an end-to-end B2B branding website resulting in 30-50% growth in user engagement.',
+      "A full-stack grocery store. It's under NDA, so I can't share the name, logo, link or details.",
     description:
-      'Frontend lead on a multi-tenant property management SaaS. Owned the entire surface from auth to billing dashboard, with a custom design system shared across web and mobile webview.',
-    stack: ['Next.js', 'TypeScript', 'Tailwind', 'after efffects'],
+      "A full-stack grocery store. It's under NDA, so I can't share the name, logo, link or details.",
+    stack: [],
     accent: 'linear-gradient(135deg, #2D3142 0%, #4F5D75 100%)',
     glyph: '▣',
     size: 'lg',
     featured: true,
-    href: "https://www.modulushousing.com/",
-    image: '/modulus.jpg',
-    bgc:'white',
+    image: '',
+    bgc: '#1a1c20',
   },
-  {
-    slug: 'Farm to home',
-    index: '05',
-    title: 'Farm To Home',
-    client: 'E-commerce - Singapore',
-    year: '2026',
-    category: 'B2C',
-    impact:
-      'E-commerce website for grocery shop, build using Next.Js',
-    description:
-      'E-commerce website for grocery shop, build using Next.Js, User can order and make payment with their card and admin will recieve the product and money via stripe',
-    stack: ['Next.js', 'TypeScript', 'Tailwind', 'Stripe', 'after efffects'],
-    accent: 'linear-gradient(135deg, #2D3142 0%, #4F5D75 100%)',
-    glyph: '▣',
-    size: 'lg',
-    featured: true,
-    href: "https://farmtohome.sg",
-    image: '/farm_to_home_new_logo-12.png',
-    bgc:'white',
-  },
-  // {
-  //   slug: 'editorial-cms',
-  //   index: '06',
-  //   title: 'Editorial Publishing System',
-  //   client: 'Independent Magazine — NYC',
-  //   year: '2023',
-  //   category: 'Editorial / CMS',
-  //   impact: 'Editor velocity up 4×. Scroll-depth from 38% to 71%.',
-  //   description:
-  //     'A block-based composition layer over Sanity, exposing typographic axes, asymmetric grids, and live previews to non-technical editors.',
-  //   stack: ['Next.js', 'Sanity', 'Framer Motion', 'GSAP'],
-  //   accent: 'linear-gradient(135deg, #3f0d12 0%, #a71d31 100%)',
-  //   glyph: '✦',
-  //   size: 'sm',
-  //   featured: false,
-  //   href: "https://sphere-red.vercel.app/"
-  // },
-  // {
-  //   slug: 'commerce-3d',
-  //   index: '07',
-  //   title: 'Immersive 3D Commerce Platform',
-  //   client: 'DTC Footwear Brand — UK',
-  //   year: '2024',
-  //   category: 'E-commerce / WebGL',
-  //   impact: 'Mobile conversion lifted from 1.1% to 2.7%. Lighthouse mobile: 96.',
-  //   description:
-  //     'A configurable Three.js product studio with custom GLSL shaders for leather, deferred LOD streaming, and a 60fps mobile target.',
-  //   stack: ['Next.js', 'Three.js', 'GLSL', 'Blender', 'Vercel Edge'],
-  //   accent: 'linear-gradient(135deg, #5d4037 0%, #d7ccc8 100%)',
-  //   glyph: '◐',
-  //   size: 'sm',
-  //   featured: false,
-  //   href: "https://sphere-red.vercel.app/"
-  // },
-  // {
-  //   slug: 'design-system',
-  //   index: '08',
-  //   title: 'Cross-product Design System',
-  //   client: 'Series A Marketplace',
-  //   year: '2023',
-  //   category: 'Design Systems',
-  //   impact: 'Onboarded 12 engineers; ship velocity up 2.3×.',
-  //   description:
-  //     'A headless component library with design tokens piped from Figma, full a11y coverage, and Storybook-driven docs.',
-  //   stack: ['React', 'Radix', 'CSS Vars', 'Storybook', 'Figma Tokens'],
-  //   accent: 'linear-gradient(135deg, #2d6a4f 0%, #95d5b2 100%)',
-  //   glyph: '⬢',
-  //   size: 'sm',
-  //   featured: false,
-  //   href: "https://sphere-red.vercel.app/"
-  // },
 ];
 
 /* ─────────────────────────────────────────────────────────────────── *
@@ -258,7 +179,6 @@ export const projects: Project[] = [
  * Used in: components/stack.tsx
  *
  * To add a tool, add an object. To add a new group, add a key.
- * "Premiere" not "Premier" — fixed.
  * ─────────────────────────────────────────────────────────────────── */
 export const stackGroups = {
   Core: [
@@ -288,9 +208,9 @@ export const stackGroups = {
  * Used in: components/stack.tsx
  * ─────────────────────────────────────────────────────────────────── */
 export const stats = [
-  { value: '8+', label: 'Client websites delivered.' },
-  { value: '50 - 75%', label: 'Faster data fetch via type-safe REST APIs.' },
-  { value: '60%', label: 'Reduction in client JS via SSR & serverless.' },
+  { value: '8+', label: 'Client websites shipped.' },
+  { value: '50–75%', label: 'Faster data fetching with type-safe REST APIs.' },
+  { value: '60%', label: 'Less JavaScript sent to the browser, using SSR and serverless.' },
 ];
 
 /* ─────────────────────────────────────────────────────────────────── *
@@ -300,85 +220,58 @@ export const stats = [
 export const about = {
   // The single big quote
   headline:
-    'I bridge the gap between complex engineering and world class design - building the layers and interfaces that everyone likes and respects.',
-  // The word(s) inside `headline` to italicize / mute
-  italicPhrase: 'complex engineering',
+    'I care about how a website is built as much as how it looks.',
+  // The word(s) inside `headline` to mute
+  italicPhrase: 'how it looks',
 
   paragraphs: [
-    'Four years, twelve production clients. Most of my work runs in front of paying customers today - at fintechs, marketplaces, and DTC brands across the world.',
-    'The pattern is the same: a founder has a product where the interface is the product. They need someone who can hold both the typographic detail and the bundle size, the spring damping and the edge function. I do that.',
-  ],
-
-  meta: [
-    // { label: 'Availability', value: 'Q3 2026 — limited' },
-    // { label: 'Based', value: 'Chennai, India' },
-    // { label: 'Open to', value: 'Remote & Relocation — UK & US' },
+    "I've spent four years building websites for clients. Most of that work is still live, used by real customers at fintechs, marketplaces and DTC brands.",
+    "Most of the people I work with have a product where the interface really matters. So I look after both sides of it: the type and the bundle size, how something moves and how fast it loads.",
   ],
 };
 
 /* ─────────────────────────────────────────────────────────────────── *
- * 8. MARQUEE — scrolling ticker between sections
- * Used in: components/marquee.tsx
- * ─────────────────────────────────────────────────────────────────── */
-export const marqueePhrases = [
-  'Performance',
-  'Typography',
-  'Motion',
-  'Accessibility',
-  // 'WebGL',
-  'Edge rendering',
-  'Design systems',
-  'TypeScript',
-  'Spatial UI',
-  'Real-time',
-];
-
-/* ─────────────────────────────────────────────────────────────────── *
- * 9. CONTACT — copy + email
+ * 8. CONTACT — copy + email
  * Used in: components/contact.tsx
  * ─────────────────────────────────────────────────────────────────── */
 export const contact = {
   eyebrow: 'Contact',
-  headline: `Let's build`,
-  headlineItalic: 'something memorable.',
+  headline: 'Got a project?',
+  headlineItalic: "Let's talk.",
   pitch:
-    `Tell me what you're shipping and I'll respond within 24 hours.`,
-    // I take on a small number of new engagements each quarter. 
+    `Tell me what you're working on and I'll reply within 24 hours.`,
   email: 'vimaloffi1@gmail.com',
   calendarUrl: 'https://cal.com/vimal',
-  // Form success message — feels premium when subtle and direct
-  successHeadline: 'Message received.',
+  successHeadline: 'Thanks, got it.',
   successBody:
-    'Thanks for reaching out. I\u2019ll be back to you within 24 hours, usually faster.',
+    'I\u2019ll get back to you within 24 hours, usually sooner.',
 };
 
 /* ─────────────────────────────────────────────────────────────────── *
- * 10. FOOTER — socials + meta
+ * 9. FOOTER — socials + meta
  * Used in: components/footer.tsx
  * ─────────────────────────────────────────────────────────────────── */
 export const socials = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/vimalrjoffi/' },
   { label: 'GitHub', href: 'https://github.com/vimal-hash' },
-  // { label: 'Twitter / X', href: 'https://x.com/vimal' },
-  // { label: 'Read.cv', href: 'https://read.cv/vimal' },
+  { label: 'Twitter', href: 'https://x.com/Vimal_dev_' },
 ];
 
 export const footerCopy = {
   taglineActive: 'Available for new work',
-  taglineRelocation: 'Open to Remote & Freelance',
+  taglineRelocation: 'Open to remote and freelance work',
   copyright: '© 2026 Vimal. All rights reserved.',
-  // buildTag: 'v1.4 / elite',
 };
 
 /* ─────────────────────────────────────────────────────────────────── *
- * 11. SEO / METADATA
+ * 10. SEO / METADATA
  * Used in: app/layout.tsx
  * ─────────────────────────────────────────────────────────────────── */
 export const seo = {
   title: 'Vimal - Frontend Engineer',
   titleTemplate: '%s — Vimal',
   description:
-    'Frontend Engineer specializing in React, TypeScript, and 3D web environments. Building immersive, high-performance web experiences for founders in the UK and US.',
+    'Frontend engineer in Chennai. I build fast websites and 3D web experiences with React, TypeScript and Three.js, for clients in the UK and US.',
   keywords: [
     'Frontend Engineer',
     'React Developer',

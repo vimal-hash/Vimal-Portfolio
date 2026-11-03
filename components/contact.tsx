@@ -10,14 +10,29 @@ const ease = [0.16, 1, 0.3, 1] as const;
 export function Contact() {
   const [submitted, setSubmitted] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
+  // Set when sending fails: a ready-to-send email, so the visitor's message isn't lost.
+  const [fallbackMail, setFallbackMail] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
     setSubmitting(true);
-    // Replace with real API call (Resend/Postmark/etc)
-    await new Promise((r) => setTimeout(r, 900));
+    setFallbackMail(null);
+    const sent = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.ok)
+      .catch(() => false);
     setSubmitting(false);
-    setSubmitted(true);
+    if (sent) {
+      setSubmitted(true);
+      return;
+    }
+    const subject = encodeURIComponent(data.subject);
+    const body = encodeURIComponent(`${data.message}\n\n${data.name}`);
+    setFallbackMail(`mailto:${contact.email}?subject=${subject}&body=${body}`);
   };
 
   return (
@@ -25,9 +40,8 @@ export function Contact() {
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 md:px-10">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-5">
-            <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-              <span className="inline-block h-px w-8 bg-[var(--fg-muted)]" />
-              <span>{contact.eyebrow}</span>
+            <div className="text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+              {contact.eyebrow}
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
@@ -38,7 +52,7 @@ export function Contact() {
             >
               {contact.headline}
               <br />
-              <em className="italic text-[var(--fg-muted)]">
+              <em className="text-[var(--fg-muted)]">
                 {contact.headlineItalic}
               </em>
             </motion.h2>
@@ -54,17 +68,10 @@ export function Contact() {
               >
                 {contact.email}
               </a>
-              {/* <a
-                href={contact.calendarUrl}
-                className="link-underline block text-[var(--fg-muted)]"
-              >
-                Book an introductory call →
-              </a> */}
             </div>
           </div>
 
           <div className="lg:col-span-7">
-            {/* Premium success state: form fades out, message fades in */}
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
@@ -119,15 +126,31 @@ export function Contact() {
                   <Field
                     label="Message"
                     name="message"
-                    placeholder="A few sentences about scope, timeline, and stack."
+                    placeholder="What do you need, and by when?"
                     required
                     multiline
                   />
 
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
-                    {/* <p className="text-xs text-[var(--fg-subtle)] max-w-[32ch]">
-                      Submitting sends a direct email — no CRM, no tracking.
-                    </p> */}
+                  {/* Hidden from people. Bots fill it in, and the API ignores anything that has it. */}
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden
+                    className="absolute -left-[9999px] h-px w-px opacity-0"
+                  />
+
+                  <div className="flex flex-col items-start gap-4 pt-2">
+                    {fallbackMail && (
+                      <p role="alert" className="max-w-md text-sm text-[var(--fg)]">
+                        That didn't send.{' '}
+                        <a href={fallbackMail} className="underline underline-offset-4">
+                          Open it as an email instead
+                        </a>
+                        , your message is already filled in.
+                      </p>
+                    )}
                     <button
                       type="submit"
                       disabled={submitting}
@@ -166,7 +189,7 @@ function Field({
     <div className="group relative">
       <label
         htmlFor={id}
-        className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--fg-subtle)]"
+        className="text-[10px] uppercase tracking-[0.22em] text-[var(--fg-subtle)]"
       >
         {label}
         {required && <span className="ml-1 text-[var(--accent)]">*</span>}
@@ -178,6 +201,7 @@ function Field({
           required={required}
           placeholder={placeholder}
           rows={4}
+          data-lenis-prevent
           className="underline-input mt-2 resize-none"
         />
       ) : (

@@ -5,7 +5,9 @@ out/
 .vercel
 *.log
 .DS_Store
-.tsbuildinfo
+*.tsbuildinfo
+.tools/
+assets-src/
 next-env.d.ts
 pnpm-lock.yaml
 package-lock.json

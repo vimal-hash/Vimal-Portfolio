@@ -1,26 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono, Instrument_Serif } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import { ThemeProvider, ThemeScript } from '@/components/theme-provider';
+import { SmoothScroll } from '@/components/smooth-scroll';
 import { seo, identity } from '@/lib/content';
 import './globals.css';
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-geist',
-  display: 'swap',
-});
-
-const mono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-geist-mono',
-  display: 'swap',
-});
-
-const instrument = Instrument_Serif({
-  subsets: ['latin'],
-  weight: '400',
-  style: ['normal', 'italic'],
-  variable: '--font-instrument',
+  variable: '--font-sans',
   display: 'swap',
 });
 
@@ -69,7 +56,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${mono.variable} ${instrument.variable}`}
+      className={spaceGrotesk.variable}
     >
       <head>
         <ThemeScript defaultTheme="light" />
@@ -79,29 +66,34 @@ export default function RootLayout({
           href="/Portfolio3-draco.glb"
           type="model/gltf-binary"
           crossOrigin="anonymous"
+          media="(min-width: 768px)"
+        />
+        <link
+          rel="preload"
+          as="fetch"
+          href="/Portfolio3-mobile.glb"
+          type="model/gltf-binary"
+          crossOrigin="anonymous"
+          media="(max-width: 767px)"
         />
         <link rel="preload" as="fetch" href="/Wood/diff.ktx2" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/Wood/arm.ktx2" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/Cw/diffuse.ktx2" crossOrigin="anonymous" />
-        {/* Self-hosted Draco/Basis decoder+transcoder (see components/Portfolio3.tsx).
-            Preloading lets the browser fetch these in parallel with the JS bundle
-            instead of discovering them only after the loader code runs. */}
         <link rel="preload" as="script" href="/decoders/draco/draco_wasm_wrapper.js" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/decoders/draco/draco_decoder.wasm" crossOrigin="anonymous" />
         <link rel="preload" as="script" href="/decoders/basis/basis_transcoder.js" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/decoders/basis/basis_transcoder.wasm" crossOrigin="anonymous" />
-        {/* Mobile-only poster preload — browser only fetches if media matches,
-            so desktop doesn't waste bandwidth on an image it won't render. */}
         <link
           rel="preload"
           as="image"
-          href="/hero-poster.jpg"
+          href="/hero-poster-phone.jpg"
           type="image/jpeg"
           media="(max-width: 767px)"
         />
       </head>
       <body className="font-sans antialiased">
         <ThemeProvider defaultTheme="light" enableSystem>
+          <SmoothScroll />
           {children}
         </ThemeProvider>
       </body>

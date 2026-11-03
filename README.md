@@ -55,12 +55,11 @@ That's it. No code changes needed.
 
 ```
 public/
-├── Portfolio3.glb
-├── Rw/Rough-wall.webp, Normal-wall.webp
-├── Cw/diffuse.webp
-├── Wood/diff.webp, arm.webp
-├── textures/floor/floor_diffuse.jpg, floor_Normal.jpg, floor_Roughness.jpg, floor_ao.jpg
-└── resume/Vimal_sphere_resume.pdf
+├── Portfolio3-draco.glb, Portfolio3-mobile.glb
+├── Cw/diffuse.ktx2
+├── Wood/diff.ktx2, arm.ktx2
+├── work-gallery/
+└── resume/Vimal_resume_design_engineer.pdf
 ```
 
 ## What's new in v1.4

@@ -14,22 +14,11 @@ const config: Config = {
         accent: { DEFAULT: '#FF4500', warm: '#E8DDD0' },
       },
       fontFamily: {
-        sans: ['var(--font-geist)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-instrument)', 'Georgia', 'serif'],
-        mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
         tightest: '-0.04em',
         tighter: '-0.03em',
-      },
-      animation: {
-        marquee: 'marquee 40s linear infinite',
-      },
-      keyframes: {
-        marquee: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
       },
     },
   },

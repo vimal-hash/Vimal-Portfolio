@@ -40,7 +40,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    scroll-behavior: smooth;
+    /* Space Grotesk has no italic, and a faked slant looks wrong. Emphasis comes from colour. */
+    font-synthesis: none;
     /* Prevent iOS auto-zoom on form input focus */
     -webkit-text-size-adjust: 100%;
   }
@@ -48,7 +49,6 @@
   body {
     background: var(--bg);
     color: var(--fg);
-    font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv11';
     transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                 color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     /* Prevent overscroll bounce showing wrong color behind sections */
@@ -151,7 +151,7 @@
 }
 
 .font-display {
-  font-family: var(--font-instrument), Georgia, serif;
-  font-weight: 400;
-  letter-spacing: -0.025em;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.03em;
 }
