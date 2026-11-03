@@ -17,7 +17,7 @@ function HeroPlaceholder() {
     />
   );
 }
-
+// done
 export function Hero() {
   return (
     <section
